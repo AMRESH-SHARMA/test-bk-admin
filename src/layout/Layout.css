@@ -1,0 +1,35 @@
+/* .l-mid-container {
+  height: 'auto';
+  display: 'flex';
+  flex-direction: 'column';
+  color: 'red';
+}  */
+
+/* LAYOUT */
+.main {
+  display: flex;
+  height: 100vh;
+}
+
+
+.container {
+  flex-grow: 1;
+  /* padding: 2em; */
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  /* text-align: center; */
+}
+
+.title {
+  font-size: 3em;
+}
+
+.info {
+  font-size: 1.1em;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  margin: 1.5em;
+  color: rgb(224, 224, 224);
+}
+
