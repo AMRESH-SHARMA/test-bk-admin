@@ -8,7 +8,7 @@ function Layout() {
     <div className="main">
 
       <AppSidebar />
-      <div className="container">
+      <div className="l-container">
         <AppHeader />
         <>
         <Outlet />

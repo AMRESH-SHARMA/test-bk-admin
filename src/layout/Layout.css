@@ -12,24 +12,25 @@
 }
 
 
-.container {
+.l-container {
   flex-grow: 1;
-  /* padding: 2em; */
-  /* display: flex; */
-  /* flex-direction: column; */
-  /* justify-content: center; */
-  /* text-align: center; */
 }
 
-.title {
-  font-size: 3em;
+.cont-title {
+  letter-spacing: 1px;
+  padding: 15px 15px 0 15px;
+  font-size: 25px;
 }
 
-.info {
+.cont-info {
   font-size: 1.1em;
   letter-spacing: 1px;
   line-height: 1.5;
-  margin: 1.5em;
-  color: rgb(224, 224, 224);
+  margin: 1em;
+  padding: 1em;
+}
+.cont-btn-panel{
+  display: flex;
+  justify-content: space-between;
 }
 
