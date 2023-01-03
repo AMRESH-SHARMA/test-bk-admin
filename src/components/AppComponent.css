@@ -72,14 +72,17 @@
 }
 
 .sidebar-header {
+  background-color: #3c4b64;
   color: #fff;
   font-size: 1.5em;
-  padding: .75em 1em;
+  padding-left: 15px;
+  height: 3rem;
   display: flex;
   justify-content: space-center;
+  align-items: center;
 }
 
-.sidebar-header>i {
+.sidebar-header>div {
   cursor: pointer;
 }
 

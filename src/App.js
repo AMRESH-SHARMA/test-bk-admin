@@ -7,6 +7,10 @@ import Layout from './layout/Layout'
 import ModalScr from './screens/ModalScr';
 import Spinner from './assets/Spinner/Spinner';
 import ChangePassword from './screens/Pages/ChangePassword';
+import Copyright from './screens/Copyright';
+import Address from './screens/Address';
+import SocialMedia from './screens/SocialMedia';
+import Logos from './screens/Logos';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -31,6 +35,10 @@ const App = () => {
 
           <Route path="/" name="defaultLayout" element={<Layout />} >
             <Route path='/home' element={<Home />} />
+            <Route path='/copyright' element={<Copyright />} />
+            <Route path='/address' element={<Address />} />
+            <Route path='/social-media' element={<SocialMedia />} />
+            <Route path='/logos' element={<Logos />} />
             <Route path='/topics' element={<Topics />} />
             <Route path="/modal" element={<ModalScr />} />
           </Route>

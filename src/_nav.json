@@ -106,5 +106,30 @@
     "title": "Log out",
     "icon": "fa fa-sign-out fa-lg", 
     "path": "/"
+  },  {
+    "title": "Settings",
+    "icon": "bi-gear-fill",
+    "childrens": [
+      {
+        "title": "Logos",
+        "icon": "fa fa-camera-retro",
+        "path": "/logos"
+      },
+      {
+        "title": "Social Media",
+        "icon": "fa fa-user",
+        "path": "/social-media"
+      },
+      {
+        "title": "Address",
+        "icon": "fa fa-address-book-o",
+        "path": "/address"
+      },
+      {
+        "title": "Copyright",
+        "icon": "fa fa-copyright",
+        "path": "/copyright"
+      }
+    ]
   }
 ]
