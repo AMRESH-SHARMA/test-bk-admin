@@ -121,7 +121,7 @@ input.error {
 .gbtn2 {
   margin: 0 auto;
   padding: 8px 8px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   color: #fff;
   box-shadow: 0 3px 5px rgba(0, 0, 0, .4);
   font-weight: 600;
@@ -129,6 +129,7 @@ input.error {
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 .gbtn-create{
   background-color: #006A4E ;
