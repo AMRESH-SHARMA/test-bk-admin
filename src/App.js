@@ -11,6 +11,9 @@ import Copyright from './screens/Copyright';
 import Address from './screens/Address';
 import SocialMedia from './screens/SocialMedia';
 import Logos from './screens/Logos';
+import Users from './screens/Users/Users';
+import AddUsers from './screens/Users/AddUsers';
+import EditUsers from './screens/Users/EditUsers';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -34,6 +37,11 @@ const App = () => {
           <Route exact path="*" element={<Page404 />} />
 
           <Route path="/" name="defaultLayout" element={<Layout />} >
+
+            <Route path='/users' element={<Users />} />
+            <Route path='/users/add' element={<AddUsers/>} />
+            <Route path='/users/edit' element={<EditUsers />} />
+          
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />
             <Route path='/address' element={<Address />} />

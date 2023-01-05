@@ -30,7 +30,7 @@ const Alert = () => {
 
     {alert.open &&
       <div className='alert-container' style={{ backgroundColor: alertColor }}>
-        <div className='alert-inner' style={{ display: 'flex',justifyContent:'space-between' }}>
+        <div className='alert-inner'>
 
           <p>ALERT! {alert.message}</p>
           <p>TIMEOUT:{alert.timeout}</p>

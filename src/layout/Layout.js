@@ -9,10 +9,10 @@ function Layout() {
 
       <AppSidebar />
       <div className="l-container">
-        <AppHeader />
-        <>
+      <AppHeader />
+        <div>
         <Outlet />
-        </> 
+        </div> 
       </div>
     </div>
   )

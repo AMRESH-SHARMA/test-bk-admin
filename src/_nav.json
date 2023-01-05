@@ -1,66 +1,126 @@
 [
   {
-    "title": "General",
-    "icon": "bi-gear-fill",
+    "title": "Users",
+    "icon": "fa fa-user",
+    "path": "/users"
+  },
+  {
+    "title": "Books",
+    "icon": "bi-person-fill",
     "childrens": [
       {
-        "title": "Home",
-        "icon": "bi-house-fill",
-        "path": "/home"
+        "title": "Profile",
+        "path": "/profile"
       },
       {
-        "title": "About",
-        "icon": "bi-info-circle-fill",
-        "path": "/topics"
-      },
-      {
-        "title": "Contact",
-        "icon": "bi-phone-fill",
+        "title": "Settings",
         "childrens": [
           {
-            "title": "Facebook",
-            "icon": "bi-facebook"
+            "title": "Account",
+            "path": "/settings/account"
           },
           {
-            "title": "Twitter",
-            "icon": "bi-twitter"
-          },
-          {
-            "title": "Instagram",
-            "icon": "bi-instagram"
+            "title": "Notifications",
+            "path": "/settings/notifications"
           }
         ]
-      },
-      {
-        "title": "FAQ",
-        "icon": "bi-question-circle-fill"
       }
     ]
   },
   {
-    "title": "Account",
-    "icon": "bi-info-circle-fill",
+    "title": "Orders",
+    "icon": "bi-person-fill",
     "childrens": [
       {
-        "title": "Login",
-        "path": "/login"
+        "title": "Profile",
+        "path": "/profile"
       },
       {
-        "title": "Register",
-        "path": "/register"
-      },
-      {
-        "title": "Forgot Password",
-        "path": "/forgot-password"
-      },
-      {
-        "title": "Reset Password",
-        "path": "/reset-password"
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
       }
     ]
   },
   {
-    "title": "Profile",
+    "title": "Earnings",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Payouts",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Support",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Employees",
     "icon": "bi-person-fill",
     "childrens": [
       {
@@ -86,21 +146,6 @@
     "title": "Home",
     "icon": "fa fa-home fa-lg",
     "path": "/home"
-  },
-  {
-    "title": "Login",
-    "icon": "fa fa-sign-in fa-lg",
-    "path": "/login"
-  },
-  {
-    "title": "Register",
-    "icon": "bi-question-circle-fill",
-    "path": "/register"
-  },
-  {
-    "title": "Forgot Password",
-    "icon": "bi-question-circle-fill",
-    "path": "/forgot-password"
   },
   {
     "title": "Log out",

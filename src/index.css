@@ -3,6 +3,7 @@ body {
   font-family: Roboto, Helvetica, sans-serif;
   font-style: normal;
   margin: 0;
+  overflow-y: hidden;
 }
 
 p,
@@ -77,9 +78,9 @@ input.error {
   border-color: #FF0000;
 }
 
-.container {
+/* .container {
   flex-grow: 1;
-}
+} */
 
 .gcenter-screen {
   display: flex;
@@ -102,7 +103,8 @@ input.error {
 .gbtn1 {
   color: white;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
+  font-weight: 600;
   background-color: #394263;
   border: none;
   border-radius: 4px;
@@ -110,7 +112,7 @@ input.error {
   width: 5rem;
   cursor: pointer;
   margin: 0 auto;
-  letter-spacing: 0.4px;
+  letter-spacing: 1px;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -121,31 +123,59 @@ input.error {
 .gbtn2 {
   margin: 0 auto;
   padding: 8px 8px;
-  letter-spacing: 0.4px;
+  letter-spacing: 0.8px;
   color: #fff;
   box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
   font-weight: 600;
-  font-size: 16px;
+  font-size: 14px;
   text-transform: uppercase;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+
+  /* width: 5rem; */
 }
 
 .gbtn2:hover {
-  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.6);
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.6);
+}
+
+/* BTN COLORS */
+.gbtn-lgreen {
+  background-color: #00A550;
+}
+
+.gbtn-lblue {
+  background-color: #008CBA;
+}
+
+.gbtn-dblue {
+  background-color: #394263;
+}
+
+.gbtn-yellow {
+  background-color: rgb(204, 204, 0);
+}
+
+.gbtn-red {
+  background-color: #D2122E;
+}
+
+.gbtn-pink {
+  background-color: #F50057;
 }
 
 .gbtn-create {
   background-color: #006A4E;
 }
 
-.gbtn-edit {
-  background-color: #394263;
+.gcard-btn-panel {
+  display: flex;
+  justify-content: space-evenly;
 }
 
-.gbtn-delete {
-  background-color: #D2122E;
+.gcard-btn-panel>button {
+  width: 5rem;
 }
 
 .gbtncross {
@@ -157,13 +187,20 @@ input.error {
 }
 
 /* CONTENT */
+.gcont-container {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
 .gcont-title {
   letter-spacing: 1px;
   padding: 1em 1em 0 1em;
-  font-size: 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #2C3848F2;
 }
 
-.gcontent {
+.gcont-body {
   font-size: 1.1em;
   letter-spacing: 1px;
   margin: 1em;
@@ -196,4 +233,40 @@ input.error {
   width: 100%;
   outline: none;
   border: 2px solid #D8D8E0;
+}
+
+/* TABLE */
+
+.gtable {
+  margin-bottom: 2rem;
+  overflow-x: 'auto';
+}
+
+.gtable>table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  border: 1px solid #2C3848F2;
+  overflow-x: 'auto';
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+  color: #1a212bf2;
+}
+
+.gthead-light {
+  background-color: #ecdddd;
+}
+
+.gtable-btn-panel {
+  display: flex;
+  justify-content: space-between;
+  gap: '10px'
+}
+
+.gtable-btn-panel>button {
+  margin: 0;
 }
