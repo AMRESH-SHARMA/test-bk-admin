@@ -26,8 +26,6 @@ const Alert = () => {
   }
 
   return (<>
-    {console.log(alert)}
-
     {alert.open &&
       <div className='alert-container' style={{ backgroundColor: alertColor }}>
         <div className='alert-inner'>

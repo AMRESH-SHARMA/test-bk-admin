@@ -1,5 +1,6 @@
-import React, { Suspense } from 'react'
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import React, { Suspense, useState, useEffect, useCallback } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from './screens/Home';
 import Topics from './screens/Topics';
 // import DefaultLayout from './layout/DefaultLayout'
@@ -14,6 +15,10 @@ import Logos from './screens/Logos';
 import Users from './screens/Users/Users';
 import AddUsers from './screens/Users/AddUsers';
 import EditUsers from './screens/Users/EditUsers';
+// import { logout } from "./actions/auth";
+import AuthVerify from "./AuthVerify";
+import Logout from './screens/Pages/Logout';
+
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -23,8 +28,28 @@ const Page404 = React.lazy(() => import('./screens/Pages/Page404'))
 
 
 const App = () => {
-  return (
-    <BrowserRouter>
+
+  // const [showModeratorBoard, setShowModeratorBoard] = useState(false);
+  // const [showAdminBoard, setShowAdminBoard] = useState(false);
+
+  // const { user: currentUser } = useSelector((state) => state.auth);
+  // const dispatch = useDispatch();
+
+  // const logOut = useCallback(() => {
+  //   dispatch(logout());
+  // }, [dispatch]);
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     setShowModeratorBoard(currentUser.roles.includes("ROLE_MODERATOR"));
+  //     setShowAdminBoard(currentUser.roles.includes("ROLE_ADMIN"));
+  //   } else {
+  //     setShowModeratorBoard(false);
+  //     setShowAdminBoard(false);
+  //   }
+  // }, [currentUser]);
+
+  return (<>
       <Suspense fallback={
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />
@@ -33,15 +58,16 @@ const App = () => {
         <Routes>
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
+          <Route exact path="/logout" element={<Logout />} />
           <Route exact path="/forgot-password" element={<ChangePassword />} />
           <Route exact path="*" element={<Page404 />} />
 
           <Route path="/" name="defaultLayout" element={<Layout />} >
 
             <Route path='/users' element={<Users />} />
-            <Route path='/users/add' element={<AddUsers/>} />
+            <Route path='/users/add' element={<AddUsers />} />
             <Route path='/users/edit' element={<EditUsers />} />
-          
+
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />
             <Route path='/address' element={<Address />} />
@@ -53,7 +79,9 @@ const App = () => {
 
         </Routes>
       </Suspense>
-    </BrowserRouter>
+
+    <AuthVerify logOut={'logOut'} />
+  </>
   )
 }
 export default App

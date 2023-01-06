@@ -1,9 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import axios from "axios";
-// import InvalidToken from "../Error/InvalidToken";
+import axios from "axios";
+import { API } from "../../API"
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
@@ -13,23 +12,10 @@ const Login = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
 
-  useEffect(() => {
-    const loginApi = async () => {
-      try {
-        //   let payload = { token: window.location.href.split('=')[1] }
-        //   let resapi = await axios.post(`${registerUrl}/invite/verifytoken`, payload)
-        //   console.log(resapi)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    loginApi()
-  }, [])
-
-  const handleAlert = () => {
+  const handleAlert = (param1, param2) => {
     displayAlert({
-      message: "Login Failed",
-      color: "red",
+      message: param1,
+      color: param2,
       timeout: 5000
     })
   }
@@ -39,11 +25,19 @@ const Login = () => {
       <Formik
         initialValues={{ email: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            let payload = values;
-            console.log("Logging in", payload);
-
-            if (true) handleAlert()
+          setTimeout(async () => {
+            // console.log("Logging in", values);
+            await axios.post(`${API}/user/login`, values)
+              .then((resApi) => {
+                // console.log(resApi)
+                localStorage.setItem('token',resApi.data.msg)
+                handleAlert('Logged in Success', 'green')
+                navigate('/')
+              })
+              .catch((e) => {
+                console.log(e);
+                handleAlert(e.response.data.msg,'red')
+              })
             setSubmitting(false);
           }, 500);
         }}
