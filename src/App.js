@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate } from "react-router-dom";
 import Home from './screens/Home';
 import Topics from './screens/Topics';
-// import DefaultLayout from './layout/DefaultLayout'
 import Layout from './layout/Layout'
 import ModalScr from './screens/ModalScr';
 import Spinner from './assets/Spinner/Spinner';
@@ -13,8 +12,9 @@ import Address from './screens/Address';
 import SocialMedia from './screens/SocialMedia';
 import Logos from './screens/Logos';
 import Users from './screens/Users/Users';
-import AddUsers from './screens/Users/AddUsers';
-import EditUsers from './screens/Users/EditUsers';
+import AddUser from './screens/Users/AddUser';
+import ViewUser from './screens/Users/ViewUser';
+import EditUser from './screens/Users/EditUser';
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
 import Logout from './screens/Pages/Logout';
@@ -62,11 +62,12 @@ const App = () => {
           <Route exact path="/forgot-password" element={<ChangePassword />} />
           <Route exact path="*" element={<Page404 />} />
 
-          <Route path="/" name="defaultLayout" element={<Layout />} >
+          <Route path="/" name="Layout" element={<Layout />} >
 
             <Route path='/users' element={<Users />} />
-            <Route path='/users/add' element={<AddUsers />} />
-            <Route path='/users/edit' element={<EditUsers />} />
+            <Route path='/users/add' element={<AddUser />} />
+            <Route path='/users/edit/:id' element={<EditUser />} />
+            <Route path='/users/view/:id' element={<ViewUser />} />
 
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />
@@ -80,7 +81,7 @@ const App = () => {
         </Routes>
       </Suspense>
 
-    <AuthVerify logOut={'logOut'} />
+    {/* <AuthVerify logOut={'logOut'} /> */}
   </>
   )
 }

@@ -1,35 +1,37 @@
 import React from 'react'
-import { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import axios from "axios";
-// import InvalidToken from "../Error/InvalidToken";
+import axios from "axios";
 import { ERROR, INPUT } from "../../assets/constants/theme";
-import { useNavigate } from "react-router-dom";
+import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const AddUsers = () => {
-
-  const navigate = useNavigate()
+const EditUsers = () => {
+  let { id } = useParams();
+  const navigate = useNavigate();
   const { displayAlert } = useAlert();
+  const [user, setUser] = useState('')
 
   useEffect(() => {
-    const loginApi = async () => {
-      try {
-        //   let payload = { token: window.location.href.split('=')[1] }
-        //   let resapi = await axios.post(`${registerUrl}/invite/verifytoken`, payload)
-        //   console.log(resapi)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    loginApi()
+    async function getUsers() {
+      await axios.get(`${API}/user/get-single-user/${id}`)
+        .then((resApi) => {
+          console.log(resApi);
+          setUser(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          // handleAlert(e.response.data.msg, 'red')
+        });
+    } getUsers()
   }, [])
 
-  const handleAlert = () => {
+  const handleAlert = (param1, param2) => {
     displayAlert({
-      message: "Login Failed",
-      color: "red",
+      message: param1,
+      color: param2,
       timeout: 5000
     })
   }
@@ -38,23 +40,29 @@ const AddUsers = () => {
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add User</p>
+        <p>Edit User</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/users')}>Back</button>
         </div>
       </div>
 
-
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
-            initialValues={{ username: "", email: "", mobile: "", city: "", timestamp: new Date() }}
+            enableReinitialize={true}
+            initialValues={{ username: user?.name, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
             onSubmit={(values, { setSubmitting }) => {
-              setTimeout(() => {
-                let payload = values;
-                console.log("Logging in", payload);
-
-                if (true) handleAlert()
+              setTimeout(async () => {
+                await axios.post(`${API}/user/create-user`, values)
+                  .then((resApi) => {
+                    console.log(resApi)
+                    handleAlert('User Created', 'green')
+                    navigate('/users')
+                  })
+                  .catch((e) => {
+                    console.log(e);
+                    handleAlert(e.response.data.msg, 'red')
+                  })
                 setSubmitting(false);
               }, 500);
             }}
@@ -67,7 +75,7 @@ const AddUsers = () => {
                 .email()
                 .max(100, 'maximum 100 chars allowed')
                 .required("Required"),
-              mobile: Yup.string()
+              phone: Yup.string()
                 .max(10, 'maximum 10 chars allowed')
                 .required("Required"),
               city: Yup.string()
@@ -120,20 +128,20 @@ const AddUsers = () => {
                   <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.email && touched.email && errors.email}&nbsp;</div>
 
-                  <label htmlFor="mobile">Mobile Number</label>
+                  <label htmlFor="phone">Phone Number</label>
                   <input
-                    id="mobile"
-                    name="mobile"
+                    id="phone"
+                    name="phone"
                     type="text"
-                    placeholder="Enter your mobile"
-                    value={values.mobile}
+                    placeholder="Enter your phone"
+                    value={values.phone}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.mobile && touched.mobile && "error"}
+                    className={errors.phone && touched.phone && "error"}
                   />
-                  <div style={errors.mobile && touched.mobile ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.mobile && touched.mobile && errors.mobile}&nbsp;</div>
+                  <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.phone && touched.phone && errors.phone}&nbsp;</div>
 
                   <label htmlFor="city">City</label>
                   <input
@@ -188,9 +196,8 @@ const AddUsers = () => {
         </div>
       </div>
     </div>
-
   </>
   )
 }
 
-export default AddUsers
+export default EditUsers
