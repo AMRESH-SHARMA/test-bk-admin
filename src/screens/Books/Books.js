@@ -5,7 +5,7 @@ import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const Users = () => {
+const Books = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
@@ -13,8 +13,8 @@ const Users = () => {
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-users`)
+    async function getBooks() {
+      await axios.get(`${API}/book/get-books`)
         .then((resApi) => {
           console.log(resApi);
           setApiData(resApi.data.msg);
@@ -23,7 +23,7 @@ const Users = () => {
           console.log(e);
           // handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
+    } getBooks()
   }, [loading])
 
   const handleAlert = (param1, param2) => {
@@ -36,7 +36,7 @@ const Users = () => {
 
   const handleSuspend = async (param) => {
     setLoading(true)
-    await axios.put(`${API}/user/update-user-status`, { id: param })
+    await axios.put(`${API}/book/update-book-status`, { id: param })
       .then((resApi) => {
         console.log(resApi);
       })
@@ -46,12 +46,24 @@ const Users = () => {
       });
     setLoading(false)
   }
+  //change time formate
+  function formatAMPM(date) {
+    var hours = new Date(date).getHours();
+    var minutes = new Date(date).getMinutes();
+    var ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours % 12;
+    hours = hours ? hours : 12; // the hour '0' should be '12'
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    var strTime = hours + ':' + minutes + ' ' + ampm;
+    return strTime;
+  }
+
 
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Users</p>
-        <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/users/add')}>Add user</button> </div>
+        <p>Books</p>
+        <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/books/add')}>Add Book</button> </div>
       </div>
 
       <div className="gcard gcont-body">
@@ -59,11 +71,11 @@ const Users = () => {
           <table >
             <thead className='gthead-light'>
               <tr>
-                <th>Name</th>
+                <th>Book Name</th>
                 <th>Unique ID</th>
-                <th>City</th>
-                <th>Books Added</th>
-                <th>Books Rented</th>
+                <th>Uploaded By</th>
+                <th>Uploaded Date</th>
+                <th>Rent per Day</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>
@@ -71,11 +83,11 @@ const Users = () => {
             <tbody>
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
-                  <td>{i.username}</td>
-                  <td>{i.uuid}</td>
-                  <td>{i.city}</td>
-                  <td>{i.booksAdded}</td>
-                  <td>{i.BookRented}</td>
+                  <td>{i.bookname}</td>
+                  <td>{i._id}</td>
+                  <td>{i.uploadedBy}</td>
+                  <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                  <td>{i.rentperday}</td>
                   <td>{i.approved ?
                     <button className="gbtn-status gbtn-lgreen">Active</button> :
                     <button className="gbtn-status gbtn-red">inactive</button>}
@@ -100,4 +112,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default Books

@@ -6,26 +6,8 @@
   },
   {
     "title": "Books",
-    "icon": "bi-person-fill",
-    "childrens": [
-      {
-        "title": "Profile",
-        "path": "/profile"
-      },
-      {
-        "title": "Settings",
-        "childrens": [
-          {
-            "title": "Account",
-            "path": "/settings/account"
-          },
-          {
-            "title": "Notifications",
-            "path": "/settings/notifications"
-          }
-        ]
-      }
-    ]
+    "icon": "fa fa-book",
+    "path": "/books"
   },
   {
     "title": "Orders",

@@ -11,10 +11,16 @@ import Copyright from './screens/Copyright';
 import Address from './screens/Address';
 import SocialMedia from './screens/SocialMedia';
 import Logos from './screens/Logos';
+
 import Users from './screens/Users/Users';
 import AddUser from './screens/Users/AddUser';
 import ViewUser from './screens/Users/ViewUser';
 import EditUser from './screens/Users/EditUser';
+
+import Books from './screens/Books/Books';
+import AddBook from './screens/Books/AddBook';
+// import EditBook from './screens/Books/EditBook';
+
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
 import Logout from './screens/Pages/Logout';
@@ -68,6 +74,11 @@ const App = () => {
             <Route path='/users/add' element={<AddUser />} />
             <Route path='/users/edit/:id' element={<EditUser />} />
             <Route path='/users/view/:id' element={<ViewUser />} />
+
+            <Route path='/books' element={<Books />} />
+            <Route path='/books/add' element={<AddBook />} />
+            {/* <Route path='/books/edit/:id' element={<EditBook />} /> */}
+            <Route path='/books/view/:id' element={<ViewUser />} />
 
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />

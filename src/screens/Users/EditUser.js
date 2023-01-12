@@ -9,7 +9,7 @@ import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
 const EditUsers = () => {
-  let { id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
   const { displayAlert } = useAlert();
   const [user, setUser] = useState('')
@@ -50,13 +50,14 @@ const EditUsers = () => {
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
-            initialValues={{ username: user?.name, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
+            initialValues={{ username: user?.username, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                console.log(values)
+                await axios.put(`${API}/user/update-user/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
+                    handleAlert('User Updated successfully', 'green')
                     navigate('/users')
                   })
                   .catch((e) => {
