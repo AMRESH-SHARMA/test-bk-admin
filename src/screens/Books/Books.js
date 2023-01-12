@@ -12,6 +12,14 @@ const Books = () => {
   const [ApiData, setApiData] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const handleAlert = (param1, param2) => {
+    displayAlert({
+      message: param1,
+      color: param2,
+      timeout: 5000
+    })
+  }
+
   useEffect(() => {
     async function getBooks() {
       await axios.get(`${API}/book/get-books`)
@@ -21,24 +29,32 @@ const Books = () => {
         })
         .catch((e) => {
           console.log(e);
-          // handleAlert(e.response.data.msg, 'red')
+          handleAlert(e.response.data.msg, 'red')
         });
     } getBooks()
-  }, [loading])
-
-  const handleAlert = (param1, param2) => {
-    displayAlert({
-      message: param1,
-      color: param2,
-      timeout: 5000
-    })
-  }
+  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSuspend = async (param) => {
     setLoading(true)
     await axios.put(`${API}/book/update-book-status`, { id: param })
       .then((resApi) => {
         console.log(resApi);
+      })
+      .catch((e) => {
+        console.log(e);
+        handleAlert(e.response.data.msg, 'red')
+      });
+    setLoading(false)
+  }
+
+  const handleDelete = async (bookId,uploadedBy) => {
+    setLoading(true)
+    const payload = { bookId,uploadedBy }
+    console.log(payload)
+    await axios.delete(`${API}/book/delete-single-book`, payload)
+      .then((resApi) => {
+        console.log(resApi);
+        handleAlert(resApi.data.msg, 'green');
       })
       .catch((e) => {
         console.log(e);
@@ -68,7 +84,7 @@ const Books = () => {
 
       <div className="gcard gcont-body">
         <div className='gtable' style={{ overflowX: 'auto' }}>
-          <table >
+          <table>
             <thead className='gthead-light'>
               <tr>
                 <th>Book Name</th>
@@ -83,21 +99,22 @@ const Books = () => {
             <tbody>
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
-                  <td>{i.bookname}</td>
+                  <td>{i.bookName}</td>
                   <td>{i._id}</td>
                   <td>{i.uploadedBy}</td>
                   <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                  <td>{i.rentperday}</td>
+                  <td>₹{i.rentPerDay}</td>
                   <td>{i.approved ?
                     <button className="gbtn-status gbtn-lgreen">Active</button> :
                     <button className="gbtn-status gbtn-red">inactive</button>}
                   </td>
                   <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
+                    <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/books/view/${i._id}`)}>View</button>
+                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/edit/${i._id}`)}>Edit</button>
                     {i.approved ?
                       <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
                       <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id,i.uploadedBy)}>Delete</button>
                   </span>
                   </td>
                 </tr>

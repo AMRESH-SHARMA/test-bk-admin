@@ -8,11 +8,19 @@ import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const EditUsers = () => {
+const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { displayAlert } = useAlert();
   const [user, setUser] = useState('')
+
+  const handleAlert = (param1, param2) => {
+    displayAlert({
+      message: param1,
+      color: param2,
+      timeout: 5000
+    })
+  }
 
   useEffect(() => {
     async function getUsers() {
@@ -23,18 +31,10 @@ const EditUsers = () => {
         })
         .catch((e) => {
           console.log(e);
-          // handleAlert(e.response.data.msg, 'red')
+          handleAlert(e.response.data.msg, 'red')
         });
     } getUsers()
-  }, [])
-
-  const handleAlert = (param1, param2) => {
-    displayAlert({
-      message: param1,
-      color: param2,
-      timeout: 5000
-    })
-  }
+  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
@@ -50,7 +50,7 @@ const EditUsers = () => {
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
-            initialValues={{ username: user?.username, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
+            initialValues={{ userName: user?.userName, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 console.log(values)
@@ -69,7 +69,7 @@ const EditUsers = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              username: Yup.string()
+              userName: Yup.string()
                 .max(50, 'maximum 50 chars allowed')
                 .required("Required"),
               email: Yup.string()
@@ -99,20 +99,20 @@ const EditUsers = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="username">User Name</label>
+                  <label htmlFor="userName">User Name</label>
                   <input
-                    id="username"
-                    name="username"
+                    id="userName"
+                    name="userName"
                     type="text"
-                    placeholder="Enter your username"
-                    value={values.username}
+                    placeholder="Enter your userName"
+                    value={values.userName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.username && touched.username && "error"}
+                    className={errors.userName && touched.userName && "error"}
                   />
-                  <div style={errors.username && touched.username ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.username && touched.username && errors.username}&nbsp;</div>
+                  <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.userName && touched.userName && errors.userName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -201,4 +201,4 @@ const EditUsers = () => {
   )
 }
 
-export default EditUsers
+export default EditUser

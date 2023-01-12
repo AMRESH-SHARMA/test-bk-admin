@@ -18,8 +18,9 @@ import ViewUser from './screens/Users/ViewUser';
 import EditUser from './screens/Users/EditUser';
 
 import Books from './screens/Books/Books';
+import ViewBook from './screens/Books/ViewBook';
 import AddBook from './screens/Books/AddBook';
-// import EditBook from './screens/Books/EditBook';
+import EditBook from './screens/Books/EditBook';
 
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
@@ -77,8 +78,8 @@ const App = () => {
 
             <Route path='/books' element={<Books />} />
             <Route path='/books/add' element={<AddBook />} />
-            {/* <Route path='/books/edit/:id' element={<EditBook />} /> */}
-            <Route path='/books/view/:id' element={<ViewUser />} />
+            <Route path='/books/edit/:id' element={<EditBook />} />
+            <Route path='/books/view/:id' element={<ViewBook />} />
 
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />

@@ -5,11 +5,11 @@ import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const ViewUser = () => {
+const ViewBook = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
-  const [user, setUser] = useState('')
+  const [book, setBook] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -20,18 +20,18 @@ const ViewUser = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-single-user/${id}`)
+    async function getbooks() {
+      await axios.get(`${API}/book/get-single-book/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUser(resApi.data.msg);
+          setBook(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
-  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
+    } getbooks()
+  }, [id])// eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
   function formatAMPM(date) {
@@ -48,9 +48,9 @@ const ViewUser = () => {
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>View User</p>
+        <p>View Book</p>
         <div className='gcard-btn-panel'>
-          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/users')}>Back</button>
+          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
 
@@ -59,42 +59,42 @@ const ViewUser = () => {
           <table>
             <thead>
               <tr>
-                <th>User_Id</th>
-                <td>{user?._id}</td></tr>
-
-              <tr>
                 <th>Unique ID</th>
-                <td>{user?._id}</td></tr>
+                <td>{book?._id}</td></tr>
 
               <tr>
-                <th>Name</th>
-                <td>{user?.name}</td></tr>
+                <th>Book Name</th>
+                <td>{book?.bookName}</td></tr>
 
               <tr>
-                <th>Email</th>
-                <td>{user?.email}</td></tr>
+                <th>Genre</th>
+                <td>{book?.genre}</td></tr>
 
               <tr>
-                <th>City</th>
-                <td>{user?.city}</td></tr>
+                <th>Language</th>
+                <td>{book?.language}</td></tr>
 
               <tr>
-                <th>Phone No.</th>
-                <td>{user?.phone}</td></tr>
+                <th>Description</th>
+                <td>{book?.description}</td></tr>
 
               <tr>
-                <th>Role</th>
-                <td>{user?.role}</td></tr>
+                <th>Rent Per Day</th>
+                <td>{book?.rentPerDay}</td></tr>
 
               <tr>
-                <th>Register At</th>
+                <th>Uploaded By</th>
+                <td>{book?.uploadedBy}</td></tr>
+
+              <tr>
+                <th>Book Uploaded At</th>
                 <td>
-                  {new Date(`${user?.createdAt}`).toDateString()}<span> , {`${formatAMPM(user?.createdAt)}`}</span>
+                  {new Date(`${book?.createdAt}`).toDateString()}<span> , {`${formatAMPM(book?.createdAt)}`}</span>
                 </td></tr>
 
-              <tr><th>Profile Updated At</th>
+              <tr><th>Book Updated At</th>
                 <td>
-                  {new Date(`${user?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(user?.updatedAt)}`}</span>
+                  {new Date(`${book?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(book?.updatedAt)}`}</span>
                 </td></tr>
             </thead>
           </table>
@@ -105,4 +105,4 @@ const ViewUser = () => {
   )
 }
 
-export default ViewUser
+export default ViewBook

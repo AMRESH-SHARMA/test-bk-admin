@@ -12,6 +12,14 @@ const Users = () => {
   const [ApiData, setApiData] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const handleAlert = (param1, param2) => {
+    displayAlert({
+      message: param1,
+      color: param2,
+      timeout: 5000
+    })
+  }
+
   useEffect(() => {
     async function getUsers() {
       await axios.get(`${API}/user/get-users`)
@@ -21,18 +29,10 @@ const Users = () => {
         })
         .catch((e) => {
           console.log(e);
-          // handleAlert(e.response.data.msg, 'red')
+          handleAlert(e.response.data.msg, 'red')
         });
     } getUsers()
-  }, [loading])
-
-  const handleAlert = (param1, param2) => {
-    displayAlert({
-      message: param1,
-      color: param2,
-      timeout: 5000
-    })
-  }
+  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSuspend = async (param) => {
     setLoading(true)
@@ -71,11 +71,11 @@ const Users = () => {
             <tbody>
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
-                  <td>{i.username}</td>
+                  <td>{i.userName}</td>
                   <td>{i.uuid}</td>
                   <td>{i.city}</td>
-                  <td>{i.booksAdded}</td>
-                  <td>{i.BookRented}</td>
+                  <td>{i.booksAdded?.length}</td>
+                  <td>{i.booksRented?.length}</td>
                   <td>{i.approved ?
                     <button className="gbtn-status gbtn-lgreen">Active</button> :
                     <button className="gbtn-status gbtn-red">inactive</button>}

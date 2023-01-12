@@ -7,7 +7,7 @@ import { API } from "../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const AddUsers = () => {
+const AddUser = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
@@ -34,7 +34,7 @@ const AddUsers = () => {
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
-            initialValues={{ username: "", email: "", phone: "", city: "", timestamp: new Date() }}
+            initialValues={{ userName: "", email: "", phone: "", city: "", timestamp: new Date() }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 await axios.post(`${API}/user/create-user`, values)
@@ -52,7 +52,7 @@ const AddUsers = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              username: Yup.string()
+              userName: Yup.string()
                 .max(50, 'maximum 50 chars allowed')
                 .required("Required"),
               email: Yup.string()
@@ -82,20 +82,20 @@ const AddUsers = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="username">User Name</label>
+                  <label htmlFor="userName">User Name</label>
                   <input
-                    id="username"
-                    name="username"
+                    id="userName"
+                    name="userName"
                     type="text"
-                    placeholder="Enter your username"
-                    value={values.username}
+                    placeholder="Enter your userName"
+                    value={values.userName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.username && touched.username && "error"}
+                    className={errors.userName && touched.userName && "error"}
                   />
-                  <div style={errors.username && touched.username ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.username && touched.username && errors.username}&nbsp;</div>
+                  <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.userName && touched.userName && errors.userName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -185,4 +185,4 @@ const AddUsers = () => {
   )
 }
 
-export default AddUsers
+export default AddUser
