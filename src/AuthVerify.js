@@ -1,32 +1,27 @@
 import React, { useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-
-const parseJwt = (token) => {
-  try {
-    return JSON.parse(atob(token.split(".")[1]));
-  } catch (e) {
-    return null;
-  }
-};
+import { useJwt } from "react-jwt";
 
 const AuthVerify = (props) => {
   const navigate = useNavigate();
-  let location = useLocation();
+  // let location = useLocation();
+  const token = localStorage.getItem("token")
+  const { decodedToken, isExpired } = useJwt(token);
+  console.log(decodedToken, isExpired);
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("token"));
-    if (user) {
-      const decodedJwt = parseJwt(user.accessToken);
-      if (decodedJwt.exp * 1000 < Date.now()) {
-        // props.logOut();
+    if (decodedToken) {
+      if (isExpired) {
         navigate('/login')
       }
-    }
-    else navigate('/login')
-  // }, [location, props]);
+      else navigate('/')
+    } else navigate('/login')
+
+    // }, [location, props]);
   }, []);
 
-  return ;
+  return;
 };
+
 
 export default AuthVerify;

@@ -36,6 +36,7 @@ import Logout from './screens/Pages/Logout';
 const Login = React.lazy(() => import('./screens/Pages/Login'))
 const Register = React.lazy(() => import('./screens/Pages/Register'))
 const Page404 = React.lazy(() => import('./screens/Pages/Page404'))
+// const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 
 const App = () => {
@@ -65,8 +66,6 @@ const App = () => {
       <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
         <Spinner />
       </div>}>
-
-      <AuthVerify logOut={'logOut'} />
 
       <Routes>
         <Route exact path="/register" element={<Register />} />
@@ -102,6 +101,8 @@ const App = () => {
         </Route>
 
       </Routes>
+
+      <AuthVerify logOut={'logOut'} />
     </Suspense>
 
   </>
