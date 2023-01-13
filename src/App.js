@@ -66,7 +66,7 @@ const App = () => {
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />
         </div>}>
-    <AuthVerify logOut={'logOut'} />
+    {/* <AuthVerify logOut={'logOut'} /> */}
         <Routes>
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
