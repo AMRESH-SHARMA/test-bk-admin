@@ -36,7 +36,6 @@ import Logout from './screens/Pages/Logout';
 const Login = React.lazy(() => import('./screens/Pages/Login'))
 const Register = React.lazy(() => import('./screens/Pages/Register'))
 const Page404 = React.lazy(() => import('./screens/Pages/Page404'))
-// const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
 
 
 const App = () => {
@@ -62,46 +61,48 @@ const App = () => {
   // }, [currentUser]);
 
   return (<>
-      <Suspense fallback={
-        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
-          <Spinner />
-        </div>}>
-    {/* <AuthVerify logOut={'logOut'} /> */}
-        <Routes>
-          <Route exact path="/register" element={<Register />} />
-          <Route exact path="/login" element={<Login />} />
-          <Route exact path="/logout" element={<Logout />} />
-          <Route exact path="/forgot-password" element={<ChangePassword />} />
-          <Route exact path="*" element={<Page404 />} />
+    <Suspense fallback={
+      <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+        <Spinner />
+      </div>}>
 
-          <Route path="/" name="Layout" element={<Layout />} >
+      <AuthVerify logOut={'logOut'} />
 
-            <Route path='/users' element={<Users />} />
-            <Route path='/users/add' element={<AddUser />} />
-            <Route path='/users/edit/:id' element={<EditUser />} />
-            <Route path='/users/view/:id' element={<ViewUser />} />
+      <Routes>
+        <Route exact path="/register" element={<Register />} />
+        <Route exact path="/login" element={<Login />} />
+        <Route exact path="/logout" element={<Logout />} />
+        <Route exact path="/forgot-password" element={<ChangePassword />} />
+        <Route exact path="*" element={<Page404 />} />
 
-            <Route path='/books' element={<Books />} />
-            <Route path='/books/add' element={<AddBook />} />
-            <Route path='/books/edit/:id' element={<EditBook />} />
-            <Route path='/books/view/:id' element={<ViewBook />} />
+        <Route path="/" name="Layout" element={<Layout />} >
 
-            <Route path='/books/genre' element={<BookGenres />} />
-            <Route path='/books/genre/add' element={<AddBookGenres />} />
-            <Route path='/books/language' element={<BookLanguage />} />
-            <Route path='/books/language/add' element={<AddBookLanguage />} />
+          <Route path='/users' element={<Users />} />
+          <Route path='/users/add' element={<AddUser />} />
+          <Route path='/users/edit/:id' element={<EditUser />} />
+          <Route path='/users/view/:id' element={<ViewUser />} />
 
-            <Route path='/home' element={<Home />} />
-            <Route path='/copyright' element={<Copyright />} />
-            <Route path='/address' element={<Address />} />
-            <Route path='/social-media' element={<SocialMedia />} />
-            <Route path='/logos' element={<Logos />} />
-            <Route path='/topics' element={<Topics />} />
-            <Route path="/modal" element={<ModalScr />} />
-          </Route>
+          <Route path='/books' element={<Books />} />
+          <Route path='/books/add' element={<AddBook />} />
+          <Route path='/books/edit/:id' element={<EditBook />} />
+          <Route path='/books/view/:id' element={<ViewBook />} />
 
-        </Routes>
-      </Suspense>
+          <Route path='/books/genre' element={<BookGenres />} />
+          <Route path='/books/genre/add' element={<AddBookGenres />} />
+          <Route path='/books/language' element={<BookLanguage />} />
+          <Route path='/books/language/add' element={<AddBookLanguage />} />
+
+          <Route path='/home' element={<Home />} />
+          <Route path='/copyright' element={<Copyright />} />
+          <Route path='/address' element={<Address />} />
+          <Route path='/social-media' element={<SocialMedia />} />
+          <Route path='/logos' element={<Logos />} />
+          <Route path='/topics' element={<Topics />} />
+          <Route path="/modal" element={<ModalScr />} />
+        </Route>
+
+      </Routes>
+    </Suspense>
 
   </>
   )
