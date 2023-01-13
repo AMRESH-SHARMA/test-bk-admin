@@ -22,6 +22,11 @@ import ViewBook from './screens/Books/ViewBook';
 import AddBook from './screens/Books/AddBook';
 import EditBook from './screens/Books/EditBook';
 
+import BookGenres from './screens/Books/BookGenres/BookGenres'
+import AddBookGenres from './screens/Books/BookGenres/AddBookGenres'
+import BookLanguage from './screens/Books/BookLanguage/BookLanguage'
+import AddBookLanguage from './screens/Books/BookLanguage/AddBookLanguage'
+
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
 import Logout from './screens/Pages/Logout';
@@ -61,7 +66,7 @@ const App = () => {
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />
         </div>}>
-
+    <AuthVerify logOut={'logOut'} />
         <Routes>
           <Route exact path="/register" element={<Register />} />
           <Route exact path="/login" element={<Login />} />
@@ -81,6 +86,11 @@ const App = () => {
             <Route path='/books/edit/:id' element={<EditBook />} />
             <Route path='/books/view/:id' element={<ViewBook />} />
 
+            <Route path='/books/genre' element={<BookGenres />} />
+            <Route path='/books/genre/add' element={<AddBookGenres />} />
+            <Route path='/books/language' element={<BookLanguage />} />
+            <Route path='/books/language/add' element={<AddBookLanguage />} />
+
             <Route path='/home' element={<Home />} />
             <Route path='/copyright' element={<Copyright />} />
             <Route path='/address' element={<Address />} />
@@ -93,7 +103,6 @@ const App = () => {
         </Routes>
       </Suspense>
 
-    {/* <AuthVerify logOut={'logOut'} /> */}
   </>
   )
 }

@@ -7,7 +7,20 @@
   {
     "title": "Books",
     "icon": "fa fa-book",
-    "path": "/books"
+    "childrens": [
+      {
+        "title": "Books",
+        "path": "/books"
+      },
+      {
+        "title": "Genre",
+        "path": "/books/genre"
+      },
+      {
+        "title": "Language",
+        "path": "/books/language"
+      }
+    ]
   },
   {
     "title": "Orders",
