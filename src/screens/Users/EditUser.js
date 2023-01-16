@@ -50,7 +50,14 @@ const EditUser = () => {
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
-            initialValues={{ userName: user?.userName, email: user?.email, phone: user?.phone, city: user?.city, timestamp: new Date() }}
+            initialValues={{
+              userName: user?.userName || "",
+              email: user?.email || "",
+              phone: user?.phone || "",
+              city: user?.city || "",
+              uniqueId: user._id || "",
+              timestamp: new Date()
+            }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 console.log(values)
@@ -175,7 +182,7 @@ const EditUser = () => {
                   <input
                     id="uniqueId"
                     name="uniqueId"
-                    value={'(376274632478)dummy uid'}
+                    value={values.uniqueId}
                     onChange={handleChange}
                     style={INPUT.boxdisable}
                     disabled
@@ -190,7 +197,6 @@ const EditUser = () => {
                   </div>
                 </form>
               </>
-
               );
             }}
           </Formik>

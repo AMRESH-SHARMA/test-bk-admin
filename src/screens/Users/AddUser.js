@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -11,6 +11,7 @@ const AddUser = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
+  const [uid, setUid] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -19,6 +20,19 @@ const AddUser = () => {
       timeout: 5000
     })
   }
+
+  useEffect(() => {
+    async function getUid() {
+      await axios.get(`${API}/getUid`)
+        .then((resApi) => {
+          setUid(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getUid()
+  }, [])
 
   return (<>
     <div className='gcont-container'>
@@ -34,7 +48,15 @@ const AddUser = () => {
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
-            initialValues={{ userName: "", email: "", phone: "", city: "", timestamp: new Date() }}
+            enableReinitialize={true}
+            initialValues={{
+              userName: "",
+              email: "",
+              phone: "",
+              city: "",
+              uniqueId: uid?._id || "",
+              timestamp: new Date()
+            }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 await axios.post(`${API}/user/create-user`, values)
@@ -158,7 +180,7 @@ const AddUser = () => {
                   <input
                     id="uniqueId"
                     name="uniqueId"
-                    value={'(376274632478)dummy uid'}
+                    value={values.uniqueId}
                     onChange={handleChange}
                     style={INPUT.boxdisable}
                     disabled

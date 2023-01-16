@@ -1,17 +1,18 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 
-const AddBookGenres = () => {
-
+const EditBookLanguage = () => {
+  const { id } = useParams()
   const navigate = useNavigate()
-  const { displayAlert } = useAlert();
-  const [ApiData, setApiData] = useState('')
+  const { displayAlert } = useAlert()
+  const [language, setlanguage] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -22,66 +23,64 @@ const AddBookGenres = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-users`)
+    async function getlanguages() {
+      await axios.get(`${API}/language/get-single-language/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setApiData(resApi.data.msg);
+          setlanguage(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
-  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
+    } getlanguages()
+  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add Genre</p>
+        <p>Books / Language</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
 
-
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
-            initialValues={{ genreName: "", image: "", timestamp: new Date() }}
+            enableReinitialize={true}
+            initialValues={{
+              language: language?.language || "",
+              uniqueId: language?._id || "",
+              timestamp: new Date()
+            }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                const formData = new FormData();
-                formData.append('image', values.image);
-                formData.append('genreName', values.genreName);
-                await axios.post(`${API}/book/create-book`, formData, {
-                  headers: {
-                    "Content-Type": "multipart/form-data",
-                  }
-                })
+                // console.log(values)
+                await axios.put(`${API}/language/update-language/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('Book Created', 'green')
-                    navigate('/books')
+                    handleAlert('language Updated successfully', 'green')
+                    navigate('/books/language')
                   })
                   .catch((e) => {
                     console.log(e);
                     handleAlert(e.response.data.msg, 'red')
-                  }).finally(() => setSubmitting(false))
+                  })
+                setSubmitting(false);
               }, 500);
             }}
 
             validationSchema={Yup.object().shape({
-              genreName: Yup.string()
-                .max(50, 'maximum 20 chars allowed')
-                .required('required feild')
-            })}
-          >
+              language: Yup.string()
+                .max(50, 'maximum 50 chars allowed')
+                .required("Required"),
+            })}>
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
               } = props;
 
               if (isSubmitting) {
@@ -90,42 +89,23 @@ const AddBookGenres = () => {
 
               return (<>
                 <form
-                  enctype="multipart/form-data"
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="genreName">Genre Name</label>
+                  <label htmlFor="language">Language</label>
                   <input
-                    id="genreName"
-                    name="genreName"
+                    id="language"
+                    name="language"
                     type="text"
-                    placeholder="Enter genre name"
-                    value={values.genreName}
+                    placeholder="Enter language"
+                    value={values.language}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.genreName && touched.genreName && "error"}
+                    className={errors.language && touched.language && "error"}
                   />
-                  <div style={errors.genreName && touched.genreName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.genreName && touched.genreName && errors.genreName}&nbsp;</div>
-
-                  <label htmlFor="image">Image</label>
-                  <input
-                    id="image"
-                    name="image"
-                    type="file"
-                    onChange={(event) => {
-                      // setimage(URL.createObjectURL(event.target.files[0]))
-                      setFieldValue("image", event.currentTarget.files[0])
-                    }}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.image && touched.image && "error"}
-                  />
-                  <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.image && touched.image && errors.image}&nbsp;</div>
-                  {/* 
-                  <img style={{ width: 'auto', height: '100px' }} src={URL.createObjectURL(values.image)} alt={values.image.name} /> */}
+                  <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.language && touched.language && errors.language}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -143,7 +123,7 @@ const AddBookGenres = () => {
                   <input
                     id="uniqueId"
                     name="uniqueId"
-                    value={'(376274632478)dummy uid'}
+                    value={values.uniqueId}
                     onChange={handleChange}
                     style={INPUT.boxdisable}
                     disabled
@@ -158,15 +138,15 @@ const AddBookGenres = () => {
                   </div>
                 </form>
               </>
+
               );
             }}
           </Formik>
         </div>
       </div>
     </div>
-
   </>
   )
 }
 
-export default AddBookGenres
+export default EditBookLanguage

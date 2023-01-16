@@ -23,9 +23,12 @@ import AddBook from './screens/Books/AddBook';
 import EditBook from './screens/Books/EditBook';
 
 import BookGenres from './screens/Books/BookGenres/BookGenres'
-import AddBookGenres from './screens/Books/BookGenres/AddBookGenres'
-import BookLanguage from './screens/Books/BookLanguage/BookLanguage'
+import AddBookGenre from './screens/Books/BookGenres/AddBookGenre'
+import EditBookGenre from './screens/Books/BookGenres/EditBookGenre'
+
+import BookLanguages from './screens/Books/BookLanguage/BookLanguages'
 import AddBookLanguage from './screens/Books/BookLanguage/AddBookLanguage'
+import EditBookLanguage from './screens/Books/BookLanguage/EditBookLanguage'
 
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
@@ -87,9 +90,12 @@ const App = () => {
           <Route path='/books/view/:id' element={<ViewBook />} />
 
           <Route path='/books/genre' element={<BookGenres />} />
-          <Route path='/books/genre/add' element={<AddBookGenres />} />
-          <Route path='/books/language' element={<BookLanguage />} />
+          <Route path='/books/genre/add' element={<AddBookGenre />} />
+          <Route path='/books/genre/edit/:id' element={<EditBookGenre />} />
+
+          <Route path='/books/language' element={<BookLanguages />} />
           <Route path='/books/language/add' element={<AddBookLanguage />} />
+          <Route path='/books/language/edit/:id' element={<EditBookLanguage />} />
 
           <Route path='/home' element={<Home />} />
           <Route path='/copyright' element={<Copyright />} />
@@ -102,7 +108,7 @@ const App = () => {
 
       </Routes>
 
-      <AuthVerify logOut={'logOut'} />
+      {/* <AuthVerify logOut={'logOut'} /> */}
     </Suspense>
 
   </>

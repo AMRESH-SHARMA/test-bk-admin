@@ -21,8 +21,8 @@ const BookGenres = () => {
   }
 
   useEffect(() => {
-    async function getBooks() {
-      await axios.get(`${API}/book/get-books`)
+    async function getGenres() {
+      await axios.get(`${API}/genre/get-genres`)
         .then((resApi) => {
           console.log(resApi);
           setApiData(resApi.data.msg);
@@ -31,27 +31,14 @@ const BookGenres = () => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getBooks()
+    } getGenres()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSuspend = async (param) => {
+  const handleDelete = async (genreId) => {
     setLoading(true)
-    await axios.put(`${API}/book/update-book-status`, { id: param })
-      .then((resApi) => {
-        console.log(resApi);
-      })
-      .catch((e) => {
-        console.log(e);
-        handleAlert(e.response.data.msg, 'red')
-      });
-    setLoading(false)
-  }
-
-  const handleDelete = async (bookId, uploadedBy) => {
-    setLoading(true)
-    const payload = { bookId, uploadedBy }
+    const payload = { genreId }
     console.log(payload)
-    await axios.delete(`${API}/book/delete-single-book`, payload)
+    await axios.delete(`${API}/genre/delete-single-genre`, genreId)
       .then((resApi) => {
         console.log(resApi);
         handleAlert(resApi.data.msg, 'green');
@@ -87,7 +74,7 @@ const BookGenres = () => {
           <table>
             <thead className='gthead-light'>
               <tr>
-                <th>Genre Name</th>
+                <th>Genre</th>
                 <th>Unique ID</th>
                 <th>Created On</th>
                 <th>Action</th>
@@ -96,12 +83,12 @@ const BookGenres = () => {
             <tbody>
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
-                  <td>{i.bookName}</td>
+                  <td>{i.genre}</td>
                   <td>{i._id}</td>
                   <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                   <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/edit/${i._id}`)}>Edit</button>
-                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy)}>Delete</button>
+                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/genre/edit/${i._id}`)}>Edit</button>
+                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
                   </span>
                   </td>
                 </tr>

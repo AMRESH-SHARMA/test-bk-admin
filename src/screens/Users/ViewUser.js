@@ -59,10 +59,6 @@ const ViewUser = () => {
           <table>
             <thead>
               <tr>
-                <th>User_Id</th>
-                <td>{user?._id}</td></tr>
-
-              <tr>
                 <th>Unique ID</th>
                 <td>{user?._id}</td></tr>
 

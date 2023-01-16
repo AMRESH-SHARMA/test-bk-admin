@@ -13,6 +13,8 @@ const EditBook = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
   const [book, setBook] = useState('')
+  const [languageData, setLanguageData] = useState('')
+  const [genreData, setGenreData] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -36,6 +38,34 @@ const EditBook = () => {
     } getBooks()
   }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    async function getLanguages() {
+      await axios.get(`${API}/language/get-languages`)
+        .then((resApi) => {
+          console.log(resApi);
+          setLanguageData(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getLanguages()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    async function getGenres() {
+      await axios.get(`${API}/genre/get-genres`)
+        .then((resApi) => {
+          console.log(resApi);
+          setGenreData(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getGenres()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   return (<>
     <div className='gcont-container'>
 
@@ -50,7 +80,16 @@ const EditBook = () => {
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
-            initialValues={{ bookName: book?.bookName, genre: book?.genre, language: book?.language, description: book?.description, rentPerDay: book?.rentPerDay, uploadedBy: book?.uploadedBy, timestamp: new Date() }}
+            initialValues={{
+              bookName: book?.bookName || "",
+              genre: book?.genre || "",
+              language: book?.language || "",
+              description: book?.description || "",
+              rentPerDay: book?.rentPerDay || "",
+              uniqueId: book?._id || "",
+              uploadedBy: book?.uploadedBy || "",
+              timestamp: new Date()
+            }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 // console.log(values)
@@ -116,32 +155,40 @@ const EditBook = () => {
                     {errors.bookName && touched.bookName && errors.bookName}&nbsp;</div>
 
                   <label htmlFor="genre">Genre</label>
-                  <input
-                    id="genre"
+                  <select
                     name="genre"
-                    type="text"
-                    placeholder="Enter book genre"
                     value={values.genre}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.genre && touched.genre && "error"}
-                  />
+                  >
+                    <option value="" label="Select Genre" />
+                    {genreData && genreData.map((i, index) => {
+                      return (<>
+                        <option value={i._id} label={i.genre} />
+                      </>
+                      )
+                    })}
+                  </select>
                   <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.genre && touched.genre && errors.genre}&nbsp;</div>
 
                   <label htmlFor="language">Language</label>
-                  <input
-                    id="language"
+                  <select
                     name="language"
-                    type="text"
-                    placeholder="Enter book language"
                     value={values.language}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.language && touched.language && "error"}
-                  />
+                  >
+                    <option value="" label="Select Language" />
+                    {languageData && languageData.map((i, index) => {
+                      return (<>
+                        <option value={i._id} label={i.language} />
+                      </>
+                      )
+                    })}
+                  </select>
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
 
@@ -191,7 +238,7 @@ const EditBook = () => {
                   <input
                     id="uniqueId"
                     name="uniqueId"
-                    value={'(376274632478)dummy uid'}
+                    value={values.uniqueId}
                     onChange={handleChange}
                     style={INPUT.boxdisable}
                     disabled

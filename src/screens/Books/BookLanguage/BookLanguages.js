@@ -5,7 +5,7 @@ import axios from "axios";
 import { API } from "../../../API"
 import { useAlert } from "../../../Redux/actions/useAlert";
 
-const BookLanguage = () => {
+const BookLanguages = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
@@ -21,8 +21,8 @@ const BookLanguage = () => {
   }
 
   useEffect(() => {
-    async function getBooks() {
-      await axios.get(`${API}/book/get-books`)
+    async function getLanguages() {
+      await axios.get(`${API}/language/get-languages`)
         .then((resApi) => {
           console.log(resApi);
           setApiData(resApi.data.msg);
@@ -31,27 +31,12 @@ const BookLanguage = () => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getBooks()
+    } getLanguages()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSuspend = async (param) => {
+  const handleDelete = async (languageId) => {
     setLoading(true)
-    await axios.put(`${API}/book/update-book-status`, { id: param })
-      .then((resApi) => {
-        console.log(resApi);
-      })
-      .catch((e) => {
-        console.log(e);
-        handleAlert(e.response.data.msg, 'red')
-      });
-    setLoading(false)
-  }
-
-  const handleDelete = async (bookId, uploadedBy) => {
-    setLoading(true)
-    const payload = { bookId, uploadedBy }
-    console.log(payload)
-    await axios.delete(`${API}/book/delete-single-book`, payload)
+    await axios.delete(`${API}/language/delete-single-language/${languageId}`)
       .then((resApi) => {
         console.log(resApi);
         handleAlert(resApi.data.msg, 'green');
@@ -96,12 +81,12 @@ const BookLanguage = () => {
             <tbody>
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
-                  <td>{i.bookName}</td>
+                  <td>{i.language}</td>
                   <td>{i._id}</td>
                   <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                   <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/edit/${i._id}`)}>Edit</button>
-                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy)}>Delete</button>
+                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
+                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
                   </span>
                   </td>
                 </tr>
@@ -116,4 +101,4 @@ const BookLanguage = () => {
   )
 }
 
-export default BookLanguage
+export default BookLanguages

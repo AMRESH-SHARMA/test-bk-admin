@@ -7,7 +7,7 @@ import { API } from "../../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 
-const AddlanguageLanguage = () => {
+const AddBookGenre = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
@@ -20,11 +20,11 @@ const AddlanguageLanguage = () => {
       timeout: 5000
     })
   }
-
   useEffect(() => {
     async function getUid() {
       await axios.get(`${API}/getUid`)
         .then((resApi) => {
+          console.log(resApi);
           setUid(resApi.data.msg);
         })
         .catch((e) => {
@@ -34,11 +34,12 @@ const AddlanguageLanguage = () => {
     } getUid()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Books / Add Language</p>
+        <p>Add Genre</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -50,17 +51,26 @@ const AddlanguageLanguage = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
+              genre: "",
+              image: "",
               uniqueId: uid?._id || "",
-              language: "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/language/create-language`, values)
+                const formData = new FormData();
+                formData.append('uniqueId', values.uniqueId);
+                formData.append('image', values.image);
+                formData.append('genre', values.genre);
+                await axios.post(`${API}/genre/create-genre`, formData, {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  }
+                })
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('language Created', 'green')
-                    navigate('/books/language')
+                    handleAlert('Genre Created', 'green')
+                    navigate('/books/genre')
                   })
                   .catch((e) => {
                     console.log(e);
@@ -70,8 +80,8 @@ const AddlanguageLanguage = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              language: Yup.string()
-                .max(50, 'maximum 30 chars allowed')
+              genre: Yup.string()
+                .max(50, 'maximum 20 chars allowed')
                 .required('required feild')
             })}
           >
@@ -91,20 +101,38 @@ const AddlanguageLanguage = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="language">Language</label>
+                  <label htmlFor="genre">Genre</label>
                   <input
-                    id="language"
-                    name="language"
+                    id="genre"
+                    name="genre"
                     type="text"
-                    placeholder="Enter language"
-                    value={values.language}
+                    placeholder="Enter genre"
+                    value={values.genre}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.language && touched.language && "error"}
+                    className={errors.genre && touched.genre && "error"}
                   />
-                  <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.language && touched.language && errors.language}&nbsp;</div>
+                  <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.genre && touched.genre && errors.genre}&nbsp;</div>
+
+                  <label htmlFor="image">Image</label>
+                  <input
+                    id="image"
+                    name="image"
+                    type="file"
+                    onChange={(event) => {
+                      // setimage(URL.createObjectURL(event.target.files[0]))
+                      setFieldValue("image", event.currentTarget.files[0])
+                    }}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.image && touched.image && "error"}
+                  />
+                  <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.image && touched.image && errors.image}&nbsp;</div>
+                  {/* 
+                  <img style={{ width: 'auto', height: '100px' }} src={URL.createObjectURL(values.image)} alt={values.image.name} /> */}
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -148,4 +176,4 @@ const AddlanguageLanguage = () => {
   )
 }
 
-export default AddlanguageLanguage
+export default AddBookGenre

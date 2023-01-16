@@ -49,9 +49,7 @@ const Books = () => {
 
   const handleDelete = async (bookId,uploadedBy) => {
     setLoading(true)
-    const payload = { bookId,uploadedBy }
-    console.log(payload)
-    await axios.delete(`${API}/book/delete-single-book`, payload)
+    await axios.delete(`${API}/book/delete-single-book/${bookId}/${uploadedBy}`)
       .then((resApi) => {
         console.log(resApi);
         handleAlert(resApi.data.msg, 'green');

@@ -72,7 +72,7 @@ const Users = () => {
               {ApiData && ApiData.map((i) => {
                 return (<tr key={i._id}>
                   <td>{i.userName}</td>
-                  <td>{i.uuid}</td>
+                  <td>{i._id}</td>
                   <td>{i.city}</td>
                   <td>{i.booksAdded?.length}</td>
                   <td>{i.booksRented?.length}</td>
