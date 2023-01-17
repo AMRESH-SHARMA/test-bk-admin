@@ -64,7 +64,7 @@ const ViewUser = () => {
 
               <tr>
                 <th>Name</th>
-                <td>{user?.name}</td></tr>
+                <td>{user?.userName}</td></tr>
 
               <tr>
                 <th>Email</th>

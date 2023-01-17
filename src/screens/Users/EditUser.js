@@ -14,6 +14,11 @@ const EditUser = () => {
   const { displayAlert } = useAlert();
   const [user, setUser] = useState('')
 
+  const maxUserName = 50
+  const maxEmail = 100
+  const maxPhone = 10
+  const maxCity = 50
+
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -77,17 +82,18 @@ const EditUser = () => {
 
             validationSchema={Yup.object().shape({
               userName: Yup.string()
-                .max(50, 'maximum 50 chars allowed')
+                .max(maxUserName, `maximum ${maxUserName} characters allowed`)
                 .required("Required"),
               email: Yup.string()
                 .email()
-                .max(100, 'maximum 100 chars allowed')
+                .max(maxEmail, `maximum ${maxEmail} characters allowed`)
                 .required("Required"),
-              phone: Yup.string()
-                .max(10, 'maximum 10 chars allowed')
+              phone: Yup.number('only numbers allowed')
+                .integer('only numbers allowed')
+                .max(9999999999, `maximum ${maxPhone} digits allowed`)
                 .required("Required"),
               city: Yup.string()
-                .max(50, 'maximum 50 chars allowed')
+                .max(maxCity, `maximum ${maxCity} characters allowed`)
                 .required("Required"),
             })}
           >
@@ -118,6 +124,9 @@ const EditUser = () => {
                     style={INPUT.box1}
                     className={errors.userName && touched.userName && "error"}
                   />
+                  <div style={maxUserName - values.userName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxUserName - values.userName.length) + '/' + maxUserName}</p>
+                  </div>
                   <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.userName && touched.userName && errors.userName}&nbsp;</div>
 
@@ -133,6 +142,9 @@ const EditUser = () => {
                     style={INPUT.box1}
                     className={errors.email && touched.email && "error"}
                   />
+                  <div style={maxEmail - values.email.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxEmail - values.email.length) + '/' + maxEmail}</p>
+                  </div>
                   <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.email && touched.email && errors.email}&nbsp;</div>
 
@@ -148,6 +160,9 @@ const EditUser = () => {
                     style={INPUT.box1}
                     className={errors.phone && touched.phone && "error"}
                   />
+                  <div style={maxPhone - values.phone.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxPhone - values.phone.toString().length) + '/' + maxPhone}</p>
+                  </div>
                   <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.phone && touched.phone && errors.phone}&nbsp;</div>
 
@@ -163,6 +178,9 @@ const EditUser = () => {
                     style={INPUT.box1}
                     className={errors.city && touched.city && "error"}
                   />
+                  <div style={maxCity - values.city.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
+                  </div>
                   <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.city && touched.city && errors.city}&nbsp;</div>
 

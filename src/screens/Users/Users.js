@@ -9,8 +9,9 @@ const Users = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
-  const [ApiData, setApiData] = useState('')
+  const [apiResponse, setApiResponse] = useState(true)
   const [loading, setLoading] = useState(false)
+  const [ApiData, setApiData] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -25,11 +26,16 @@ const Users = () => {
       await axios.get(`${API}/user/get-users`)
         .then((resApi) => {
           console.log(resApi);
-          setApiData(resApi.data.msg);
+          var data = resApi.data.msg
+          data.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          })
+          setApiData(data);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
+          setApiResponse(false)
         });
     } getUsers()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -69,28 +75,31 @@ const Users = () => {
               </tr>
             </thead>
             <tbody>
-              {ApiData && ApiData.map((i) => {
-                return (<tr key={i._id}>
-                  <td>{i.userName}</td>
-                  <td>{i._id}</td>
-                  <td>{i.city}</td>
-                  <td>{i.booksAdded?.length}</td>
-                  <td>{i.booksRented?.length}</td>
-                  <td>{i.approved ?
-                    <button className="gbtn-status gbtn-lgreen">Active</button> :
-                    <button className="gbtn-status gbtn-red">inactive</button>}
-                  </td>
-                  <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
-                    {i.approved ?
-                      <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
-                      <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
-                  </span>
-                  </td>
-                </tr>
-                );
-              })}
+              {apiResponse
+                ? <>
+                  {ApiData && ApiData.map((i) => {
+                    return (<tr key={i._id}>
+                      <td>{i.userName}</td>
+                      <td>{i._id}</td>
+                      <td>{i.city}</td>
+                      <td>{i.booksAdded?.length}</td>
+                      <td>{i.booksRented?.length}</td>
+                      <td>{i.approved ?
+                        <button className="gbtn-status gbtn-lgreen">Active</button> :
+                        <button className="gbtn-status gbtn-red">inactive</button>}
+                      </td>
+                      <td><span className='gtable-btn-panel'>
+                        <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
+                        <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
+                        {i.approved ?
+                          <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
+                          <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                      </span>
+                      </td>
+                    </tr>
+                    );
+                  })}</>
+                : <>&nbsp;No Data found</>}
             </tbody>
           </table>
         </div>

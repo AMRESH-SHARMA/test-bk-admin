@@ -12,7 +12,7 @@ const AddBookGenre = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
   const [uid, setUid] = useState('')
-
+  const maxGenreName = 20
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -81,7 +81,7 @@ const AddBookGenre = () => {
 
             validationSchema={Yup.object().shape({
               genre: Yup.string()
-                .max(50, 'maximum 20 chars allowed')
+                .max(maxGenreName, `maximum ${maxGenreName} characters allowed`)
                 .required('required feild')
             })}
           >
@@ -113,6 +113,9 @@ const AddBookGenre = () => {
                     style={INPUT.box1}
                     className={errors.genre && touched.genre && "error"}
                   />
+                  <div style={maxGenreName - values.genre.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxGenreName - values.genre.length) + '/' + maxGenreName}</p>
+                  </div>
                   <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.genre && touched.genre && errors.genre}&nbsp;</div>
 
@@ -121,8 +124,9 @@ const AddBookGenre = () => {
                     id="image"
                     name="image"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
-                      // setimage(URL.createObjectURL(event.target.files[0]))
+                      console.log(event.currentTarget.files[0]?.type)
                       setFieldValue("image", event.currentTarget.files[0])
                     }}
                     onBlur={handleBlur}
@@ -131,8 +135,6 @@ const AddBookGenre = () => {
                   />
                   <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.image && touched.image && errors.image}&nbsp;</div>
-                  {/* 
-                  <img style={{ width: 'auto', height: '100px' }} src={URL.createObjectURL(values.image)} alt={values.image.name} /> */}
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

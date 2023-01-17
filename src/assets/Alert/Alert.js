@@ -11,7 +11,7 @@ const Alert = () => {
     setAlertColor(alert.color)
     if (alert.open) {
       const timer = setTimeout(() => {
-        console.log('Initial timeout!');
+        // console.log('Initial timeout!');
         clearAlert()
       }, alert.timeout)
       return () => clearTimeout(timer);

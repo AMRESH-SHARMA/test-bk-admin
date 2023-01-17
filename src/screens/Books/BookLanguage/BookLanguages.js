@@ -2,6 +2,7 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import swal from 'sweetalert'
 import { API } from "../../../API"
 import { useAlert } from "../../../Redux/actions/useAlert";
 
@@ -9,7 +10,8 @@ const BookLanguages = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
-  const [ApiData, setApiData] = useState('')
+  const [apiResponse, setApiResponse] = useState(true)
+  const [ApiData, setApiData] = useState([])
   const [loading, setLoading] = useState(false)
 
   const handleAlert = (param1, param2) => {
@@ -25,28 +27,45 @@ const BookLanguages = () => {
       await axios.get(`${API}/language/get-languages`)
         .then((resApi) => {
           console.log(resApi);
-          setApiData(resApi.data.msg);
+          var data = resApi.data.msg
+          data.sort((a, b) => {
+            return new Date(b.createdAt) - new Date(a.createdAt);
+          })
+          setApiData(data);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
+          setApiResponse(false)
         });
     } getLanguages()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDelete = async (languageId) => {
-    setLoading(true)
-    await axios.delete(`${API}/language/delete-single-language/${languageId}`)
-      .then((resApi) => {
-        console.log(resApi);
-        handleAlert(resApi.data.msg, 'green');
-      })
-      .catch((e) => {
-        console.log(e);
-        handleAlert(e.response.data.msg, 'red')
-      });
-    setLoading(false)
+  const handleDelete = (languageId) => {
+    swal({
+      title: 'Are you sure?',
+      icon: 'error',
+      buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
+    }).then((value) => {
+      if (value === true) {
+        axios.delete(`${API}/language/delete-single-language/${languageId}`)
+          .then((res) => {
+            setLoading((prev) => !prev)
+            console.log(res)
+          })
+          .catch((err) => {
+            swal({
+              title: 'Warning',
+              text: 'Something went wrong!',
+              icon: 'error',
+              button: 'Retry',
+              dangerMode: true,
+            })
+          })
+      }
+    })
   }
+
   //change time formate
   function formatAMPM(date) {
     var hours = new Date(date).getHours();
@@ -79,19 +98,23 @@ const BookLanguages = () => {
               </tr>
             </thead>
             <tbody>
-              {ApiData && ApiData.map((i) => {
-                return (<tr key={i._id}>
-                  <td>{i.language}</td>
-                  <td>{i._id}</td>
-                  <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                  <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
-                    <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
-                  </span>
-                  </td>
-                </tr>
-                );
-              })}
+              {apiResponse ?
+                <>
+                  {ApiData && ApiData.map((i) => {
+                    return (<tr key={i._id}>
+                      <td>{i.language}</td>
+                      <td>{i._id}</td>
+                      <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                      <td><span className='gtable-btn-panel'>
+                        <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
+                        <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
+                      </span>
+                      </td>
+                    </tr>
+                    );
+                  })}
+                </>
+                : <>&nbsp;No Data found</>}
             </tbody>
           </table>
         </div>
@@ -100,5 +123,4 @@ const BookLanguages = () => {
   </>
   )
 }
-
 export default BookLanguages

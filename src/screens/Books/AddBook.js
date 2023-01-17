@@ -16,6 +16,9 @@ const AddBook = () => {
   const [languageData, setLanguageData] = useState('')
   const [genreData, setGenreData] = useState('')
 
+  const maxBookName = 50;
+  const maxDescription = 200;
+
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -141,18 +144,21 @@ const AddBook = () => {
 
             validationSchema={Yup.object().shape({
               // bookName: Yup.string()
-              //   .max(50, 'maximum 50 chars allowed')
+              //   .max(maxBookName, `maximum ${maxBookName} chars allowed`)
               //   .required("Required"),
               // genre: Yup.string()
               //   .required("Required"),
               // language: Yup.string()
               //   .required("Required"),
               // description: Yup.string()
-              //   .max(200, 'maximum 200 chars allowed')
+              //   .max(maxDescription,  `maximum ${maxDescription} chars allowed`)
               //   .required("Required"),
               // rentPerDay: Yup.number('only numbers allowed')
               //   .integer('only numbers allowed')
+              //   .max(999, 'maximum 3 digits allowed')
               //   .required("Required"),
+              // image1: Yup.string()
+              //   .required(),
               // uploadedBy: Yup.string()
               //   .required("Required"),
             })}
@@ -173,7 +179,7 @@ const AddBook = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="bookName">Book Name</label>
+                  <label htmlFor="bookName">Book Name *</label>
                   <input
                     id="bookName"
                     name="bookName"
@@ -185,10 +191,14 @@ const AddBook = () => {
                     style={INPUT.box1}
                     className={errors.bookName && touched.bookName && "error"}
                   />
+                  <div style={maxBookName - values.bookName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxBookName - values.bookName.length) + '/' + maxBookName}</p>
+                  </div>
                   <div style={errors.bookName && touched.bookName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.bookName && touched.bookName && errors.bookName}&nbsp;</div>
 
-                  <label htmlFor="genre">Genre</label>
+
+                  <label htmlFor="genre">Genre *</label>
                   <select
                     name="genre"
                     value={values.genre}
@@ -207,7 +217,7 @@ const AddBook = () => {
                   <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.genre && touched.genre && errors.genre}&nbsp;</div>
 
-                  <label htmlFor="language">Language</label>
+                  <label htmlFor="language">Language *</label>
                   <select
                     name="language"
                     value={values.language}
@@ -226,7 +236,7 @@ const AddBook = () => {
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
 
-                  <label htmlFor="description">Description</label>
+                  <label htmlFor="description">Description *</label>
                   <input
                     id="description"
                     name="description"
@@ -238,10 +248,13 @@ const AddBook = () => {
                     style={INPUT.box1}
                     className={errors.description && touched.description && "error"}
                   />
+                  <div style={maxDescription - values.description.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxDescription - values.description.length) + '/' + maxDescription}</p>
+                  </div>
                   <div style={errors.description && touched.description ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.description && touched.description && errors.description}&nbsp;</div>
 
-                  <label htmlFor="rentPerDay">Rent Per Day</label>
+                  <label htmlFor="rentPerDay">Rent Per Day *</label>
                   <input
                     id="rentPerDay"
                     name="rentPerDay"
@@ -256,11 +269,12 @@ const AddBook = () => {
                   <div style={errors.rentPerDay && touched.rentPerDay ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.rentPerDay && touched.rentPerDay && errors.rentPerDay}&nbsp;</div>
 
-                  <label htmlFor="image1">Image1</label>
+                  <label htmlFor="image1">Image1 *</label>
                   <input
                     id="image1"
                     name="image1"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
                       setFieldValue("image1", event.currentTarget.files[0])
                     }}
@@ -271,11 +285,12 @@ const AddBook = () => {
                   <div style={errors.image1 && touched.image1 ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.image1 && touched.image1 && errors.image1}&nbsp;</div>
 
-                  <label htmlFor="image2">Image2</label>
+                  <label htmlFor="image2">Image2 (Optional)</label>
                   <input
                     id="image2"
                     name="image2"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
                       setFieldValue("image2", event.currentTarget.files[0])
                     }}
@@ -286,11 +301,12 @@ const AddBook = () => {
                   <div style={errors.image2 && touched.image2 ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.image2 && touched.image2 && errors.image2}&nbsp;</div>
 
-                  <label htmlFor="image3">Image3</label>
+                  <label htmlFor="image3">Image3 (Optional)</label>
                   <input
                     id="image3"
                     name="image3"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
                       setFieldValue("image3", event.currentTarget.files[0])
                     }}
@@ -301,11 +317,12 @@ const AddBook = () => {
                   <div style={errors.image3 && touched.image3 ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.image3 && touched.image3 && errors.image3}&nbsp;</div>
 
-                  <label htmlFor="image4">Image4</label>
+                  <label htmlFor="image4">Image4 (Optional)</label>
                   <input
                     id="image4"
                     name="image4"
                     type="file"
+                    accept="image/*"
                     onChange={(event) => {
                       setFieldValue("image4", event.currentTarget.files[0])
                     }}
@@ -317,7 +334,7 @@ const AddBook = () => {
                     {errors.image4 && touched.image4 && errors.image4}&nbsp;</div>
 
 
-                  <label htmlFor="uploadedBy">Uploaded By</label>
+                  <label htmlFor="uploadedBy">Uploaded By *</label>
                   <select
                     name="uploadedBy"
                     value={values.uploadedBy}

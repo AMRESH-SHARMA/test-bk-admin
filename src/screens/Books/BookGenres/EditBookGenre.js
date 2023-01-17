@@ -13,7 +13,7 @@ const EditBookGenre = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
   const [genre, setGenre] = useState('')
-
+  const maxGenreName = 20
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -74,7 +74,7 @@ const EditBookGenre = () => {
 
             validationSchema={Yup.object().shape({
               genre: Yup.string()
-                .max(50, 'maximum 50 chars allowed')
+                .max(maxGenreName, `maximum ${maxGenreName} chars allowed`)
                 .required("Required"),
             })}>
 
@@ -104,6 +104,9 @@ const EditBookGenre = () => {
                     style={INPUT.box1}
                     className={errors.genre && touched.genre && "error"}
                   />
+                  <div style={maxGenreName - values.genre.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxGenreName - values.genre.length) + '/' + maxGenreName}</p>
+                  </div>
                   <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.genre && touched.genre && errors.genre}&nbsp;</div>
 

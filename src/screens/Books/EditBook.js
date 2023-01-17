@@ -16,6 +16,9 @@ const EditBook = () => {
   const [languageData, setLanguageData] = useState('')
   const [genreData, setGenreData] = useState('')
 
+  const maxBookName = 50;
+  const maxDescription = 200;
+
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -70,7 +73,7 @@ const EditBook = () => {
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Edit User</p>
+        <p>Edit Book</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/books')}>Back</button>
         </div>
@@ -109,17 +112,18 @@ const EditBook = () => {
 
             validationSchema={Yup.object().shape({
               bookName: Yup.string()
-                .max(50, 'maximum 50 chars allowed')
+                .max(maxBookName, `maximum ${maxBookName} chars allowed`)
                 .required("Required"),
               genre: Yup.string()
                 .required("Required"),
               language: Yup.string()
                 .required("Required"),
               description: Yup.string()
-                .max(200, 'maximum 200 chars allowed')
+                .max(maxDescription, `maximum ${maxDescription} chars allowed`)
                 .required("Required"),
               rentPerDay: Yup.number('only numbers allowed')
                 .integer('only numbers allowed')
+                .max(999, 'maximum 3 digits allowed')
                 .required("Required"),
               uploadedBy: Yup.string()
                 .required("Required"),
@@ -151,6 +155,9 @@ const EditBook = () => {
                     style={INPUT.box1}
                     className={errors.bookName && touched.bookName && "error"}
                   />
+                  <div style={maxBookName - values.bookName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxBookName - values.bookName.length) + '/' + maxBookName}</p>
+                  </div>
                   <div style={errors.bookName && touched.bookName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.bookName && touched.bookName && errors.bookName}&nbsp;</div>
 
@@ -204,6 +211,9 @@ const EditBook = () => {
                     style={INPUT.box1}
                     className={errors.description && touched.description && "error"}
                   />
+                  <div style={maxDescription - values.description.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxDescription - values.description.length) + '/' + maxDescription}</p>
+                  </div>
                   <div style={errors.description && touched.description ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.description && touched.description && errors.description}&nbsp;</div>
 

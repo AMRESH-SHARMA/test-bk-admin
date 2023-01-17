@@ -28,11 +28,11 @@ export const INPUT = {
   },
   boxdisable: {
     height: '30px',
-    cursor:'not-allowed',
-    backgroundColor:'D8DBE0',
-    fontWeight:'600'
+    cursor: 'not-allowed',
+    backgroundColor: 'D8DBE0',
+    fontWeight: '600'
   },
-  
+
 };
 
 export const ERROR = {
@@ -45,4 +45,13 @@ export const ERROR = {
     visibility: 'hidden',
     marginBottom: '30px',
   },
+};
+
+export const IMG = {
+  style1: {
+    maxHeight: '100px',
+    width: '200px',
+    border: '2px solid black',
+    padding: '5px'
+  }
 };

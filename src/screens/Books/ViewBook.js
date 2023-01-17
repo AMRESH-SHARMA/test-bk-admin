@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
+import { IMG } from '../../assets/constants/theme';
 import { useAlert } from "../../Redux/actions/useAlert";
 
 const ViewBook = () => {
@@ -82,21 +83,33 @@ const ViewBook = () => {
                 <th>Rent Per Day</th>
                 <td>{book?.rentPerDay}</td></tr>
 
-              <tr>
-                <th>Image 1</th>
-                <td><img alt='' src={book.image1.url} style={{ maxHeight: '100px', maxWidth: '200px' }} /></td></tr>
+              {book.image1?.url
+                &&
+                <tr>
+                  <th>Image 1</th>
+                  <td><img alt='' src={book.image1.url} style={IMG.style1} /></td></tr>
+              }
 
-              <tr>
-                <th>Image 2</th>
-                <td><img alt='' src={book.image2.url} style={{ maxHeight: '100px', maxWidth: '200px' }} /></td></tr>
+              {book.image2?.url
+                &&
+                <tr>
+                  <th>Image 2</th>
+                  <td><img alt='' src={book.image2.url} style={IMG.style1} /></td></tr>
+              }
 
-              <tr>
-                <th>Image 3</th>
-                <td><img alt='' src={book.image3.url} style={{ maxHeight: '100px', maxWidth: '200px' }} /></td></tr>
+              {book.image3?.url
+                &&
+                <tr>
+                  <th>Image 3</th>
+                  <td><img alt='' src={book.image3.url} style={IMG.style1} /></td></tr>
+              }
 
-              <tr>
-                <th>Image 4</th>
-                <td><img alt='' src={book.image4.url} style={{ maxHeight: '100px', maxWidth: '200px' }} /></td></tr>
+              {book.image4?.url
+                &&
+                <tr>
+                  <th>Image 4</th>
+                  <td><img alt='' src={book.image4.url} style={IMG.style1} /></td></tr>
+              }
 
               <tr>
                 <th>Uploaded By</th>
