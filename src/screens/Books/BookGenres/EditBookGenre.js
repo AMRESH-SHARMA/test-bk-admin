@@ -76,6 +76,8 @@ const EditBookGenre = () => {
               genre: Yup.string()
                 .max(maxGenreName, `maximum ${maxGenreName} chars allowed`)
                 .required("Required"),
+              // image: Yup.string()
+              //   .required('required feild'),
             })}>
 
             {props => {

@@ -83,6 +83,22 @@ const ViewUser = () => {
                 <td>{user?.role}</td></tr>
 
               <tr>
+                <th>Books Added</th>
+                <td>{user.booksAdded?.length}</td>
+              </tr>
+
+              <tr>
+                <th style={{display:'flex'}}>All Books</th>
+                <td>{user.booksAdded?.length ?
+                  user.booksAdded.map((i) => {
+                    return (<>
+                      <p><strong>Id :&nbsp;</strong>{i._id}</p><p><strong>Book Name :&nbsp;</strong>{i.bookName}</p><br/>
+                    </>)
+                  })
+                  : null}</td>
+              </tr>
+
+              <tr>
                 <th>Register At</th>
                 <td>
                   {new Date(`${user?.createdAt}`).toDateString()}<span> , {`${formatAMPM(user?.createdAt)}`}</span>

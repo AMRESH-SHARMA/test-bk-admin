@@ -1,4 +1,5 @@
 import React from 'react'
+import Spinner from '../../../assets/Spinner/Spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -10,8 +11,8 @@ const BookGenres = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
-  const [apiResponse, setApiResponse] = useState(true)
   const [ApiData, setApiData] = useState([])
+  const [apiloading, setApiLoading] = useState(true)
   const [loading, setLoading] = useState(false)
 
   const handleAlert = (param1, param2) => {
@@ -36,8 +37,8 @@ const BookGenres = () => {
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
-          setApiResponse(false)
         });
+      setApiLoading(false)
     } getGenres()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -85,40 +86,41 @@ const BookGenres = () => {
         <p>Books / Genre</p>
         <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/books/genre/add')}>Add Genre</button> </div>
       </div>
-
-      <div className="gcard gcont-body">
-        <div className='gtable' style={{ overflowX: 'auto' }}>
-          <table>
-            <thead className='gthead-light'>
-              <tr>
-                <th>Genre</th>
-                <th>Unique ID</th>
-                <th>Created On</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apiResponse ?
-                <>
-                  {ApiData && ApiData.map((i) => {
-                    return (<tr key={i._id}>
-                      <td>{i.genre}</td>
-                      <td>{i._id}</td>
-                      <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                      <td><span className='gtable-btn-panel'>
-                        <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/genre/edit/${i._id}`)}>Edit</button>
-                        <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
-                      </span>
-                      </td>
-                    </tr>
-                    );
-                  })}
-                </>
-                : <>&nbsp;No Data found</>}
-            </tbody>
-          </table>
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
         </div>
-      </div>
+        :
+        <div className="gcard gcont-body">
+          <div className='gtable' style={{ overflowX: 'auto' }}>
+            <table>
+              <thead className='gthead-light'>
+                <tr>
+                  <th>Genre</th>
+                  <th>Unique ID</th>
+                  <th>Created On</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ApiData && ApiData.length ? ApiData.map((i) => {
+                  return (<tr key={i._id}>
+                    <td>{i.genre}</td>
+                    <td>{i._id}</td>
+                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                    <td><span className='gtable-btn-panel'>
+                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/genre/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
+                    </span>
+                    </td>
+                  </tr>
+                  );
+                })
+                  : <>&nbsp;No Data found</>}
+              </tbody>
+            </table>
+          </div>
+        </div>}
     </div>
   </>
   )

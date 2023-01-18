@@ -82,7 +82,9 @@ const AddBookGenre = () => {
             validationSchema={Yup.object().shape({
               genre: Yup.string()
                 .max(maxGenreName, `maximum ${maxGenreName} characters allowed`)
-                .required('required feild')
+                .required('required feild'),
+              image: Yup.string()
+                .required('required feild'),
             })}
           >
 

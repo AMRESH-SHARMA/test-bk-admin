@@ -1,4 +1,5 @@
 import React from 'react'
+import Spinner from '../../assets/Spinner/Spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -10,9 +11,9 @@ const Books = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
-  const [apiResponse, setApiResponse] = useState(true)
   const [ApiData, setApiData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [apiloading, setApiLoading] = useState(true)
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -36,8 +37,8 @@ const Books = () => {
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
-          setApiResponse(false)
         });
+      setApiLoading(false)
     } getBooks()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -98,51 +99,52 @@ const Books = () => {
         <p>Books</p>
         <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/books/add')}>Add Book</button> </div>
       </div>
-
-      <div className="gcard gcont-body">
-        <div className='gtable' style={{ overflowX: 'auto' }}>
-          <table>
-            <thead className='gthead-light'>
-              <tr>
-                <th>Book Name</th>
-                <th>Unique ID</th>
-                <th>Uploaded Date</th>
-                <th>Rent per Day</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {apiResponse ?
-                <>
-                  {ApiData && ApiData.map((i) => {
-                    return (<tr key={i._id}>
-                      <td>{i.bookName}</td>
-                      <td>{i._id}</td>
-                      <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                      <td>₹{i.rentPerDay}</td>
-                      <td>{i.approved ?
-                        <button className="gbtn-status gbtn-lgreen">Active</button> :
-                        <button className="gbtn-status gbtn-red">inactive</button>}
-                      </td>
-                      <td><span className='gtable-btn-panel'>
-                        <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/books/view/${i._id}`)}>View</button>
-                        <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/edit/${i._id}`)}>Edit</button>
-                        {i.approved ?
-                          <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
-                          <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
-                        <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy)}>Delete</button>
-                      </span>
-                      </td>
-                    </tr>
-                    );
-                  })}
-                </>
-                : <>&nbsp;No Data found</>}
-            </tbody>
-          </table>
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
         </div>
-      </div>
+        :
+        <div className="gcard gcont-body">
+          <div className='gtable' style={{ overflowX: 'auto' }}>
+            <table>
+              <thead className='gthead-light'>
+                <tr>
+                  <th>Book Name</th>
+                  <th>Unique ID</th>
+                  <th>Uploaded Date</th>
+                  <th>Rent per Day</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ApiData && ApiData.length ? ApiData.map((i) => {
+                  return (<tr key={i._id}>
+                    <td>{i.bookName}</td>
+                    <td>{i._id}</td>
+                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                    <td>₹{i.rentPerDay}</td>
+                    <td>{i.approved ?
+                      <button className="gbtn-status gbtn-lgreen">Active</button> :
+                      <button className="gbtn-status gbtn-red">inactive</button>}
+                    </td>
+                    <td><span className='gtable-btn-panel'>
+                      <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/books/view/${i._id}`)}>View</button>
+                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/edit/${i._id}`)}>Edit</button>
+                      {i.approved ?
+                        <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
+                        <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy)}>Delete</button>
+                    </span>
+                    </td>
+                  </tr>
+                  );
+                }) : <>&nbsp;No Data found</>}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      }
     </div>
   </>
   )

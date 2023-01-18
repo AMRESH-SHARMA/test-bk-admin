@@ -143,24 +143,18 @@ const AddBook = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              // bookName: Yup.string()
-              //   .max(maxBookName, `maximum ${maxBookName} chars allowed`)
-              //   .required("Required"),
-              // genre: Yup.string()
-              //   .required("Required"),
-              // language: Yup.string()
-              //   .required("Required"),
-              // description: Yup.string()
-              //   .max(maxDescription,  `maximum ${maxDescription} chars allowed`)
-              //   .required("Required"),
-              // rentPerDay: Yup.number('only numbers allowed')
-              //   .integer('only numbers allowed')
-              //   .max(999, 'maximum 3 digits allowed')
-              //   .required("Required"),
-              // image1: Yup.string()
-              //   .required(),
-              // uploadedBy: Yup.string()
-              //   .required("Required"),
+              bookName: Yup.string()
+                .max(maxBookName, `maximum ${maxBookName} chars allowed`)
+                .required("Required"),
+              description: Yup.string()
+                .max(maxDescription,  `maximum ${maxDescription} chars allowed`)
+                .required("Required"),
+              rentPerDay: Yup.number('only numbers allowed')
+                .integer('only numbers allowed')
+                .max(999, 'maximum 3 digits allowed')
+                .required("Required"),
+              image1: Yup.string()
+                .required(),
             })}
           >
 
@@ -205,6 +199,7 @@ const AddBook = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
+                    required
                   >
                     <option value="" label="Select Genre" />
                     {genreData && genreData.map((i, index) => {
@@ -224,6 +219,7 @@ const AddBook = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
+                    required
                   >
                     <option value="" label="Select Language" />
                     {languageData && languageData.map((i, index) => {
@@ -341,6 +337,7 @@ const AddBook = () => {
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={{ display: 'block', ...INPUT.box1 }}
+                    required
                   >
                     <option value="" label="Select a User" />
                     {ApiData && ApiData.map((i, index) => {

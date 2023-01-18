@@ -13,8 +13,9 @@ const EditBook = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
   const [book, setBook] = useState('')
-  const [languageData, setLanguageData] = useState('')
-  const [genreData, setGenreData] = useState('')
+  const [languageData, setLanguageData] = useState([])
+  const [genreData, setGenreData] = useState([])
+  const [userData, setUserData] = useState([])
 
   const maxBookName = 50;
   const maxDescription = 200;
@@ -68,6 +69,19 @@ const EditBook = () => {
         });
     } getGenres()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    async function getUsers() {
+      await axios.get(`${API}/user/get-users`)
+        .then((resApi) => {
+          console.log(resApi);
+          setUserData(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getUsers()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
@@ -114,18 +128,12 @@ const EditBook = () => {
               bookName: Yup.string()
                 .max(maxBookName, `maximum ${maxBookName} chars allowed`)
                 .required("Required"),
-              genre: Yup.string()
-                .required("Required"),
-              language: Yup.string()
-                .required("Required"),
               description: Yup.string()
                 .max(maxDescription, `maximum ${maxDescription} chars allowed`)
                 .required("Required"),
               rentPerDay: Yup.number('only numbers allowed')
                 .integer('only numbers allowed')
                 .max(999, 'maximum 3 digits allowed')
-                .required("Required"),
-              uploadedBy: Yup.string()
                 .required("Required"),
             })}>
 
@@ -164,15 +172,15 @@ const EditBook = () => {
                   <label htmlFor="genre">Genre</label>
                   <select
                     name="genre"
-                    value={values.genre}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
+                    required
                   >
-                    <option value="" label="Select Genre" />
+                    <option value={values.genre._id} label={values.genre.genre} />
                     {genreData && genreData.map((i, index) => {
                       return (<>
-                        <option value={i._id} label={i.genre} />
+                        <option value={i._id}>{i.genre}</option>
                       </>
                       )
                     })}
@@ -183,15 +191,15 @@ const EditBook = () => {
                   <label htmlFor="language">Language</label>
                   <select
                     name="language"
-                    value={values.language}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
+                    required
                   >
-                    <option value="" label="Select Language" />
+                    <option value={values.language._id} label={values.language.language}/>
                     {languageData && languageData.map((i, index) => {
                       return (<>
-                        <option value={i._id} label={i.language} />
+                        <option value={i._id}>{i.language}</option>
                       </>
                       )
                     })}
@@ -231,6 +239,25 @@ const EditBook = () => {
                   />
                   <div style={errors.rentPerDay && touched.rentPerDay ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.rentPerDay && touched.rentPerDay && errors.rentPerDay}&nbsp;</div>
+
+                    <label htmlFor="uploadedBy">uploadedBy</label>
+                  <select
+                    name="uploadedBy"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    required
+                  >
+                    <option value={values.uploadedBy._id} label={values.uploadedBy.userName}/>
+                    {userData && userData.map((i, index) => {
+                      return (<>
+                        <option value={i._id}>{i.userName}</option>
+                      </>
+                      )
+                    })}
+                  </select>
+                  <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.language && touched.language && errors.language}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

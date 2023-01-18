@@ -1,0 +1,175 @@
+[
+  {
+    "title": "Users",
+    "icon": "fa fa-user",
+    "path": "/users"
+  },
+  {
+    "title": "Books",
+    "icon": "fa fa-book",
+    "childrens": [
+      {
+        "title": "Books",
+        "path": "/books"
+      },
+      {
+        "title": "Genre",
+        "path": "/books/genre"
+      },
+      {
+        "title": "Language",
+        "path": "/books/language"
+      }
+    ]
+  },
+  {
+    "title": "Orders",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Earnings",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Payouts",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Support",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Employees",
+    "icon": "bi-person-fill",
+    "childrens": [
+      {
+        "title": "Profile",
+        "path": "/profile"
+      },
+      {
+        "title": "Settings",
+        "childrens": [
+          {
+            "title": "Account",
+            "path": "/settings/account"
+          },
+          {
+            "title": "Notifications",
+            "path": "/settings/notifications"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "title": "Home",
+    "icon": "fa fa-home fa-lg",
+    "path": "/home"
+  },
+  {
+    "title": "Log out",
+    "icon": "fa fa-sign-out fa-lg", 
+    "path": "/logout"
+  },  {
+    "title": "Settings",
+    "icon": "bi-gear-fill",
+    "childrens": [
+      {
+        "title": "Logos",
+        "icon": "fa fa-camera-retro",
+        "path": "/logos"
+      },
+      {
+        "title": "Social Media",
+        "icon": "fa fa-user",
+        "path": "/social-media"
+      },
+      {
+        "title": "Address",
+        "icon": "fa fa-address-book-o",
+        "path": "/address"
+      },
+      {
+        "title": "Copyright",
+        "icon": "fa fa-copyright",
+        "path": "/copyright"
+      }
+    ]
+  }
+]

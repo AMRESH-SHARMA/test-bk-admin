@@ -69,11 +69,11 @@ const ViewBook = () => {
 
               <tr>
                 <th>Genre</th>
-                <td>{book?.genre}</td></tr>
+                <td>{book?.genre?.genre}</td></tr>
 
               <tr>
                 <th>Language</th>
-                <td>{book?.language}</td></tr>
+                <td>{book?.language?.language}</td></tr>
 
               <tr>
                 <th>Description</th>
@@ -112,8 +112,10 @@ const ViewBook = () => {
               }
 
               <tr>
-                <th>Uploaded By</th>
-                <td>{book?.uploadedBy}</td></tr>
+                <th style={{display:'flex'}}>Uploaded By</th>
+                <td>
+                  <p><strong>Id :&nbsp;</strong>{book?.uploadedBy?._id}</p><p><strong>Book Name :&nbsp;</strong>{book?.uploadedBy?.name}</p><br />
+                </td></tr>
 
               <tr>
                 <th>Book Uploaded At</th>
