@@ -1,6 +1,6 @@
 import React from 'react'
 import Spinner from '../../assets/Spinner/Spinner';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
@@ -85,7 +85,7 @@ const Users = () => {
                     <td>{i.userName}</td>
                     <td>{i._id}</td>
                     <td>{i.city}</td>
-                    <td>{i.booksAdded?.length}</td>
+                    <td><Link to={`/users/view/book/${i._id}`}>{i.booksAdded?.length}</Link></td>
                     <td>{i.booksRented?.length}</td>
                     <td>{i.approved ?
                       <button className="gbtn-status gbtn-lgreen">Active</button> :

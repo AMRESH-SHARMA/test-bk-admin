@@ -16,6 +16,7 @@ import Users from './screens/Users/Users';
 import AddUser from './screens/Users/AddUser';
 import ViewUser from './screens/Users/ViewUser';
 import EditUser from './screens/Users/EditUser';
+import ViewUserBook from './screens/Users/ViewUserBook';
 
 import Books from './screens/Books/Books';
 import ViewBook from './screens/Books/ViewBook';
@@ -83,6 +84,7 @@ const App = () => {
           <Route path='/users/add' element={<AddUser />} />
           <Route path='/users/edit/:id' element={<EditUser />} />
           <Route path='/users/view/:id' element={<ViewUser />} />
+          <Route path='/users/view/book/:id' element={<ViewUserBook />} />
 
           <Route path='/books' element={<Books />} />
           <Route path='/books/add' element={<AddBook />} />
