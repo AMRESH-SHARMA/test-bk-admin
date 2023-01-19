@@ -146,7 +146,8 @@
     "title": "Log out",
     "icon": "fa fa-sign-out fa-lg", 
     "path": "/logout"
-  },  {
+  },
+    {
     "title": "Settings",
     "icon": "bi-gear-fill",
     "childrens": [

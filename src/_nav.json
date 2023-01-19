@@ -23,6 +23,17 @@
     ]
   },
   {
+    "title": "Profile",
+    "icon": "bi-gear-fill",
+    "childrens": [
+      {
+        "title": "Change Password",
+        "icon": "fa fa-key",
+        "path": "/changePassword"
+      }
+    ]
+  },
+  {
     "title": "Log out",
     "icon": "fa fa-sign-out fa-lg", 
     "path": "/logout"

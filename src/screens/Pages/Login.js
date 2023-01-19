@@ -26,8 +26,7 @@ const Login = () => {
         initialValues={{ email: "", password: "" }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(async () => {
-            // console.log("Logging in", values);
-            await axios.post(`${API}/user/login`, values)
+            await axios.post(`${API}/admin/login`, values)
               .then((resApi) => {
                 console.log(resApi)
                 localStorage.setItem('token', resApi.data.msg)

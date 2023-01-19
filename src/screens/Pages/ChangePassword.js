@@ -1,9 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
-// import axios from "axios";
-// import InvalidToken from "../Error/InvalidToken";
+import axios from "axios";
+import { API } from "../../API"
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
@@ -13,23 +12,10 @@ const ChangePassword = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
 
-  useEffect(() => {
-    const loginApi = async () => {
-      try {
-        //   let payload = { token: window.location.href.split('=')[1] }
-        //   let resapi = await axios.post(`${registerUrl}/invite/verifytoken`, payload)
-        //   console.log(resapi)
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    loginApi()
-  }, [])
-
-  const handleAlert = () => {
+  const handleAlert = (param1, param2) => {
     displayAlert({
-      message: "Login Failed",
-      color: "red",
+      message: param1,
+      color: param2,
       timeout: 5000
     })
   }
@@ -37,28 +23,38 @@ const ChangePassword = () => {
   return (
     <>
       <Formik
-        initialValues={{ old_password: "", new_password: "", con_password: "" }}
+        initialValues={{ currentPassword: "", newPassword: "", confirmNewPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            let payload = values;
-            console.log("Logging in", payload);
-            setSubmitting(false);
-            if (true) handleAlert()
+          setTimeout(async () => {
+            await axios.post(`${API}/admin/change-password`, values, {
+              headers: {
+                'Authorization': `${localStorage.getItem('token')}`
+              }
+            })
+              .then((resApi) => {
+                console.log(resApi)
+                handleAlert('Logged in Success', 'green')
+                navigate('/')
+              })
+              .catch((e) => {
+                console.log(e);
+                handleAlert(e.response.data.msg, 'red')
+              }).finally(() => setSubmitting(false))
           }, 500);
         }}
 
         validationSchema={Yup.object().shape({
-          old_password: Yup.string()
+          currentPassword: Yup.string()
             .required("No password provided.")
             .min(1, "Password is too short - should be 1 chars minimum.")
             .matches(/(?=.*[0-9])/, "Password must contain a number."),
-          new_password: Yup.string()
+          newPassword: Yup.string()
             .required("No password provided.")
             .min(1, "Password is too short - should be 1 chars minimum.")
             .matches(/(?=.*[0-9])/, "Password must contain a number."),
-          con_password: Yup.string()
+          confirmNewPassword: Yup.string()
             .required("No password provided.")
-            .oneOf([Yup.ref('new_password'), null], 'Passwords must match'),
+            .oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
         })}
       >
 
@@ -76,77 +72,61 @@ const ChangePassword = () => {
             <div className="gcenter-screen">
 
               <div className="gcard" style={{ margin: '5px', height: 'auto', width: "35rem", padding: '40px' }}>
-                <h1 style={{ marginBottom: '15px' }}>Forgot Password</h1>
+                <h1 style={{ marginBottom: '15px' }}>Change Password</h1>
                 <form
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  {/* <label htmlFor="email">Email</label>
+                  <label htmlFor="currentPassword">Current Password</label>
                   <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    placeholder="Enter your email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.email && touched.email && "error"}
-                  />
-                  <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.email && touched.email && errors.email}&nbsp;</div> */}
-
-
-                  <label htmlFor="old_password">Old Password</label>
-                  <input
-                    id="old_password"
-                    name="old_password"
+                    id="currentPassword"
+                    name="currentPassword"
                     type="password"
-                    placeholder="Enter your old password"
-                    value={values.old_password}
+                    placeholder="Enter your Current password"
+                    value={values.currentPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.old_password && touched.old_password && "error"}
+                    className={errors.currentPassword && touched.currentPassword && "error"}
                   />
-                  <div style={errors.old_password && touched.old_password ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.old_password && touched.old_password && errors.old_password}&nbsp;</div>
+                  <div style={errors.currentPassword && touched.currentPassword ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.currentPassword && touched.currentPassword && errors.currentPassword}&nbsp;</div>
 
-                  <label htmlFor="new_password">New Password</label>
+                  <label htmlFor="newPassword">New Password</label>
                   <input
-                    id="new_password"
-                    name="new_password"
+                    id="newPassword"
+                    name="newPassword"
                     type="password"
                     placeholder="Enter your new password"
-                    value={values.new_password}
+                    value={values.newPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.new_password && touched.new_password && "error"}
+                    className={errors.newPassword && touched.newPassword && "error"}
                   />
-                  <div style={errors.new_password && touched.new_password ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.new_password && touched.new_password && errors.new_password}&nbsp;</div>
+                  <div style={errors.newPassword && touched.newPassword ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.newPassword && touched.newPassword && errors.newPassword}&nbsp;</div>
 
-                  <label htmlFor="con_password">Confirm new password</label>
+                  <label htmlFor="confirmNewPassword">Confirm new password</label>
                   <input
-                    id="con_password"
-                    name="con_password"
+                    id="confirmNewPassword"
+                    name="confirmNewPassword"
                     type="password"
                     placeholder="Enter your password"
-                    value={values.con_password}
+                    value={values.confirmNewPassword}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.con_password && touched.con_password && "error"}
+                    className={errors.confirmNewPassword && touched.confirmNewPassword && "error"}
                   />
-                  <div style={errors.con_password && touched.con_password ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.con_password && touched.con_password && errors.con_password}&nbsp;</div>
+                  <div style={errors.confirmNewPassword && touched.confirmNewPassword ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.confirmNewPassword && touched.confirmNewPassword && errors.confirmNewPassword}&nbsp;</div>
 
                   <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>
                     <button type="submit" className="gbtn1" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-spin fa-1x fa-fw" /> : 'Submit'}</button>
 
-                    <button type="button" className="gbtn1" onClick={() => navigate('/login')}>Login</button>
+                    <button type="button"  className='gbtn1 gbtn-pink'  onClick={() => navigate(-1)}>Back</button>
                   </div>
                 </form>
               </div>

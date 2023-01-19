@@ -6,7 +6,6 @@ import Topics from './screens/Topics';
 import Layout from './layout/Layout'
 import ModalScr from './screens/ModalScr';
 import Spinner from './assets/Spinner/Spinner';
-import ChangePassword from './screens/Pages/ChangePassword';
 import Copyright from './screens/Copyright';
 import Address from './screens/Address';
 import SocialMedia from './screens/SocialMedia';
@@ -40,7 +39,8 @@ import Logout from './screens/Pages/Logout';
 const Login = React.lazy(() => import('./screens/Pages/Login'))
 const Register = React.lazy(() => import('./screens/Pages/Register'))
 const Page404 = React.lazy(() => import('./screens/Pages/Page404'))
-// const Page500 = React.lazy(() => import('./views/pages/page500/Page500'))
+const ChangePassword = React.lazy(() => import('./screens/Pages/ChangePassword'))
+const ForgotPassword = React.lazy(() => import('./screens/Pages/ForgotPassword'))
 
 
 const App = () => {
@@ -75,7 +75,7 @@ const App = () => {
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/logout" element={<Logout />} />
-        <Route exact path="/forgot-password" element={<ChangePassword />} />
+        <Route exact path="/forgot-password" element={<ForgotPassword />} />
         <Route exact path="*" element={<Page404 />} />
 
         <Route path="/" name="Layout" element={<Layout />} >
@@ -98,6 +98,10 @@ const App = () => {
           <Route path='/books/language' element={<BookLanguages />} />
           <Route path='/books/language/add' element={<AddBookLanguage />} />
           <Route path='/books/language/edit/:id' element={<EditBookLanguage />} />
+
+
+
+          <Route path='/changePassword' element={<ChangePassword />} />
 
           <Route path='/home' element={<Home />} />
           <Route path='/copyright' element={<Copyright />} />
