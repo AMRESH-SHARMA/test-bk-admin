@@ -22,7 +22,7 @@ const Register = () => {
   return (
     <>
       <Formik
-        initialValues={{ adminName: "", email: "", password: "", con_password: "" }}
+        initialValues={{ adminName: "", email: "", password: "", confirmPassword: "" }}
         onSubmit={(values, { setSubmitting }) => {
           setTimeout(async () => {
             await axios.post(`${API}/admin/register`, values)
@@ -45,10 +45,13 @@ const Register = () => {
           .email()
           .required("Required"),
         password: Yup.string()
-          .required("No password provided.")
-          .min(1, "Password is too short - should be 8 chars minimum.")
-          .matches(/(?=.*[0-9])/, "Password must contain a number."),
-        con_password: Yup.string()
+        .required("No password provided.")
+            .min(8, "Password is too short - should be 8 chars minimum.")
+            .matches(/(?=.*[0-9])/, "Password must contain a number.")
+            .matches(/(?=.*[a-z])/, "Password must contain a small letter.")
+            .matches(/(?=.*[A-Z])/, "Password must contain a capital letter.")
+            .matches(/(?=.*[!@#$%^&*])/, "Password must contain a special character."),
+        confirmPassword: Yup.string()
           .required("No password provided.")
           .oneOf([Yup.ref('password'), null], "Password must match.")
       })}
@@ -121,20 +124,20 @@ const Register = () => {
 
 
 
-                <label htmlFor="con_password">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
-                  id="con_password"
-                  name="con_password"
+                  id="confirmPassword"
+                  name="confirmPassword"
                   type="text"
-                  placeholder="Enter your con_password"
-                  value={values.con_password}
+                  placeholder="Enter your confirmPassword"
+                  value={values.confirmPassword}
                   onChange={handleChange}
                   onBlur={handleBlur}
                   style={INPUT.box1}
-                  className={errors.con_password && touched.con_password && "error"}
+                  className={errors.confirmPassword && touched.confirmPassword && "error"}
                 />
-                <div style={errors.con_password && touched.con_password ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                  {errors.con_password && touched.con_password && errors.con_password}&nbsp;</div>
+                <div style={errors.confirmPassword && touched.confirmPassword ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                  {errors.confirmPassword && touched.confirmPassword && errors.confirmPassword}&nbsp;</div>
 
 
                 <div style={{ display: 'flex', justifyContent: 'space-evenly' }}>

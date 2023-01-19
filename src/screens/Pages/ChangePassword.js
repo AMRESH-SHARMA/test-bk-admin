@@ -45,13 +45,19 @@ const ChangePassword = () => {
 
         validationSchema={Yup.object().shape({
           currentPassword: Yup.string()
-            .required("No password provided.")
-            .min(1, "Password is too short - should be 1 chars minimum.")
-            .matches(/(?=.*[0-9])/, "Password must contain a number."),
+          .required("No password provided.")
+            .min(8, "Password is too short - should be 8 chars minimum.")
+            .matches(/(?=.*[0-9])/, "Password must contain a number.")
+            .matches(/(?=.*[a-z])/, "Password must contain a small letter.")
+            .matches(/(?=.*[A-Z])/, "Password must contain a capital letter.")
+            .matches(/(?=.*[!@#$%^&*])/, "Password must contain a special character."),
           newPassword: Yup.string()
             .required("No password provided.")
-            .min(1, "Password is too short - should be 1 chars minimum.")
-            .matches(/(?=.*[0-9])/, "Password must contain a number."),
+            .min(8, "Password is too short - should be 8 chars minimum.")
+            .matches(/(?=.*[0-9])/, "Password must contain a number.")
+            .matches(/(?=.*[a-z])/, "Password must contain a small letter.")
+            .matches(/(?=.*[A-Z])/, "Password must contain a capital letter.")
+            .matches(/(?=.*[!@#$%^&*])/, "Password must contain a special character."),
           confirmNewPassword: Yup.string()
             .required("No password provided.")
             .oneOf([Yup.ref('newPassword'), null], 'Passwords must match'),
@@ -126,7 +132,7 @@ const ChangePassword = () => {
                     <button type="submit" className="gbtn1" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-spin fa-1x fa-fw" /> : 'Submit'}</button>
 
-                    <button type="button"  className='gbtn1 gbtn-pink'  onClick={() => navigate(-1)}>Back</button>
+                    <button type="button" className='gbtn1 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
                   </div>
                 </form>
               </div>

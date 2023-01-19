@@ -45,9 +45,12 @@ const Login = () => {
           .email()
           .required("Required"),
         password: Yup.string()
-          .required("No password provided.")
-          .min(1, "Password is too short - should be 8 chars minimum.")
-          .matches(/(?=.*[0-9])/, "Password must contain a number."),
+        .required("No password provided.")
+            .min(8, "Password is too short - should be 8 chars minimum.")
+            .matches(/(?=.*[0-9])/, "Password must contain a number.")
+            .matches(/(?=.*[a-z])/, "Password must contain a small letter.")
+            .matches(/(?=.*[A-Z])/, "Password must contain a capital letter.")
+            .matches(/(?=.*[!@#$%^&*])/, "Password must contain a special character."),
       })}
       >
 
