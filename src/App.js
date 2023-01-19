@@ -114,7 +114,7 @@ const App = () => {
 
       </Routes>
 
-      {/* <AuthVerify logOut={'logOut'} /> */}
+      <AuthVerify logOut={'logOut'} />
     </Suspense>
 
   </>

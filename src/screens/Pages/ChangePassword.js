@@ -33,7 +33,7 @@ const ChangePassword = () => {
             })
               .then((resApi) => {
                 console.log(resApi)
-                handleAlert('Logged in Success', 'green')
+                handleAlert('Password Updated', 'green')
                 navigate('/')
               })
               .catch((e) => {
