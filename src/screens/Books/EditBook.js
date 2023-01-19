@@ -89,7 +89,7 @@ const EditBook = () => {
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
         <p>Edit Book</p>
         <div className='gcard-btn-panel'>
-          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/books')}>Back</button>
+          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
 
@@ -286,7 +286,7 @@ const EditBook = () => {
                   <div className='gcard-btn-panel'>
                     <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
-                    <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/books')}>Back</button>
+                    <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
                   </div>
                 </form>
               </>

@@ -50,7 +50,7 @@ const ViewUser = () => {
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <p>View User</p>
         <div className='gcard-btn-panel'>
-          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate('/users')}>Back</button>
+          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
 

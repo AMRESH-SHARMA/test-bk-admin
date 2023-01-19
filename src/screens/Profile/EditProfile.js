@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { ERROR, INPUT } from "../../assets/constants/theme";
+import { ERROR, INPUT, IMG } from "../../assets/constants/theme";
 import { API } from "../../API"
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
+import { decodedAuthToken } from '../../utils/auth';
 
-const AddUser = () => {
-
-  const navigate = useNavigate()
+const EditProfile = () => {
+  const navigate = useNavigate();
   const { displayAlert } = useAlert();
-  const [uid, setUid] = useState('')
+  const [admin, setAdmin] = useState([])
 
-  const maxUserName = 50
+  const maxadminName = 50
   const maxEmail = 100
-  const maxPhone = 10
-  const maxCity = 50
+  // const maxPhone = 10
+  // const maxCity = 50
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -27,48 +28,59 @@ const AddUser = () => {
   }
 
   useEffect(() => {
-    async function getUid() {
-      await axios.get(`${API}/getUid`)
-        .then((resApi) => {
-          setUid(resApi.data.msg);
-        })
-        .catch((e) => {
-          console.log(e);
-          handleAlert(e.response.data.msg, 'red')
-        });
-    } getUid()
-  }, [])// eslint-disable-line react-hooks/exhaustive-deps
+    async function getSingleAdmins() {
+      const token = decodedAuthToken()
+      if (token) {
+        await axios.get(`${API}/admin/get-single-admin/${token.id}`)
+          .then((resApi) => {
+            console.log(resApi);
+            setAdmin(resApi.data.msg);
+          })
+          .catch((e) => {
+            console.log(e);
+            handleAlert(e.response.data.msg, 'red')
+          });
+      } else handleAlert('Server error', 'red')
+
+    } getSingleAdmins()
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add User</p>
+        <p>Edit Profile</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
-
 
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              userName: "",
-              email: "",
-              phone: "",
-              city: "",
-              uniqueId: uid?._id || "",
+              adminName: admin?.name || "",
+              email: admin?.email || "",
+              // phone: admin?.phone || "",
+              // city: admin?.city || "",
+              image: admin?.image?.url || "",
+              uniqueId: admin?._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                const formData = new FormData();
+                formData.append('adminName', values.adminName);
+                formData.append('email', values.email);
+                formData.append('image', values.image);
+                formData.append('uniqueId', values.uniqueId);
+                const token = decodedAuthToken()
+                await axios.put(`${API}/admin/update-admin/${token.id}`, formData)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
-                    navigate('/users')
+                    handleAlert('admin Updated successfully', 'green')
+                    navigate(0)
                   })
                   .catch((e) => {
                     console.log(e);
@@ -79,25 +91,26 @@ const AddUser = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              userName: Yup.string()
-                .max(maxUserName, `maximum ${maxUserName} characters allowed`)
+              adminName: Yup.string()
+                .max(maxadminName, `maximum ${maxadminName} characters allowed`)
                 .required("Required"),
               email: Yup.string()
                 .email()
                 .max(maxEmail, `maximum ${maxEmail} characters allowed`)
                 .required("Required"),
-              phone: Yup.string()
-                .max(maxPhone, `maximum ${maxPhone} digits allowed`)
-                .required("Required"),
-              city: Yup.string()
-                .max(maxCity, `maximum ${maxCity} characters allowed`)
-                .required("Required"),
+              // phone: Yup.number('only numbers allowed')
+              //   .integer('only numbers allowed')
+              //   .max(9999999999, `maximum ${maxPhone} digits allowed`)
+              //   .required("Required"),
+              // city: Yup.string()
+              //   .max(maxCity, `maximum ${maxCity} characters allowed`)
+              //   .required("Required"),
             })}
           >
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
               } = props;
 
               if (isSubmitting) {
@@ -109,23 +122,23 @@ const AddUser = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="userName">User Name</label>
+                  <label htmlFor="adminName">Name</label>
                   <input
-                    id="userName"
-                    name="userName"
+                    id="adminName"
+                    name="adminName"
                     type="text"
-                    placeholder="Enter your userName"
-                    value={values.userName}
+                    placeholder="Enter your adminName"
+                    value={values.adminName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.userName && touched.userName && "error"}
+                    className={errors.adminName && touched.adminName && "error"}
                   />
-                  <div style={maxUserName - values.userName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxUserName - values.userName.length) + '/' + maxUserName}</p>
+                  <div style={maxadminName - values.adminName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxadminName - values.adminName.length) + '/' + maxadminName}</p>
                   </div>
-                  <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.userName && touched.userName && errors.userName}&nbsp;</div>
+                  <div style={errors.adminName && touched.adminName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.adminName && touched.adminName && errors.adminName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -145,11 +158,11 @@ const AddUser = () => {
                   <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.email && touched.email && errors.email}&nbsp;</div>
 
-                  <label htmlFor="phone">Phone Number</label>
+                  {/* <label htmlFor="phone">Phone Number</label>
                   <input
                     id="phone"
                     name="phone"
-                    type="number"
+                    type="text"
                     placeholder="Enter your phone"
                     value={values.phone}
                     onChange={handleChange}
@@ -179,7 +192,26 @@ const AddUser = () => {
                     <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
                   </div>
                   <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.city && touched.city && errors.city}&nbsp;</div>
+                    {errors.city && touched.city && errors.city}&nbsp;</div> */}
+
+                  <label htmlFor="image">Image</label>
+                  <input
+                    id="image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      console.log(event.currentTarget.files[0])
+                      setFieldValue("image", event.currentTarget.files[0])
+                    }}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.image && touched.image && "error"}
+                  />
+                  <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.image && touched.image && errors.image}&nbsp;</div>
+
+                  {values.image.length && <img alt='' src={values.image} style={{ ...ERROR.inputFTrue, ...IMG.style1 }} />}
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -212,16 +244,14 @@ const AddUser = () => {
                   </div>
                 </form>
               </>
-
               );
             }}
           </Formik>
         </div>
       </div>
     </div>
-
   </>
   )
 }
 
-export default AddUser
+export default EditProfile

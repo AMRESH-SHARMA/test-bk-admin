@@ -1,24 +1,20 @@
-import React, { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import { useJwt } from "react-jwt";
+import { useEffect } from "react";
+import { useNavigate} from "react-router-dom";
+import { isExpired, decodeToken } from "react-jwt";
 
 const AuthVerify = (props) => {
   const navigate = useNavigate();
-  // let location = useLocation();
-  const token = localStorage.getItem("token")
-  const { decodedToken, isExpired } = useJwt(token);
-  console.log(decodedToken, isExpired);
-
   useEffect(() => {
-    if (decodedToken) {
-      if (isExpired) {
-        navigate('/login')
-      }
-      else navigate('/')
-    } else navigate('/login')
 
-    // }, [location, props]);
-  }, []);
+    const myDecodedToken = decodeToken(localStorage.getItem("token"));
+    const isMyTokenExpired = isExpired(localStorage.getItem("token"));
+    console.log(myDecodedToken, isMyTokenExpired);
+    if (myDecodedToken) {
+      if (isMyTokenExpired) {
+        navigate('/login')
+      } 
+    } else navigate('/login')
+  }, []);// eslint-disable-line react-hooks/exhaustive-deps
 
   return;
 };

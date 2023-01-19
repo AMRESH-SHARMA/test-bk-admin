@@ -28,8 +28,11 @@
     "childrens": [
       {
         "title": "Change Password",
-        "icon": "fa fa-key",
         "path": "/changePassword"
+      },
+      {
+        "title": "Edit Profile",
+        "path": "/editProfile"
       }
     ]
   },
