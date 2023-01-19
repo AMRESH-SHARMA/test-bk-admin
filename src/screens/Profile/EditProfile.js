@@ -4,10 +4,11 @@ import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
-import { ERROR, INPUT, IMG } from "../../assets/constants/theme";
+import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import { decodedAuthToken } from '../../utils/auth';
+import PreviewImage from '../../components/PreviewImage';
 
 const EditProfile = () => {
   const navigate = useNavigate();
@@ -84,7 +85,7 @@ const EditProfile = () => {
                   })
                   .catch((e) => {
                     console.log(e);
-                    handleAlert(e.response.data.msg, 'red')
+                    // handleAlert(e.response.data.msg, 'red')
                   })
                 setSubmitting(false);
               }, 500);
@@ -211,7 +212,7 @@ const EditProfile = () => {
                   <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.image && touched.image && errors.image}&nbsp;</div>
 
-                  {values.image.length && <img alt='' src={values.image} style={{ ...ERROR.inputFTrue, ...IMG.style1 }} />}
+                  {values.image && <PreviewImage file={values.image} />}
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
