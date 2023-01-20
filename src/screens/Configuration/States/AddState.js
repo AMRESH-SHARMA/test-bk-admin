@@ -1,20 +1,18 @@
-import React from 'react'
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
+import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 
-const EditBookLanguage = () => {
-  const { id } = useParams()
-  const navigate = useNavigate()
-  const { displayAlert } = useAlert()
-  const [language, setlanguage] = useState('')
-  const maxLanguage = 30
+const AddState = () => {
 
+  const navigate = useNavigate()
+  const { displayAlert } = useAlert();
+  const [uid, setUid] = useState('')
+  const maxstateNameName = 20
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -22,66 +20,72 @@ const EditBookLanguage = () => {
       timeout: 5000
     })
   }
-
   useEffect(() => {
-    async function getlanguages() {
-      await axios.get(`${API}/language/get-single-language/${id}`)
+    async function getUid() {
+      await axios.get(`${API}/getUid`)
         .then((resApi) => {
           console.log(resApi);
-          setlanguage(resApi.data.msg);
+          setUid(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getlanguages()
-  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
+    } getUid()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Books / Language</p>
+        <p>Add State</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
+
 
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              language: language?.language || "",
-              uniqueId: language?._id || "",
+              stateName: "",
+              stateCode: "",
+              uniqueId: uid?._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                // console.log(values)
-                await axios.put(`${API}/language/update-language/${id}`, values)
+                await axios.post(`${API}/stateName/create-stateName`, values, {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  }
+                })
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('language Updated successfully', 'green')
-                    navigate('/books/language')
+                    handleAlert('stateName Created', 'green')
+                    navigate('/books/stateName')
                   })
                   .catch((e) => {
                     console.log(e);
                     handleAlert(e.response.data.msg, 'red')
-                  })
-                setSubmitting(false);
+                  }).finally(() => setSubmitting(false))
               }, 500);
             }}
 
             validationSchema={Yup.object().shape({
-              language: Yup.string()
-                .max(maxLanguage, `maximum ${maxLanguage} characters allowed`)
-                .required("Required"),
-            })}>
+              stateName: Yup.string()
+                .required('required'),
+              stateCode: Yup.string()
+                .required('required'),
+            })}
+          >
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit,
               } = props;
 
               if (isSubmitting) {
@@ -90,26 +94,42 @@ const EditBookLanguage = () => {
 
               return (<>
                 <form
+                  encType="multipart/form-data"
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="language">Language</label>
+                  <label htmlFor="stateName">State Name</label>
                   <input
-                    id="language"
-                    name="language"
+                    id="stateName"
+                    name="stateName"
                     type="text"
-                    placeholder="Enter language"
-                    value={values.language}
+                    placeholder="Enter stateName"
+                    value={values.stateName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.language && touched.language && "error"}
+                    className={errors.stateName && touched.stateName && "error"}
                   />
-                  <div style={maxLanguage - values.language.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxLanguage - values.language.length) + '/' + maxLanguage}</p>
+                  <div style={maxstateNameName - values.stateName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxstateNameName - values.stateName.length) + '/' + maxstateNameName}</p>
                   </div>
-                  <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.language && touched.language && errors.language}&nbsp;</div>
+                  <div style={errors.stateName && touched.stateName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.stateName && touched.stateName && errors.stateName}&nbsp;</div>
+
+                  <label htmlFor="stateCode">State Code</label>
+                  <input
+                    id="stateCode"
+                    name="stateCode"
+                    type="text"
+                    placeholder="Enter stateCode"
+                    value={values.stateCode}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.stateCode && touched.stateCode && "error"}
+                  />
+                  <div style={errors.stateCode && touched.stateCode ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.stateCode && touched.stateCode && errors.stateCode}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -135,22 +155,21 @@ const EditBookLanguage = () => {
                   <div style={ERROR.inputFFalse}>
                   </div>
 
-                  <div className='gcard-btn-panel'>
+                  <div>
                     <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
-                    <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
                   </div>
                 </form>
               </>
-
               );
             }}
           </Formik>
         </div>
       </div>
     </div>
+
   </>
   )
 }
 
-export default EditBookLanguage
+export default AddState

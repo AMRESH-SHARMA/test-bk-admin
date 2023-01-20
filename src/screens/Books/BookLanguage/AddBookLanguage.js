@@ -12,7 +12,7 @@ const AddlanguageLanguage = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
   const [uid, setUid] = useState('')
-
+  const maxLanguage = 30
   const handleAlert = (param1, param2) => {
     displayAlert({
       message: param1,
@@ -71,14 +71,14 @@ const AddlanguageLanguage = () => {
 
             validationSchema={Yup.object().shape({
               language: Yup.string()
-                .max(50, 'maximum 30 chars allowed')
+                .max(maxLanguage, `maximum ${maxLanguage} characters allowed`)
                 .required('required feild')
             })}
           >
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
               } = props;
 
               if (isSubmitting) {
@@ -103,6 +103,9 @@ const AddlanguageLanguage = () => {
                     style={INPUT.box1}
                     className={errors.language && touched.language && "error"}
                   />
+                  <div style={maxLanguage - values.language.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxLanguage - values.language.length) + '/' + maxLanguage}</p>
+                  </div>
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
 

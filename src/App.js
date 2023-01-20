@@ -7,9 +7,6 @@ import Layout from './layout/Layout'
 import ModalScr from './screens/ModalScr';
 import Spinner from './assets/Spinner/Spinner';
 import Copyright from './screens/Copyright';
-import Address from './screens/Address';
-import SocialMedia from './screens/SocialMedia';
-import Logos from './screens/Logos';
 
 import Users from './screens/Users/Users';
 import AddUser from './screens/Users/AddUser';
@@ -30,10 +27,18 @@ import BookLanguages from './screens/Books/BookLanguage/BookLanguages'
 import AddBookLanguage from './screens/Books/BookLanguage/AddBookLanguage'
 import EditBookLanguage from './screens/Books/BookLanguage/EditBookLanguage'
 
+//CONFIGURATION
+import Cities from './screens/Configuration/Cities/Cities'
+import States from './screens/Configuration/States/States'
+import Address from './screens/Configuration/Address';
+import SocialMedia from './screens/Configuration/SocialMedia';
+import Logos from './screens/Configuration/Logos';
+
 // import { logout } from "./actions/auth";
 import AuthVerify from "./AuthVerify";
 import Logout from './screens/Pages/Logout';
-
+import AddCity from './screens/Configuration/Cities/AddCity';
+import AddState from './screens/Configuration/States/AddState';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -100,8 +105,16 @@ const App = () => {
           <Route path='/books/language/add' element={<AddBookLanguage />} />
           <Route path='/books/language/edit/:id' element={<EditBookLanguage />} />
 
-          <Route path='/changePassword' element={<ChangePassword />} />
-          <Route path='/editProfile' element={<EditProfile />} />
+          <Route path='/profile/changePassword' element={<ChangePassword />} />
+          <Route path='/profile/editProfile' element={<EditProfile />} />
+
+          <Route path='/configuration/cities' element={<Cities />} />
+          <Route path='/configuration/city/add' element={<AddCity />} />
+          <Route path='/configuration/states' element={<States />} />
+          <Route path='/configuration/state/add' element={<AddState />} />
+          <Route path='/configuration/socialMedia' element={<SocialMedia />} />
+          <Route path='/configuration/address' element={<Address />} />
+          <Route path='/configuration/logos' element={<Logos />} />
 
           <Route path='/home' element={<Home />} />
           <Route path='/copyright' element={<Copyright />} />

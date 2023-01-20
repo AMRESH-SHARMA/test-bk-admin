@@ -28,11 +28,37 @@
     "childrens": [
       {
         "title": "Change Password",
-        "path": "/changePassword"
+        "path": "/profile/changePassword"
       },
       {
         "title": "Edit Profile",
-        "path": "/editProfile"
+        "path": "/profile/editProfile"
+      }
+    ]
+  },
+  {
+    "title": "Configuration",
+    "icon": "bi-gear-fill",
+    "childrens": [
+      {
+        "title": "Cities",
+        "path": "/configuration/cities"
+      },
+      {
+        "title": "States",
+        "path": "/configuration/states"
+      },
+      {
+        "title": "Social Media",
+        "path": "/configuration/socialMedia"
+      },
+      {
+        "title": "Address",
+        "path": "/configuration/Address"
+      },
+      {
+        "title": "Logo",
+        "path": "/configuration/logos"
       }
     ]
   },

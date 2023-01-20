@@ -246,10 +246,9 @@ const EditProfile = () => {
                     <div style={ERROR.inputFFalse}>
                     </div>
 
-                    <div className='gcard-btn-panel'>
+                    <div>
                       <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                         {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
-                      <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
                     </div>
                   </form>
                 </>

@@ -1,19 +1,19 @@
-import React from 'react'
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useState, useEffect } from 'react'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
+import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 
-const EditBookLanguage = () => {
-  const { id } = useParams()
+const AddCity = () => {
+
   const navigate = useNavigate()
-  const { displayAlert } = useAlert()
-  const [language, setlanguage] = useState('')
-  const maxLanguage = 30
+  const { displayAlert } = useAlert();
+  const [ApiData, setApiData] = useState('')
+  const [uid, setUid] = useState('')
+  const [stateData, setstateData] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -22,66 +22,80 @@ const EditBookLanguage = () => {
       timeout: 5000
     })
   }
-
   useEffect(() => {
-    async function getlanguages() {
-      await axios.get(`${API}/language/get-single-language/${id}`)
+    async function getUid() {
+      await axios.get(`${API}/getUid`)
         .then((resApi) => {
           console.log(resApi);
-          setlanguage(resApi.data.msg);
+          setUid(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getlanguages()
-  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
+    } getUid()
+  }, [])// eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    async function getstates() {
+      await axios.get(`${API}/state/get-states`)
+        .then((resApi) => {
+          console.log(resApi);
+          setstateData(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getstates()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Books / Language</p>
+        <p>Add City</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
+
 
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              language: language?.language || "",
-              uniqueId: language?._id || "",
+              city: "",
+              state: "",
+              uniqueId: uid?._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                // console.log(values)
-                await axios.put(`${API}/language/update-language/${id}`, values)
+                await axios.post(`${API}/book/create-book`, values, {
+                })
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('language Updated successfully', 'green')
-                    navigate('/books/language')
+                    handleAlert('Book Created', 'green')
+                    navigate('/books')
                   })
                   .catch((e) => {
                     console.log(e);
                     handleAlert(e.response.data.msg, 'red')
-                  })
-                setSubmitting(false);
+                  }).finally(() => setSubmitting(false))
               }, 500);
             }}
 
             validationSchema={Yup.object().shape({
-              language: Yup.string()
-                .max(maxLanguage, `maximum ${maxLanguage} characters allowed`)
+              city: Yup.string()
                 .required("Required"),
-            })}>
+            })}
+          >
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
               } = props;
 
               if (isSubmitting) {
@@ -90,26 +104,45 @@ const EditBookLanguage = () => {
 
               return (<>
                 <form
+                  encType="multipart/form-data"
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="language">Language</label>
+                  <label htmlFor="city">City</label>
                   <input
-                    id="language"
-                    name="language"
+                    id="city"
+                    name="city"
                     type="text"
-                    placeholder="Enter language"
-                    value={values.language}
+                    placeholder="Enter City "
+                    value={values.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.language && touched.language && "error"}
+                    className={errors.city && touched.city && "error"}
                   />
-                  <div style={maxLanguage - values.language.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxLanguage - values.language.length) + '/' + maxLanguage}</p>
-                  </div>
-                  <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.language && touched.language && errors.language}&nbsp;</div>
+                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.city && touched.city && errors.city}&nbsp;</div>
+
+
+                  <label htmlFor="state">State</label>
+                  <select
+                    name="state"
+                    value={values.state}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    required
+                  >
+                    <option value="" label="Select state" />
+                    {stateData && stateData.map((i, index) => {
+                      return (<>
+                        <option value={i._id} label={i.state} />
+                      </>
+                      )
+                    })}
+                  </select>
+                  <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.state && touched.state && errors.state}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -142,15 +175,15 @@ const EditBookLanguage = () => {
                   </div>
                 </form>
               </>
-
               );
             }}
           </Formik>
         </div>
       </div>
     </div>
+
   </>
   )
 }
 
-export default EditBookLanguage
+export default AddCity
