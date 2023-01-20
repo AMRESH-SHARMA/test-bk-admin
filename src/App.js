@@ -1,12 +1,9 @@
 import React, { Suspense, useState, useEffect, useCallback } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route, useNavigate } from "react-router-dom";
-import Home from './screens/Home';
-import Topics from './screens/Topics';
 import Layout from './layout/Layout'
 import ModalScr from './screens/ModalScr';
 import Spinner from './assets/Spinner/Spinner';
-import Copyright from './screens/Copyright';
 
 import Users from './screens/Users/Users';
 import AddUser from './screens/Users/AddUser';
@@ -116,12 +113,6 @@ const App = () => {
           <Route path='/configuration/address' element={<Address />} />
           <Route path='/configuration/logos' element={<Logos />} />
 
-          <Route path='/home' element={<Home />} />
-          <Route path='/copyright' element={<Copyright />} />
-          <Route path='/address' element={<Address />} />
-          <Route path='/social-media' element={<SocialMedia />} />
-          <Route path='/logos' element={<Logos />} />
-          <Route path='/topics' element={<Topics />} />
           <Route path="/modal" element={<ModalScr />} />
         </Route>
 

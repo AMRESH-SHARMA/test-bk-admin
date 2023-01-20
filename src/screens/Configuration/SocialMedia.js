@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
@@ -6,11 +6,14 @@ import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
+import Spinner from '../../assets/Spinner/Spinner';
 
 const SocialMedia = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
+  const [apiloading, setApiLoading] = useState(true)
+  const [apiData, setApiData] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -19,6 +22,21 @@ const SocialMedia = () => {
       timeout: 5000
     })
   }
+
+  useEffect(() => {
+    async function getSocial() {
+      await axios.get(`${API}/socialMedia/get-socialMedia`)
+        .then((resApi) => {
+          console.log(resApi);
+          setApiData(resApi.data.msg[0]);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+      setApiLoading(false)
+    } getSocial()
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
@@ -30,24 +48,28 @@ const SocialMedia = () => {
         </div>
       </div>
 
-
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
+        </div>
+        :
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              facebook: "",
-              twitter: "",
-              instagram: "",
-              linkedin: "",
+              facebook: apiData?.facebook || "",
+              twitter: apiData?.twitter || "",
+              instagram: apiData?.instagram || "",
+              linkedin: apiData?.linkedin || "",
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                await axios.put(`${API}/socialMedia/update-socialMedia/${apiData?._id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
-                    navigate('/users')
+                    handleAlert('Social Media Updated', 'green')
+                    navigate(0)
                   })
                   .catch((e) => {
                     console.log(e);
@@ -143,7 +165,7 @@ const SocialMedia = () => {
                   <div style={errors.linkedin && touched.linkedin ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.linkedin && touched.linkedin && errors.linkedin}&nbsp;</div>
 
-                  <div>
+                  <div className='gcard-btn-panel'>
                     <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
                   </div>
@@ -154,7 +176,7 @@ const SocialMedia = () => {
             }}
           </Formik>
         </div>
-      </div>
+      </div>}
     </div>
 
   </>

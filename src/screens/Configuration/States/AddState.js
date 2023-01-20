@@ -52,7 +52,6 @@ const AddState = () => {
             enableReinitialize={true}
             initialValues={{
               stateName: "",
-              stateCode: "",
               uniqueId: uid?._id || "",
               timestamp: new Date()
             }}
@@ -77,8 +76,6 @@ const AddState = () => {
 
             validationSchema={Yup.object().shape({
               stateName: Yup.string()
-                .required('required'),
-              stateCode: Yup.string()
                 .required('required'),
             })}
           >
@@ -115,21 +112,6 @@ const AddState = () => {
                   </div>
                   <div style={errors.stateName && touched.stateName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.stateName && touched.stateName && errors.stateName}&nbsp;</div>
-
-                  <label htmlFor="stateCode">State Code</label>
-                  <input
-                    id="stateCode"
-                    name="stateCode"
-                    type="text"
-                    placeholder="Enter stateCode"
-                    value={values.stateCode}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.stateCode && touched.stateCode && "error"}
-                  />
-                  <div style={errors.stateCode && touched.stateCode ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.stateCode && touched.stateCode && errors.stateCode}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

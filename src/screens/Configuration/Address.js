@@ -6,11 +6,14 @@ import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
+import Spinner from '../../assets/Spinner/Spinner';
 
 const Address = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
+  const [apiloading, setApiLoading] = useState(true)
+  const [apiData, setApiData] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -19,6 +22,21 @@ const Address = () => {
       timeout: 5000
     })
   }
+
+  useEffect(() => {
+    async function getAddress() {
+      await axios.get(`${API}/address/get-address`)
+        .then((resApi) => {
+          console.log(resApi);
+          setApiData(resApi.data.msg[0]);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+      setApiLoading(false)
+    } getAddress()
+  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
@@ -30,30 +48,34 @@ const Address = () => {
         </div>
       </div>
 
-
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
+        </div>
+        :
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              companyName: "",
-              address: "",
-              city: "",
-              state: "",
-              country: "",
-              pinCode: "",
-              gstin: "",
-              website: "",
-              phone: "",
-              email: "",
+              companyName: apiData?.companyName || "",
+              address: apiData?.address || "",
+              city: apiData?.city || "",
+              state: apiData?.state || "",
+              country: apiData?.country || "",
+              pinCode: apiData?.pinCode || "",
+              gstin: apiData?.gstin || "",
+              website: apiData?.website || "",
+              phone: apiData?.phone || "",
+              email: apiData?.email || "",
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                await axios.put(`${API}/address/update-address/${apiData?._id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
-                    navigate('/users')
+                    handleAlert('Address Updated', 'green')
+                    navigate(0)
                   })
                   .catch((e) => {
                     console.log(e);
@@ -255,7 +277,7 @@ const Address = () => {
                   <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.email && touched.email && errors.email}&nbsp;</div>
 
-                  <div>
+                  <div className='gcard-btn-panel'>
                     <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                       {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
                   </div>
@@ -266,7 +288,7 @@ const Address = () => {
             }}
           </Formik>
         </div>
-      </div>
+      </div>}
     </div>
 
   </>

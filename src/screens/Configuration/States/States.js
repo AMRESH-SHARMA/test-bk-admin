@@ -97,7 +97,6 @@ const States = () => {
               <thead className='gthead-light'>
                 <tr>
                   <th>State Name</th>
-                  <th>State Code (GST)</th>
                   <th>Created On</th>
                   <th>Actions</th>
                 </tr>
@@ -106,7 +105,6 @@ const States = () => {
                 {ApiData && ApiData.length ? ApiData.map((i) => {
                   return (<tr key={i._id}>
                     <td>{i.name}</td>
-                    <td>{i.code}</td>
                     <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                     <td><span className='gtable-btn-panel'>
                       <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>

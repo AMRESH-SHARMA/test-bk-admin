@@ -26,10 +26,10 @@ const Logos = () => {
 
   useEffect(() => {
     async function getLogos() {
-        await axios.get(`${API}/logos`)
+        await axios.get(`${API}/logos/get-logos`)
           .then((resApi) => {
             console.log(resApi);
-            setApiData(resApi.data.msg);
+            setApiData(resApi.data.msg[0]);
           })
           .catch((e) => {
             console.log(e);
@@ -69,10 +69,10 @@ const Logos = () => {
                   formData.append('websiteHeader', values.websiteHeader);
                   formData.append('websiteFooter', values.websiteFooter);
                   formData.append('websiteAdminHeader', values.websiteAdminHeader);
-                  await axios.put(`${API}/apiData/update-apiData`, formData)
+                  await axios.put(`${API}/logos/update-logos/${apiData?._id}`, formData)
                     .then((resApi) => {
                       console.log(resApi)
-                      handleAlert('apiData Updated successfully', 'green')
+                      handleAlert('Logos Updated', 'green')
                       navigate(0)
                     })
                     .catch((e) => {
@@ -145,7 +145,7 @@ const Logos = () => {
 
                     {values.websiteFooter && <PreviewImage file={values.websiteFooter} />}
 
-                    <label htmlFor="websiteAdminHeader">Website Footer(148 x 48 px)</label>
+                    <label htmlFor="websiteAdminHeader">Website Admin Header(148 x 48 px)</label>
                     <input
                       id="websiteAdminHeader"
                       name="websiteAdminHeader"
@@ -164,7 +164,7 @@ const Logos = () => {
 
                     {values.websiteAdminHeader && <PreviewImage file={values.websiteAdminHeader} />}
 
-                    <div>
+                    <div className='gcard-btn-panel'>
                       <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                         {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
                     </div>
