@@ -36,6 +36,8 @@ import AuthVerify from "./AuthVerify";
 import Logout from './screens/Pages/Logout';
 import AddCity from './screens/Configuration/Cities/AddCity';
 import AddState from './screens/Configuration/States/AddState';
+import EditState from './screens/Configuration/States/EditState';
+import EditCity from './screens/Configuration/Cities/EditCity';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -107,8 +109,10 @@ const App = () => {
 
           <Route path='/configuration/cities' element={<Cities />} />
           <Route path='/configuration/city/add' element={<AddCity />} />
+          <Route path='/configuration/city/edit/:id' element={<EditCity />} />
           <Route path='/configuration/states' element={<States />} />
           <Route path='/configuration/state/add' element={<AddState />} />
+          <Route path='/configuration/state/edit/:id' element={<EditState />} />
           <Route path='/configuration/socialMedia' element={<SocialMedia />} />
           <Route path='/configuration/address' element={<Address />} />
           <Route path='/configuration/logos' element={<Logos />} />

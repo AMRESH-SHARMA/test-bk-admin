@@ -1,20 +1,23 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 import Spinner from '../../../assets/Spinner/Spinner';
 
-const AddState = () => {
-
+const EditCity = () => {
+  const { id } = useParams()
   const navigate = useNavigate()
-  const { displayAlert } = useAlert();
-  const [uid, setUid] = useState('')
-  const [apiloading, setApiLoading] = useState(true)
-  const maxState = 20;
+  const { displayAlert } = useAlert()
+  const [apiloading, setApiloading] = useState(true)
+  const [city, setcity] = useState('')
+  const [stateData, setstateData] = useState([])
+
+  const maxCity = 20;
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -23,27 +26,41 @@ const AddState = () => {
       timeout: 5000
     })
   }
+
   useEffect(() => {
-    async function getUid() {
-      await axios.get(`${API}/getUid`)
+    async function getcities() {
+      await axios.get(`${API}/city/get-single-city/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUid(resApi.data.msg);
+          setcity(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-      setApiLoading(false)
-    } getUid()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+        setApiloading(false)
+    } getcities()
+  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
+  useEffect(() => {
+    async function getstates() {
+      await axios.get(`${API}/state/get-states`)
+        .then((resApi) => {
+          console.log(resApi);
+          setstateData(resApi.data.msg);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getstates()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add State</p>
+        <p>Edit City</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -59,34 +76,37 @@ const AddState = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              state: "",
-              uniqueId: uid?._id || "",
+              city: city?.city || "",
+              state: city?.state || "",
+              uniqueId: city?._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/state/create-state`, values)
+                // console.log(values)
+                await axios.put(`${API}/city/update-city/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('state Created', 'green')
+                    handleAlert('City Updated', 'green')
                     navigate(-1)
                   })
                   .catch((e) => {
                     console.log(e);
                     handleAlert(e.response.data.msg, 'red')
-                  }).finally(() => setSubmitting(false))
+                  })
+                setSubmitting(false);
               }, 500);
             }}
 
             validationSchema={Yup.object().shape({
-              state: Yup.string()
-                .required('required'),
-            })}
-          >
+              city: Yup.string()
+                .max(maxCity, `maximum ${maxCity} chars allowed`)
+                .required("Required")
+            })}>
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit,
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
               } = props;
 
               if (isSubmitting) {
@@ -98,23 +118,43 @@ const AddState = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="state">State Name</label>
+                  <label htmlFor="city">City</label>
                   <input
-                    id="state"
-                    name="state"
+                    id="city"
+                    name="city"
                     type="text"
-                    placeholder="Enter state"
-                    value={values.state}
+                    placeholder="Enter city name"
+                    value={values.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.state && touched.state && "error"}
+                    className={errors.city && touched.city && "error"}
                   />
-                  <div style={maxState - values.state.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxState - values.state.length) + '/' + maxState}</p>
+                  <div style={maxCity - values.city.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
                   </div>
+                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.city && touched.city && errors.city}&nbsp;</div>
+
+                  <label htmlFor="state">State</label>
+                  <select
+                    name="state"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    required
+                  >
+                    <option value={values.state._id} label={values.state.state} />
+                    {stateData && stateData.map((i, index) => {
+                      return (<>
+                        <option value={i._id}>{i.state}</option>
+                      </>
+                      )
+                    })}
+                  </select>
                   <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.state && touched.state && errors.state}&nbsp;</div>
+
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -146,15 +186,15 @@ const AddState = () => {
                   </div>
                 </form>
               </>
+
               );
             }}
           </Formik>
         </div>
       </div>}
     </div>
-
   </>
   )
 }
 
-export default AddState
+export default EditCity

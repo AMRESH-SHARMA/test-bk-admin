@@ -6,14 +6,17 @@ import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
+import Spinner from '../../../assets/Spinner/Spinner';
 
 const AddCity = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
-  const [ApiData, setApiData] = useState('')
+  const [apiloading, setApiLoading] = useState(true)
   const [uid, setUid] = useState('')
   const [stateData, setstateData] = useState([])
+
+  const maxCity = 20;
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -33,6 +36,7 @@ const AddCity = () => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
+      setApiLoading(false)
     } getUid()
   }, [])// eslint-disable-line react-hooks/exhaustive-deps
 
@@ -60,126 +64,133 @@ const AddCity = () => {
         </div>
       </div>
 
-
-      <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              city: "",
-              state: "",
-              uniqueId: uid?._id || "",
-              timestamp: new Date()
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(async () => {
-                await axios.post(`${API}/book/create-book`, values, {
-                })
-                  .then((resApi) => {
-                    console.log(resApi)
-                    handleAlert('Book Created', 'green')
-                    navigate('/books')
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                    handleAlert(e.response.data.msg, 'red')
-                  }).finally(() => setSubmitting(false))
-              }, 500);
-            }}
-
-            validationSchema={Yup.object().shape({
-              city: Yup.string()
-                .required("Required"),
-            })}
-          >
-
-            {props => {
-              const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
-              } = props;
-
-              if (isSubmitting) {
-                var disableStyle = { cursor: "not-allowed", }
-              }
-
-              return (<>
-                <form
-                  encType="multipart/form-data"
-                  onSubmit={handleSubmit}
-                  style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
-
-                  <label htmlFor="city">City</label>
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    placeholder="Enter City "
-                    value={values.city}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.city && touched.city && "error"}
-                  />
-                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.city && touched.city && errors.city}&nbsp;</div>
-
-
-                  <label htmlFor="state">State</label>
-                  <select
-                    name="state"
-                    value={values.state}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    required
-                  >
-                    <option value="" label="Select state" />
-                    {stateData && stateData.map((i, index) => {
-                      return (<>
-                        <option value={i._id} label={i.state} />
-                      </>
-                      )
-                    })}
-                  </select>
-                  <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.state && touched.state && errors.state}&nbsp;</div>
-
-                  <label htmlFor="timestamp">TimeStamp</label>
-                  <input
-                    id="timestamp"
-                    name="timestamp"
-                    value={new Date()}
-                    onChange={handleChange}
-                    style={INPUT.boxdisable}
-                    disabled
-                  />
-                  <div style={ERROR.inputFFalse}>
-                  </div>
-
-                  <label htmlFor="uniqueId">Unique Id</label>
-                  <input
-                    id="uniqueId"
-                    name="uniqueId"
-                    value={values.uniqueId}
-                    onChange={handleChange}
-                    style={INPUT.boxdisable}
-                    disabled
-                  />
-                  <div style={ERROR.inputFFalse}>
-                  </div>
-
-                  <div className='gcard-btn-panel'>
-                    <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
-                      {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
-                    <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
-                  </div>
-                </form>
-              </>
-              );
-            }}
-          </Formik>
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
         </div>
-      </div>
+        :
+        <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                city: "",
+                state: "",
+                uniqueId: uid?._id || "",
+                timestamp: new Date()
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                setTimeout(async () => {
+                  await axios.post(`${API}/city/create-city`, values, {
+                  })
+                    .then((resApi) => {
+                      console.log(resApi)
+                      handleAlert('City Created', 'green')
+                      navigate(-1)
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                      handleAlert(e.response.data.msg, 'red')
+                    }).finally(() => setSubmitting(false))
+                }, 500);
+              }}
+
+              validationSchema={Yup.object().shape({
+                city: Yup.string()
+                  .required("Required"),
+              })}
+            >
+
+              {props => {
+                const {
+                  values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
+                } = props;
+
+                if (isSubmitting) {
+                  var disableStyle = { cursor: "not-allowed", }
+                }
+
+                return (<>
+                  <form
+                    encType="multipart/form-data"
+                    onSubmit={handleSubmit}
+                    style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
+
+                    <label htmlFor="city">City</label>
+                    <input
+                      id="city"
+                      name="city"
+                      type="text"
+                      placeholder="Enter City "
+                      value={values.city}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      style={INPUT.box1}
+                      className={errors.city && touched.city && "error"}
+                    />
+                    <div style={maxCity - values.city.length < 0 ? { display: 'block' } : null}>
+                      <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
+                    </div>
+                    <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                      {errors.city && touched.city && errors.city}&nbsp;</div>
+
+
+                    <label htmlFor="state">State</label>
+                    <select
+                      name="state"
+                      value={values.state}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      style={INPUT.box1}
+                      required
+                    >
+                      <option value="" label="Select state" />
+                      {stateData && stateData.map((i, index) => {
+                        return (<>
+                          <option value={i._id} label={i.state} />
+                        </>
+                        )
+                      })}
+                    </select>
+                    <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                      {errors.state && touched.state && errors.state}&nbsp;</div>
+
+                    <label htmlFor="timestamp">TimeStamp</label>
+                    <input
+                      id="timestamp"
+                      name="timestamp"
+                      value={new Date()}
+                      onChange={handleChange}
+                      style={INPUT.boxdisable}
+                      disabled
+                    />
+                    <div style={ERROR.inputFFalse}>
+                    </div>
+
+                    <label htmlFor="uniqueId">Unique Id</label>
+                    <input
+                      id="uniqueId"
+                      name="uniqueId"
+                      value={values.uniqueId}
+                      onChange={handleChange}
+                      style={INPUT.boxdisable}
+                      disabled
+                    />
+                    <div style={ERROR.inputFFalse}>
+                    </div>
+
+                    <div className='gcard-btn-panel'>
+                      <button type="submit" className="gbtn1 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
+                        {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
+                      <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
+                    </div>
+                  </form>
+                </>
+                );
+              }}
+            </Formik>
+          </div>
+        </div>}
     </div>
 
   </>

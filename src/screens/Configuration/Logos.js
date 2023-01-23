@@ -165,7 +165,7 @@ const Logos = () => {
                     {values.websiteAdminHeader && <PreviewImage file={values.websiteAdminHeader} />}
 
                     <div className='gcard-btn-panel'>
-                      <button type="submit" className="gbtn2 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
+                      <button type="submit" className="gbtn1 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
                         {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
                     </div>
                   </form>

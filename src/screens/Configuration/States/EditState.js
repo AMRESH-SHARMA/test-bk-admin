@@ -1,20 +1,21 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 import Spinner from '../../../assets/Spinner/Spinner';
 
-const AddState = () => {
-
+const EditState = () => {
+  const { id } = useParams()
   const navigate = useNavigate()
-  const { displayAlert } = useAlert();
-  const [uid, setUid] = useState('')
+  const { displayAlert } = useAlert()
+  const [state, setState] = useState('')
   const [apiloading, setApiLoading] = useState(true)
-  const maxState = 20;
+  const maxState = 20
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -23,27 +24,27 @@ const AddState = () => {
       timeout: 5000
     })
   }
+
   useEffect(() => {
-    async function getUid() {
-      await axios.get(`${API}/getUid`)
+    async function getStates() {
+      await axios.get(`${API}/state/get-single-state/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUid(resApi.data.msg);
+          setState(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-      setApiLoading(false)
-    } getUid()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
-
+        setApiLoading(false)
+    } getStates()
+  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add State</p>
+        <p>Edit State</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -59,34 +60,36 @@ const AddState = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              state: "",
-              uniqueId: uid?._id || "",
+              state: state?.state || "",
+              uniqueId: state?._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/state/create-state`, values)
+                // console.log(values)
+                await axios.put(`${API}/state/update-state/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('state Created', 'green')
+                    handleAlert('State Updated', 'green')
                     navigate(-1)
                   })
                   .catch((e) => {
                     console.log(e);
                     handleAlert(e.response.data.msg, 'red')
-                  }).finally(() => setSubmitting(false))
+                  })
+                setSubmitting(false);
               }, 500);
             }}
 
             validationSchema={Yup.object().shape({
               state: Yup.string()
-                .required('required'),
-            })}
-          >
+                .max(maxState, `maximum ${maxState} characters allowed`)
+                .required("Required"),
+            })}>
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit,
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
               } = props;
 
               if (isSubmitting) {
@@ -98,7 +101,7 @@ const AddState = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="state">State Name</label>
+                  <label htmlFor="state">State</label>
                   <input
                     id="state"
                     name="state"
@@ -146,15 +149,15 @@ const AddState = () => {
                   </div>
                 </form>
               </>
+
               );
             }}
           </Formik>
         </div>
       </div>}
     </div>
-
   </>
   )
 }
 
-export default AddState
+export default EditState

@@ -25,7 +25,7 @@ const States = () => {
 
   useEffect(() => {
     async function getStates() {
-      await axios.get(`${API}/states`)
+      await axios.get(`${API}/state/get-states`)
         .then((resApi) => {
           console.log(resApi);
           var data = resApi.data.msg
@@ -42,14 +42,14 @@ const States = () => {
     } getStates()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDelete = (languageId) => {
+  const handleDelete = (stateId) => {
     swal({
       title: 'Are you sure?',
       icon: 'error',
       buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
     }).then((value) => {
       if (value === true) {
-        axios.delete(`${API}/language/delete-single-language/${languageId}`)
+        axios.delete(`${API}/state/delete-single-state/${stateId}`)
           .then((res) => {
             setLoading((prev) => !prev)
             console.log(res)
@@ -104,17 +104,17 @@ const States = () => {
               <tbody>
                 {ApiData && ApiData.length ? ApiData.map((i) => {
                   return (<tr key={i._id}>
-                    <td>{i.name}</td>
+                    <td>{i.state}</td>
                     <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                     <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/configuration/state/edit/${i._id}`)}>Edit</button>
                       <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
                     </span>
                     </td>
                   </tr>
                   );
                 })
-                  : <>&nbsp;No Data found</>}
+                  : <tr><td>&nbsp;No Data found</td></tr>}
               </tbody>
             </table>
           </div>

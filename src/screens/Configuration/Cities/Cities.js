@@ -25,7 +25,7 @@ const Cities = () => {
 
   useEffect(() => {
     async function getCities() {
-      await axios.get(`${API}/cities/get-cities`)
+      await axios.get(`${API}/city/get-cities`)
         .then((resApi) => {
           console.log(resApi);
           var data = resApi.data.msg
@@ -42,14 +42,14 @@ const Cities = () => {
     } getCities()
   }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleDelete = (languageId) => {
+  const handleDelete = (cityId) => {
     swal({
       title: 'Are you sure?',
       icon: 'error',
       buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
     }).then((value) => {
       if (value === true) {
-        axios.delete(`${API}/language/delete-single-language/${languageId}`)
+        axios.delete(`${API}/city/delete-single-city/${cityId}`)
           .then((res) => {
             setLoading((prev) => !prev)
             console.log(res)
@@ -105,11 +105,11 @@ const Cities = () => {
               <tbody>
                 {ApiData && ApiData.length ? ApiData.map((i) => {
                   return (<tr key={i._id}>
-                    <td>{i.language}</td>
-                    <td>{i._id}</td>
+                    <td>{i.city}</td>
+                    <td>{i.state?.state}</td>
                     <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                     <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/configuration/city/edit/${i._id}`)}>Edit</button>
                       <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
                     </span>
                     </td>
