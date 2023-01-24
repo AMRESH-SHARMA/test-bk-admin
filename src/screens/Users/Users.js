@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
+import Pagination from '../../components/Pagination';
 
 const Users = () => {
 
@@ -13,6 +14,13 @@ const Users = () => {
   const [apiloading, setApiLoading] = useState(true)
   const [loading, setLoading] = useState(false)
   const [ApiData, setApiData] = useState([])
+
+  //PAGINATION
+  const PAGE_SIZE = 5;
+  const [TOTAL_DOCS, setTOTAL_DOCS] = useState('')
+  const [CURRENT_PAGE, setCURRENT_PAGE] = useState(1)
+  const limit = PAGE_SIZE;
+  const skip = (CURRENT_PAGE - 1) * PAGE_SIZE
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -24,10 +32,11 @@ const Users = () => {
 
   useEffect(() => {
     async function getUsers() {
-      await axios.get(`${API}/user/get-users`)
+      await axios.get(`${API}/user/get-users?skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
-          var data = resApi.data.msg
+          setTOTAL_DOCS(resApi.data.msg.totalDocs)
+          var data = resApi.data.msg.result
           data.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
           })
@@ -39,7 +48,7 @@ const Users = () => {
         });
       setApiLoading(false)
     } getUsers()
-  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSuspend = async (param) => {
     setLoading(true)
@@ -60,6 +69,12 @@ const Users = () => {
         <p>Users</p>
         <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/users/add')}>Add user</button> </div>
       </div>
+
+      <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+      </div>
+
+
       {apiloading ?
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />

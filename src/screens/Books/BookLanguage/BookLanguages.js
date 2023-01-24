@@ -6,14 +6,22 @@ import axios from "axios";
 import swal from 'sweetalert'
 import { API } from "../../../API"
 import { useAlert } from "../../../Redux/actions/useAlert";
+import Pagination from '../../../components/Pagination';
 
 const BookLanguages = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
-  const [ApiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState([])
   const [apiloading, setApiLoading] = useState(true)
   const [loading, setLoading] = useState(false)
+
+  //PAGINATION
+  const PAGE_SIZE = 5;
+  const [TOTAL_DOCS, setTOTAL_DOCS] = useState('')
+  const [CURRENT_PAGE, setCURRENT_PAGE] = useState(1)
+  const limit = PAGE_SIZE;
+  const skip = (CURRENT_PAGE - 1) * PAGE_SIZE
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -25,10 +33,11 @@ const BookLanguages = () => {
 
   useEffect(() => {
     async function getLanguages() {
-      await axios.get(`${API}/language/get-languages`)
+      await axios.get(`${API}/language/get-languages?skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
-          var data = resApi.data.msg
+          setTOTAL_DOCS(resApi.data.msg.totalDocs)
+          let data = resApi.data.msg.result
           data.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
           })
@@ -40,7 +49,7 @@ const BookLanguages = () => {
         });
       setApiLoading(false)
     } getLanguages()
-  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleDelete = (languageId) => {
     swal({
@@ -86,6 +95,11 @@ const BookLanguages = () => {
         <p>Books / Language</p>
         <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/books/language/add')}>Add Language</button> </div>
       </div>
+
+        <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+        </div>
+
       {apiloading ?
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />
@@ -103,7 +117,7 @@ const BookLanguages = () => {
                 </tr>
               </thead>
               <tbody>
-                {ApiData && ApiData.length ? ApiData.map((i) => {
+                {apiData && apiData.length ? apiData.map((i) => {
                   return (<tr key={i._id}>
                     <td>{i.language}</td>
                     <td>{i._id}</td>

@@ -288,3 +288,11 @@ td {
 .gtable-btn-panel>button {
   margin: 0;
 }
+
+/* PAGINATION */
+.gpagination-entries{
+  padding: 0px 10px;
+}
+.gpagination{
+  cursor: pointer;
+}

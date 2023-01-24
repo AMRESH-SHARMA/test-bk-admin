@@ -7,6 +7,7 @@ import swal from 'sweetalert'
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import { IMG } from '../../assets/constants/theme';
+import Pagination from '../../components/Pagination';
 
 const Books = () => {
 
@@ -15,6 +16,13 @@ const Books = () => {
   const [ApiData, setApiData] = useState([])
   const [loading, setLoading] = useState(false)
   const [apiloading, setApiLoading] = useState(true)
+
+  //PAGINATION
+  const PAGE_SIZE = 5;
+  const [TOTAL_DOCS, setTOTAL_DOCS] = useState('')
+  const [CURRENT_PAGE, setCURRENT_PAGE] = useState(1)
+  const limit = PAGE_SIZE;
+  const skip = (CURRENT_PAGE - 1) * PAGE_SIZE
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -26,10 +34,11 @@ const Books = () => {
 
   useEffect(() => {
     async function getBooks() {
-      await axios.get(`${API}/book/get-books`)
+      await axios.get(`${API}/book/get-books?skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
-          var data = resApi.data.msg
+          setTOTAL_DOCS(resApi.data.msg.totalDocs)
+          var data = resApi.data.msg.result
           data.sort((a, b) => {
             return new Date(b.createdAt) - new Date(a.createdAt);
           })
@@ -41,7 +50,7 @@ const Books = () => {
         });
       setApiLoading(false)
     } getBooks()
-  }, [loading]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSuspend = async (param) => {
     setLoading(true)
@@ -100,6 +109,11 @@ const Books = () => {
         <p>Books</p>
         <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/books/add')}>Add Book</button> </div>
       </div>
+
+      <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+      </div>
+
       {apiloading ?
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
           <Spinner />
