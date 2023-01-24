@@ -6,6 +6,7 @@ import axios from "axios";
 import swal from 'sweetalert'
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
+import { IMG } from '../../assets/constants/theme';
 
 const Books = () => {
 
@@ -109,8 +110,8 @@ const Books = () => {
             <table>
               <thead className='gthead-light'>
                 <tr>
+                  <th>Thumbnail</th>
                   <th>Book Name</th>
-                  <th>Unique ID</th>
                   <th>Uploaded Date</th>
                   <th>Rent per Day</th>
                   <th>Status</th>
@@ -120,8 +121,8 @@ const Books = () => {
               <tbody>
                 {ApiData && ApiData.length ? ApiData.map((i) => {
                   return (<tr key={i._id}>
+                    <td><img alt="" src={i.image1?.url} style={IMG.style2} /></td>
                     <td>{i.bookName}</td>
-                    <td>{i._id}</td>
                     <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
                     <td>₹{i.rentPerDay}</td>
                     <td>{i.approved ?

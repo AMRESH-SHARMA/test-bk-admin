@@ -49,8 +49,16 @@ export const ERROR = {
 
 export const IMG = {
   style1: {
-    maxHeight: '100px',
+    height: '100px',
     width: '200px',
+    border: '2px solid black',
+    padding: '5px'
+  },
+  style2: {
+    // height: '100px',
+    // width: '200px',
+    height: '100px',
+    width: '100px',
     border: '2px solid black',
     padding: '5px'
   }
