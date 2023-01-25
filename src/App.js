@@ -38,6 +38,10 @@ import AddCity from './screens/Configuration/Cities/AddCity';
 import AddState from './screens/Configuration/States/AddState';
 import EditState from './screens/Configuration/States/EditState';
 import EditCity from './screens/Configuration/Cities/EditCity';
+import InternetHandlingFees from './screens/Configuration/InternetHandlingFees';
+import AddDeliveryFees from './screens/Configuration/DeliveryFees/AddDeliveryFees';
+import DeliveryFees from './screens/Configuration/DeliveryFees/DeliveryFees';
+import EditDeliveryFees from './screens/Configuration/DeliveryFees/EditDeliveryFees';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -106,6 +110,12 @@ const App = () => {
 
           <Route path='/profile/changePassword' element={<ChangePassword />} />
           <Route path='/profile/editProfile' element={<EditProfile />} />
+
+          <Route path='/configuration/internet-handling-fees' element={<InternetHandlingFees />} />
+
+          <Route path='/configuration/delivery-fees' element={<DeliveryFees />} />
+          <Route path='/configuration/delivery-fees/add' element={<AddDeliveryFees/>} />
+          <Route path='/configuration/delivery-fees/edit/:id' element={<EditDeliveryFees />} />
 
           <Route path='/configuration/cities' element={<Cities />} />
           <Route path='/configuration/city/add' element={<AddCity />} />

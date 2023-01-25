@@ -45,7 +45,7 @@ const AddBook = () => {
       await axios.get(`${API}/user/get-users`)
         .then((resApi) => {
           console.log(resApi);
-          setApiData(resApi.data.msg);
+          setApiData(resApi.data.msg.result);
         })
         .catch((e) => {
           console.log(e);
@@ -59,7 +59,7 @@ const AddBook = () => {
       await axios.get(`${API}/language/get-languages`)
         .then((resApi) => {
           console.log(resApi);
-          setLanguageData(resApi.data.msg);
+          setLanguageData(resApi.data.msg.result);
         })
         .catch((e) => {
           console.log(e);
@@ -73,7 +73,7 @@ const AddBook = () => {
       await axios.get(`${API}/genre/get-genres`)
         .then((resApi) => {
           console.log(resApi);
-          setGenreData(resApi.data.msg);
+          setGenreData(resApi.data.msg.result);
         })
         .catch((e) => {
           console.log(e);

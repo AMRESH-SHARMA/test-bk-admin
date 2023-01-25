@@ -41,6 +41,14 @@
     "icon": "bi-gear-fill",
     "childrens": [
       {
+        "title": "Internet Handling Fees",
+        "path": "/configuration/internet-handling-fees"
+      },
+      {
+        "title": "Delivery Fees",
+        "path": "/configuration/delivery-fees"
+      },
+      {
         "title": "Cities",
         "path": "/configuration/cities"
       },

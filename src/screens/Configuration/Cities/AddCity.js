@@ -45,7 +45,7 @@ const AddCity = () => {
       await axios.get(`${API}/state/get-states`)
         .then((resApi) => {
           console.log(resApi);
-          setstateData(resApi.data.msg);
+          setstateData(resApi.data.msg.result);
         })
         .catch((e) => {
           console.log(e);
@@ -103,7 +103,7 @@ const AddCity = () => {
 
               {props => {
                 const {
-                  values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
+                  values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
                 } = props;
 
                 if (isSubmitting) {
