@@ -28,7 +28,7 @@
 
 .sidebar-title {
   display: flex;
-  font-size: 22px;
+  font-size: 18px;
   justify-content: space-between;
   cursor: pointer;
 }
@@ -60,7 +60,7 @@
 .sidebar-item.plain {
   color: #fff;
   text-decoration: none;
-  font-size: 20px;
+  /* font-size: 16px; */
 }
 
 .sidebar-item.plain:hover {

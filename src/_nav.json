@@ -75,6 +75,36 @@
     ]
   },
   {
+    "title": "Order Management",
+    "icon": "fa fa-shopping-cart",
+    "childrens": [
+      {
+        "title": "New",
+        "path": "/order/new"
+      },
+      {
+        "title": "Processing",
+        "path": "/order/processing"
+      },
+      {
+        "title": "Dispatched",
+        "path": "/order/dispatched"
+      },
+      {
+        "title": "Delivered",
+        "path": "/order/delivered"
+      },
+      {
+        "title": "Cancelled",
+        "path": "/order/cancelled"
+      },
+      {
+        "title": "Returned",
+        "path": "/order/returned"
+      }
+    ]
+  },
+  {
     "title": "Log out",
     "icon": "fa fa-sign-out fa-lg", 
     "path": "/logout"

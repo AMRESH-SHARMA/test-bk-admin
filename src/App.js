@@ -46,6 +46,13 @@ import ServiceFees from './screens/Configuration/ServiceFees/ServiceFees';
 import AddServiceFees from './screens/Configuration/ServiceFees/AddServiceFees';
 import EditServiceFees from './screens/Configuration/ServiceFees/EditServiceFees';
 
+import NewOrder from './screens/Order Management/NewOrder/NewOrder';
+import Processing from './screens/Order Management/Processing/Processing';
+import Dispatched from './screens/Order Management/Dispatched/Dispatched';
+import Delivered from './screens/Order Management/Delivered/Delivered';
+import Cancelled from './screens/Order Management/Cancelled/Cancelled';
+import Returned from './screens/Order Management/Returned/Returned';
+
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
 const Register = React.lazy(() => import('./screens/Pages/Register'))
@@ -84,6 +91,7 @@ const App = () => {
       </div>}>
 
       <Routes>
+        {/* PAGES */}
         <Route exact path="/register" element={<Register />} />
         <Route exact path="/login" element={<Login />} />
         <Route exact path="/logout" element={<Logout />} />
@@ -92,12 +100,14 @@ const App = () => {
 
         <Route path="/" name="Layout" element={<Layout />} >
 
+          {/* USERS */}
           <Route path='/users' element={<Users />} />
           <Route path='/users/add' element={<AddUser />} />
           <Route path='/users/edit/:id' element={<EditUser />} />
           <Route path='/users/view/:id' element={<ViewUser />} />
           <Route path='/users/view/book/:id' element={<ViewUserBook />} />
 
+          {/* BOOKS */}
           <Route path='/books' element={<Books />} />
           <Route path='/books/add' element={<AddBook />} />
           <Route path='/books/edit/:id' element={<EditBook />} />
@@ -111,17 +121,18 @@ const App = () => {
           <Route path='/books/language/add' element={<AddBookLanguage />} />
           <Route path='/books/language/edit/:id' element={<EditBookLanguage />} />
 
+          {/* PROFILE */}
           <Route path='/profile/changePassword' element={<ChangePassword />} />
           <Route path='/profile/editProfile' element={<EditProfile />} />
 
+          {/* CONFIGURATION */}
           <Route path='/configuration/internet-handling-fees' element={<InternetHandlingFees />} />
-
           <Route path='/configuration/delivery-fees' element={<DeliveryFees />} />
-          <Route path='/configuration/delivery-fees/add' element={<AddDeliveryFees/>} />
+          <Route path='/configuration/delivery-fees/add' element={<AddDeliveryFees />} />
           <Route path='/configuration/delivery-fees/edit/:id' element={<EditDeliveryFees />} />
 
           <Route path='/configuration/service-fees' element={<ServiceFees />} />
-          <Route path='/configuration/service-fees/add' element={<AddServiceFees/>} />
+          <Route path='/configuration/service-fees/add' element={<AddServiceFees />} />
           <Route path='/configuration/service-fees/edit/:id' element={<EditServiceFees />} />
 
           <Route path='/configuration/cities' element={<Cities />} />
@@ -133,6 +144,15 @@ const App = () => {
           <Route path='/configuration/socialMedia' element={<SocialMedia />} />
           <Route path='/configuration/address' element={<Address />} />
           <Route path='/configuration/logos' element={<Logos />} />
+
+          {/* ORDER MANAGEMENT */}
+          <Route path='/order/new' element={<NewOrder />} />
+          <Route path='/order/processing' element={<Processing />} />
+          <Route path='/order/dispatched' element={<Dispatched />} />
+          <Route path='/order/delivered' element={<Delivered />} />
+          <Route path='/order/cancelled' element={<Cancelled />} />
+          <Route path='/order/returned' element={<Returned />} />
+
 
           <Route path="/modal" element={<ModalScr />} />
         </Route>
