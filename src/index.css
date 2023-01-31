@@ -12,6 +12,14 @@ h1 {
   padding: 0;
 }
 
+pre {
+  display: block;
+  font-family: Roboto, Helvetica, sans-serif;
+  font-style: normal;
+  white-space: pre;
+  margin: 0;
+}
+
 /* SPINNER */
 .gspinnerflex {
   display: flex;

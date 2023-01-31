@@ -77,7 +77,7 @@ const ViewNewOrder = () => {
 
               <div style={{ padding: '10px' }}>
 
-                <pre>Items : </pre>
+                <pre style={{fontWeight:'600',color:'#2C3848F2'}}>Items : </pre>
                 <br />
 
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
