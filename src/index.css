@@ -187,9 +187,22 @@ input.error {
   background-color: #006A4E;
 }
 
+.gbtn-print {
+  background-color: #3399FF;
+}
+
+.gbtn-back {
+  background-color: #F50057;
+}
+
+.gbtn-update {
+  background-color: #2EB85C;
+}
+
 .gcard-btn-panel {
   display: flex;
   justify-content: space-evenly;
+  gap: 10px;
 }
 
 .gcard-btn-panel>button {
@@ -268,11 +281,19 @@ input.error {
   overflow-x: 'auto';
 }
 
+.gtable2cell{
+  background-color: #D6EBFF;
+  color: #2C384AF2;
+  border-spacing: 0;
+  border-collapse: collapse;
+}
+
 th,
 td {
   text-align: left;
   padding: 8px;
-  color: #1a212bf2;
+  color: #2C384AF2;
+  font-size: 16px;
 }
 
 .gthead-light {
@@ -290,9 +311,10 @@ td {
 }
 
 /* PAGINATION */
-.gpagination-entries{
+.gpagination-entries {
   padding: 0px 10px;
 }
-.gpagination{
+
+.gpagination {
   cursor: pointer;
 }

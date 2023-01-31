@@ -52,6 +52,7 @@ import Dispatched from './screens/Order Management/Dispatched/Dispatched';
 import Delivered from './screens/Order Management/Delivered/Delivered';
 import Cancelled from './screens/Order Management/Cancelled/Cancelled';
 import Returned from './screens/Order Management/Returned/Returned';
+import ViewNewOrder from './screens/Order Management/NewOrder/ViewNewOrder';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -147,6 +148,8 @@ const App = () => {
 
           {/* ORDER MANAGEMENT */}
           <Route path='/order/new' element={<NewOrder />} />
+          <Route path='/order/new/view/:id' element={<ViewNewOrder />} />
+
           <Route path='/order/processing' element={<Processing />} />
           <Route path='/order/dispatched' element={<Dispatched />} />
           <Route path='/order/delivered' element={<Delivered />} />

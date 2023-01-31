@@ -70,9 +70,9 @@ const NewOrder = () => {
         <p>Orders / New</p>
       </div>
 
-        <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
-        </div>
+      <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+      </div>
 
       {apiloading ?
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
@@ -92,7 +92,7 @@ const NewOrder = () => {
                 </tr>
               </thead>
               <tbody>
-                {apiData && apiData.length ? apiData.map((i) => {
+                {/* {apiData && apiData.length ? apiData.map((i) => {
                   return (<tr key={i._id}>
                     <td>{i.language}</td>
                     <td>{i._id}</td>
@@ -104,7 +104,20 @@ const NewOrder = () => {
                   </tr>
                   );
                 })
-                  : <>&nbsp;No Data found</>}
+                  : <>&nbsp;No Data found</>} */}
+                <tr>
+                  <td>1324545</td>
+                  <td>99</td>
+                  <td>Tue Jan 31 2023 , 2:20 PM</td>
+                  <td>{true?
+                      <button className="gbtn-status gbtn-lgreen">New</button> :
+                      <button className="gbtn-status gbtn-red">inactive</button>}
+                    </td>
+                  <td><span className='gtable-btn-panel'>
+                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${123}`)}>View</button>
+                  </span>
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
