@@ -50,14 +50,14 @@ const ViewUser = () => {
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <p>View User</p>
         <div className='gcard-btn-panel'>
-          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
+          <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
 
       <div className="gcard gcont-body">
         <div className='gtable' style={{ overflowX: 'auto' }}>
           <table>
-            <thead>
+            <thead className='gviewthpre'>
               <tr>
                 <th>Unique ID</th>
                 <td>{user?._id}</td></tr>

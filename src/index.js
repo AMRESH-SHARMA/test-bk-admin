@@ -13,8 +13,7 @@ const setupAxios = () => {
   axios.defaults.baseURL = 'https://test-bk-api.vercel.app';
   // axios.defaults.baseURL = 'http://localhost:8080';
   axios.defaults.headers = {
-    'Cache-Control': 'no-cache,no-store',
-    'Pragma': 'no-cache',
+    'authorization': `${localStorage.getItem('token')}`
   };
 };
 

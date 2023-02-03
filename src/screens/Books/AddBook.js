@@ -101,6 +101,7 @@ const AddBook = () => {
               bookName: "",
               genre: "",
               language: "",
+              author: "",
               description: "",
               rentPerDay: "",
               image1: "",
@@ -121,6 +122,7 @@ const AddBook = () => {
                 formData.append('bookName', values.bookName);
                 formData.append('genre', values.genre);
                 formData.append('language', values.language);
+                formData.append('author', values.author);
                 formData.append('description', values.description);
                 formData.append('rentPerDay', values.rentPerDay);
                 formData.append('uniqueId', values.uniqueId);
@@ -146,8 +148,10 @@ const AddBook = () => {
               bookName: Yup.string()
                 .max(maxBookName, `maximum ${maxBookName} chars allowed`)
                 .required("Required"),
+              author: Yup.string()
+                .required("Required"),
               description: Yup.string()
-                .max(maxDescription,  `maximum ${maxDescription} chars allowed`)
+                .max(maxDescription, `maximum ${maxDescription} chars allowed`)
                 .required("Required"),
               rentPerDay: Yup.number('only numbers allowed')
                 .integer('only numbers allowed')
@@ -173,7 +177,7 @@ const AddBook = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="bookName">Book Name *</label>
+                  <label htmlFor="bookName">Book Name </label>
                   <input
                     id="bookName"
                     name="bookName"
@@ -192,7 +196,7 @@ const AddBook = () => {
                     {errors.bookName && touched.bookName && errors.bookName}&nbsp;</div>
 
 
-                  <label htmlFor="genre">Genre *</label>
+                  <label htmlFor="genre">Genre </label>
                   <select
                     name="genre"
                     value={values.genre}
@@ -212,7 +216,7 @@ const AddBook = () => {
                   <div style={errors.genre && touched.genre ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.genre && touched.genre && errors.genre}&nbsp;</div>
 
-                  <label htmlFor="language">Language *</label>
+                  <label htmlFor="language">Language </label>
                   <select
                     name="language"
                     value={values.language}
@@ -232,7 +236,22 @@ const AddBook = () => {
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
 
-                  <label htmlFor="description">Description *</label>
+                  <label htmlFor="author">Author </label>
+                  <input
+                    id="author"
+                    name="author"
+                    type="text"
+                    placeholder="Enter book author"
+                    value={values.author}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.author && touched.author && "error"}
+                  />
+                  <div style={errors.author && touched.author ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.author && touched.author && errors.author}&nbsp;</div>
+
+                  <label htmlFor="description">Description </label>
                   <input
                     id="description"
                     name="description"
@@ -250,7 +269,7 @@ const AddBook = () => {
                   <div style={errors.description && touched.description ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.description && touched.description && errors.description}&nbsp;</div>
 
-                  <label htmlFor="rentPerDay">Rent Per Day *</label>
+                  <label htmlFor="rentPerDay">Rent Per Day </label>
                   <input
                     id="rentPerDay"
                     name="rentPerDay"
@@ -265,7 +284,7 @@ const AddBook = () => {
                   <div style={errors.rentPerDay && touched.rentPerDay ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.rentPerDay && touched.rentPerDay && errors.rentPerDay}&nbsp;</div>
 
-                  <label htmlFor="image1">Image1 *</label>
+                  <label htmlFor="image1">Image1 </label>
                   <input
                     id="image1"
                     name="image1"
@@ -330,7 +349,7 @@ const AddBook = () => {
                     {errors.image4 && touched.image4 && errors.image4}&nbsp;</div>
 
 
-                  <label htmlFor="uploadedBy">Uploaded By *</label>
+                  <label htmlFor="uploadedBy">Uploaded By </label>
                   <select
                     name="uploadedBy"
                     value={values.uploadedBy}

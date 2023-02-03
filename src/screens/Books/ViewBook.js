@@ -58,7 +58,7 @@ const ViewBook = () => {
       <div className="gcard gcont-body">
         <div className='gtable' style={{ overflowX: 'auto' }}>
           <table>
-            <thead>
+            <thead className='gviewthpre'>
               <tr>
                 <th>Unique ID</th>
                 <td>{book?._id}</td></tr>
@@ -74,6 +74,10 @@ const ViewBook = () => {
               <tr>
                 <th>Language</th>
                 <td>{book?.language?.language}</td></tr>
+
+              <tr>
+                <th>Author</th>
+                <td>{book?.author}</td></tr>
 
               <tr>
                 <th>Description</th>
@@ -114,16 +118,16 @@ const ViewBook = () => {
               <tr>
                 <th style={{display:'flex'}}>Uploaded By</th>
                 <td>
-                  <p><strong>Id :&nbsp;</strong>{book?.uploadedBy?._id}</p><p><strong>Book Name :&nbsp;</strong>{book?.uploadedBy?.name}</p><br />
+                  <p><strong>Id :&nbsp;</strong>{book?.uploadedBy}</p>
                 </td></tr>
 
               <tr>
-                <th>Book Uploaded At</th>
+                <th>Uploaded At</th>
                 <td>
                   {new Date(`${book?.createdAt}`).toDateString()}<span> , {`${formatAMPM(book?.createdAt)}`}</span>
                 </td></tr>
 
-              <tr><th>Book Updated At</th>
+              <tr><th>Updated At</th>
                 <td>
                   {new Date(`${book?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(book?.updatedAt)}`}</span>
                 </td></tr>

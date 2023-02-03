@@ -48,18 +48,16 @@ export const ERROR = {
 };
 
 export const IMG = {
+  // VIEW DETAILS PAGE
   style1: {
     height: '100px',
-    width: '200px',
-    border: '2px solid black',
-    padding: '5px'
+    width: '100px',
+    borderRadius: '10px',
   },
+  // VIEW PAGE
   style2: {
-    // height: '100px',
-    // width: '200px',
     height: '100px',
     width: '100px',
-    border: '2px solid black',
-    padding: '5px'
+    borderRadius: '10px',
   }
 };

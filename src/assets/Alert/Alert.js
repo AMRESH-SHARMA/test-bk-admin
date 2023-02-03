@@ -11,13 +11,12 @@ const Alert = () => {
     setAlertColor(alert.color)
     if (alert.open) {
       const timer = setTimeout(() => {
-        // console.log('Initial timeout!');
         clearAlert()
       }, alert.timeout)
       return () => clearTimeout(timer);
     }
 
-  }, [alert.open,alert.color,clearAlert,alert.timeout]);
+  }, [alert.open, alert.color, clearAlert, alert.timeout]);
 
 
 
@@ -30,10 +29,10 @@ const Alert = () => {
       <div className='alert-container' style={{ backgroundColor: alertColor }}>
         <div className='alert-inner'>
 
-          <p>ALERT! {alert.message}</p>
-          <p>TIMEOUT:{alert.timeout}</p>
+          <div className="center-cont"><p className="center-item"> {alert.message}</p></div>
+          {/* <p>TIMEOUT:{alert.timeout}</p> */}
 
-          <p onClick={handleClose} className='gbtncross' style={{padding:'0px 5px'}}> &#10005;</p>
+          <p onClick={handleClose} className='gbtncross' style={{ padding: '0px 5px' }}> &#10005;</p>
 
         </div>
       </div>}

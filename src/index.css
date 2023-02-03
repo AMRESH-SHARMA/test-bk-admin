@@ -191,8 +191,21 @@ input.error {
   background-color: #F50057;
 }
 
-.gbtn-create {
-  background-color: #006A4E;
+/* ALL BUTTONS */
+.gbtn-save {
+  background-color: #394263;
+}
+
+.gbtn-add {
+  background-color: #00A550;
+}
+
+.gbtn-view {
+  background-color: #394263;
+}
+
+.gbtn-edit {
+  background-color:  #F77D24;
 }
 
 .gbtn-print {
@@ -207,6 +220,24 @@ input.error {
   background-color: #2EB85C;
 }
 
+.gbtn-activate {
+  background-color: #00A550;
+}
+
+.gbtn-suspend {
+  background-color: #D2122E;
+}
+
+.gbtn-active {
+  background-color: #00A550;
+}
+
+.gbtn-inactive {
+  background-color: #D2122E;
+}
+
+
+/*  */
 .gcard-btn-panel {
   display: flex;
   justify-content: space-evenly;
@@ -289,7 +320,7 @@ input.error {
   overflow-x: 'auto';
 }
 
-.gtable2cell{
+.gtable2cell {
   background-color: #D6EBFF;
   color: #2C384AF2;
   border-spacing: 0;
@@ -302,6 +333,11 @@ td {
   padding: 8px;
   color: #2C384AF2;
   font-size: 16px;
+}
+
+.gviewthpre>tr>th {
+  vertical-align: top;
+  white-space: pre;
 }
 
 .gthead-light {

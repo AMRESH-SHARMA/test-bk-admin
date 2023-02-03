@@ -67,7 +67,7 @@ const Users = () => {
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <p>Users</p>
-        <div><button className="gbtn2 gbtn-lgreen" onClick={() => navigate('/users/add')}>Add user</button> </div>
+        <div><button className="gbtn2 gbtn-add" onClick={() => navigate('/users/add')}>Add user</button> </div>
       </div>
 
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -103,15 +103,15 @@ const Users = () => {
                     <td><Link to={`/users/view/book/${i._id}`}>{i.booksAdded?.length}</Link></td>
                     <td>{i.booksRented?.length}</td>
                     <td>{i.approved ?
-                      <button className="gbtn-status gbtn-lgreen">Active</button> :
-                      <button className="gbtn-status gbtn-red">inactive</button>}
+                      <button className="gbtn-status gbtn-active">Active</button> :
+                      <button className="gbtn-status gbtn-inactive">inactive</button>}
                     </td>
                     <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-dblue" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
-                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
+                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
                       {i.approved ?
-                        <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
-                        <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                        <button className="gbtn-status gbtn-suspend" onClick={() => handleSuspend(i._id)}>Suspend</button> :
+                        <button className="gbtn-status gbtn-activate" onClick={() => handleSuspend(i._id)}>Activate</button>}
                     </span>
                     </td>
                   </tr>

@@ -138,7 +138,7 @@ const Books = () => {
                   return (<tr key={i._id}>
                     <td><img alt="" src={i.image1?.url} style={IMG.style2} /></td>
                     <td>{i.bookName}</td>
-                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                    <td>{new Date(`${i?.createdAt}`).toDateString()}<span> , {`${formatAMPM(i?.createdAt)}`}</span></td>
                     <td>₹{i.rentPerDay}</td>
                     <td>{i.approved ?
                       <button className="gbtn-status gbtn-lgreen">Active</button> :

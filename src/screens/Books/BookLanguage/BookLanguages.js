@@ -38,9 +38,9 @@ const BookLanguages = () => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
           let data = resApi.data.msg.result
-          data.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          })
+          // data.sort((a, b) => {
+          //   return new Date(b.createdAt) - new Date(a.createdAt);
+          // })
           setApiData(data);
         })
         .catch((e) => {
@@ -121,7 +121,7 @@ const BookLanguages = () => {
                   return (<tr key={i._id}>
                     <td>{i.language}</td>
                     <td>{i._id}</td>
-                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
+                    <td>{new Date(`${i?.createdAt}`).toDateString()}<span> , {`${formatAMPM(i?.createdAt)}`}</span></td>
                     <td><span className='gtable-btn-panel'>
                       <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>Edit</button>
                       <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>

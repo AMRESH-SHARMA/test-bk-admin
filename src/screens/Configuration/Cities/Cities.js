@@ -38,9 +38,9 @@ const Cities = () => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
           var data = resApi.data.msg.result
-          data.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          })
+          // data.sort((a, b) => {
+          //   return new Date(b.createdAt) - new Date(a.createdAt);
+          // })
           setApiData(data);
         })
         .catch((e) => {

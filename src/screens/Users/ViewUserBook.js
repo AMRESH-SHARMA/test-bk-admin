@@ -51,7 +51,7 @@ const ViewUserBook = () => {
             user.booksAdded.map((i) => {
               return (<>
                 <table>
-                  <thead>
+                  <thead className='gviewthpre'>
                     <tr>
                       <th>Book Id</th>
                       <td>{i?._id}</td>
