@@ -56,9 +56,14 @@ const AddUser = () => {
             enableReinitialize={true}
             initialValues={{
               userName: "",
+              fullName: "",
               email: "",
               phone: "",
+              addressLine1: "",
+              addressLine2: "",
               city: "",
+              state: "",
+              pinCode: "",
               uniqueId: uid?._id || "",
               timestamp: new Date()
             }}
@@ -114,7 +119,7 @@ const AddUser = () => {
                     id="userName"
                     name="userName"
                     type="text"
-                    placeholder="Enter your userName"
+                    placeholder="Enter your user name"
                     value={values.userName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -126,6 +131,24 @@ const AddUser = () => {
                   </div>
                   <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.userName && touched.userName && errors.userName}&nbsp;</div>
+
+                  <label htmlFor="fullName">Full Name</label>
+                  <input
+                    id="fullName"
+                    name="fullName"
+                    type="text"
+                    placeholder="Enter your fullName"
+                    value={values.fullName}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.fullName && touched.fullName && "error"}
+                  />
+                  {/* <div style={maxUserName - values.name.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxUserName - values.name.length) + '/' + maxUserName}</p>
+                  </div> */}
+                  <div style={errors.fullName && touched.fullName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.fullName && touched.fullName && errors.fullName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -163,6 +186,36 @@ const AddUser = () => {
                   <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.phone && touched.phone && errors.phone}&nbsp;</div>
 
+                  <label htmlFor="addressLine1">Address Line1</label>
+                  <input
+                    id="addressLine1"
+                    name="addressLine1"
+                    type="text"
+                    placeholder="Enter your address line1"
+                    value={values.addressLine1}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.addressLine1 && touched.addressLine1 && "error"}
+                  />
+                  <div style={errors.addressLine1 && touched.addressLine1 ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.addressLine1 && touched.addressLine1 && errors.addressLine1}&nbsp;</div>
+
+                  <label htmlFor="addressLine2">Address Line2</label>
+                  <input
+                    id="addressLine2"
+                    name="addressLine2"
+                    type="text"
+                    placeholder="Enter your address line2"
+                    value={values.addressLine2}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.addressLine2 && touched.addressLine2 && "error"}
+                  />
+                  <div style={errors.addressLine2 && touched.addressLine2 ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.addressLine2 && touched.addressLine2 && errors.addressLine2}&nbsp;</div>
+
                   <label htmlFor="city">City</label>
                   <input
                     id="city"
@@ -180,6 +233,36 @@ const AddUser = () => {
                   </div>
                   <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.city && touched.city && errors.city}&nbsp;</div>
+
+                  <label htmlFor="state">State</label>
+                  <input
+                    id="state"
+                    name="state"
+                    type="text"
+                    placeholder="Enter your state"
+                    value={values.state}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.state && touched.state && "error"}
+                  />
+                  <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.state && touched.state && errors.state}&nbsp;</div>
+
+                    <label htmlFor="pinCode">Pin Code</label>
+                  <input
+                    id="pinCode"
+                    name="pinCode"
+                    type="number"
+                    placeholder="Enter your pinCode"
+                    value={values.pinCode}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.pinCode && touched.pinCode && "error"}
+                  />
+                  <div style={errors.pinCode && touched.pinCode ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.pinCode && touched.pinCode && errors.pinCode}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
