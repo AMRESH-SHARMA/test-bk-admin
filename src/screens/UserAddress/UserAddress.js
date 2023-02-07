@@ -1,19 +1,22 @@
 import React from 'react'
 import Spinner from '../../assets/Spinner/Spinner';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import Pagination from '../../components/Pagination';
+import swal from 'sweetalert';
+import UserHeader from '../../components/UserHeader';
 
-const Users = () => {
+const UserAddress = () => {
 
+  const { userId } = useParams()
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
   const [apiloading, setApiLoading] = useState(true)
   const [loading, setLoading] = useState(false)
-  const [ApiData, setApiData] = useState([])
+  const [apiData, setApiData] = useState([])
 
   //PAGINATION
   const PAGE_SIZE = 5;
@@ -31,15 +34,12 @@ const Users = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-users?skip=${skip}&limit=${limit}`)
+    async function getAddress() {
+      await axios.get(`${API}/user/get-address/${userId}?limit=${limit}&skip=${skip}`)
         .then((resApi) => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
-          var data = resApi.data.msg.result
-          data.sort((a, b) => {
-            return new Date(b.createdAt) - new Date(a.createdAt);
-          })
+          let data = resApi.data.msg.result.address;
           setApiData(data);
         })
         .catch((e) => {
@@ -47,31 +47,45 @@ const Users = () => {
           handleAlert(e.response.data.msg, 'red')
         });
       setApiLoading(false)
-    } getUsers()
+    } getAddress()
   }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  const handleSuspend = async (param) => {
-    setLoading(true)
-    await axios.put(`${API}/user/update-user-status`, { id: param })
-      .then((resApi) => {
-        console.log(resApi);
-      })
-      .catch((e) => {
-        console.log(e);
-        handleAlert(e.response.data.msg, 'red')
-      });
-    setLoading(false)
+  const handleDelete = (addressId, userId) => {
+    console.log(addressId, userId);
+    swal({
+      title: 'Are you sure?',
+      icon: 'error',
+      buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
+    }).then((value) => {
+      if (value === true) {
+        axios.delete(`${API}/user/delete-single-address/${addressId}/${userId}`)
+          .then((res) => {
+            setLoading((prev) => !prev)
+            console.log(res)
+          })
+          .catch((err) => {
+            swal({
+              title: 'Warning',
+              text: 'Something went wrong!',
+              icon: 'error',
+              button: 'Retry',
+              dangerMode: true,
+            })
+          })
+      }
+    })
   }
 
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Users</p>
-        <div><button className="gbtn2 gbtn-add" onClick={() => navigate('/users/add')}>Add user</button> </div>
+        <p>Users / Address</p>
+        <div><button className="gbtn2 gbtn-add" onClick={() => navigate(`/users/address/add/${userId}`)}>Add address</button> </div>
       </div>
 
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+        <UserHeader userId={userId} />
       </div>
 
 
@@ -85,36 +99,24 @@ const Users = () => {
             <table >
               <thead className='gthead-light'>
                 <tr>
-                  <th>User Name</th>
                   <th>Unique ID</th>
-                  <th>Books Added</th>
-                  <th>Books Rented</th>
-                  <th>Address</th>
-                  <th>Status</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Zip Code</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {ApiData && ApiData.length ? ApiData.map((i) => {
+                {apiData && apiData.length ? apiData.map((i) => {
                   return (<tr key={i._id}>
-                    <td>{i.userName}</td>
                     <td>{i._id}</td>
-                    <td><Link to={`/users/view/book/${i._id}`}>{i.booksAdded?.length}</Link></td>
-                    <td>{i.booksRented?.length}</td>
+                    <td>{i.city}</td>
+                    <td>{i.state}</td>
+                    <td>{i.zipCode}</td>
                     <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/address/${i._id}`)}>Address</button>
-                    </span>
-                    </td>
-                    <td>{i.approved ?
-                      <button className="gbtn-status gbtn-active">Active</button> :
-                      <button className="gbtn-status gbtn-inactive">inactive</button>}
-                    </td>
-                    <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/view/${i._id}`)}>View</button>
-                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/users/edit/${i._id}`)}>Edit</button>
-                      {i.approved ?
-                        <button className="gbtn-status gbtn-suspend" onClick={() => handleSuspend(i._id)}>Suspend</button> :
-                        <button className="gbtn-status gbtn-activate" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/address/view/${i._id}`)}>View</button>
+                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/users/address/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, userId)}>Delete</button>
                     </span>
                     </td>
                   </tr>
@@ -129,4 +131,4 @@ const Users = () => {
   )
 }
 
-export default Users
+export default UserAddress

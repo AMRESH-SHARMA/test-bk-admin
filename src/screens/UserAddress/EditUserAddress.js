@@ -1,22 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
-import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const AddUser = () => {
-
-  const navigate = useNavigate()
+const EditUserAddress = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
   const { displayAlert } = useAlert();
-  const [uid, setUid] = useState('')
+  const [user, setUser] = useState('')
 
   const maxUserName = 50
-  const maxFullName = 50
   const maxEmail = 100
   const maxPhone = 10
+  const maxCity = 50
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -27,47 +28,48 @@ const AddUser = () => {
   }
 
   useEffect(() => {
-    async function getUid() {
-      await axios.get(`${API}/getUid`)
+    async function getUsers() {
+      await axios.get(`${API}/user/get-single-user/${id}`)
         .then((resApi) => {
-          setUid(resApi.data.msg);
+          console.log(resApi);
+          setUser(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUid()
-  }, [])// eslint-disable-line react-hooks/exhaustive-deps
+    } getUsers()
+  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add User</p>
+        <p>Edit User Address</p>
         <div className='gcard-btn-panel'>
-          <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
+          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
-
 
       <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
         <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
           <Formik
             enableReinitialize={true}
             initialValues={{
-              userName: "",
-              fullName: "",
-              email: "",
-              phone: "",
-              uniqueId: uid?._id || "",
+              userName: user?.userName || "",
+              email: user?.email || "",
+              phone: user?.phone || "",
+              city: user?.city || "",
+              uniqueId: user._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                console.log(values)
+                await axios.put(`${API}/user/update-user/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
+                    handleAlert('User Updated successfully', 'green')
                     navigate('/users')
                   })
                   .catch((e) => {
@@ -86,8 +88,12 @@ const AddUser = () => {
                 .email()
                 .max(maxEmail, `maximum ${maxEmail} characters allowed`)
                 .required("Required"),
-              phone: Yup.string()
-                .max(maxPhone, `maximum ${maxPhone} digits allowed`)
+              phone: Yup.number('only numbers allowed')
+                .integer('only numbers allowed')
+                .max(9999999999, `maximum ${maxPhone} digits allowed`)
+                .required("Required"),
+              city: Yup.string()
+                .max(maxCity, `maximum ${maxCity} characters allowed`)
                 .required("Required"),
             })}
           >
@@ -111,7 +117,7 @@ const AddUser = () => {
                     id="userName"
                     name="userName"
                     type="text"
-                    placeholder="Enter your user name"
+                    placeholder="Enter your userName"
                     value={values.userName}
                     onChange={handleChange}
                     onBlur={handleBlur}
@@ -124,59 +130,84 @@ const AddUser = () => {
                   <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.userName && touched.userName && errors.userName}&nbsp;</div>
 
-                  <label htmlFor="fullName">Full Name</label>
+                  <label htmlFor="addressLine">Address Line</label>
                   <input
-                    id="fullName"
-                    name="fullName"
+                    id="addressLine"
+                    name="addressLine"
                     type="text"
-                    placeholder="Enter your fullName"
-                    value={values.fullName}
+                    placeholder="Enter your address line"
+                    value={values.addressLine}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.fullName && touched.fullName && "error"}
+                    className={errors.addressLine && touched.addressLine && "error"}
                   />
-                  <div style={maxFullName - values.fullName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxFullName - values.fullName.length) + '/' + maxFullName}</p>
-                  </div>
-                  <div style={errors.fullName && touched.fullName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.fullName && touched.fullName && errors.fullName}&nbsp;</div>
+                  <div style={errors.addressLine && touched.addressLine ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.addressLine && touched.addressLine && errors.addressLine}&nbsp;</div>
 
-                  <label htmlFor="email">Email</label>
+                  <label htmlFor="city">City</label>
                   <input
-                    id="email"
-                    name="email"
+                    id="city"
+                    name="city"
                     type="text"
-                    placeholder="Enter your email"
-                    value={values.email}
+                    placeholder="Enter your city"
+                    value={values.city}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.email && touched.email && "error"}
+                    className={errors.city && touched.city && "error"}
                   />
-                  <div style={maxEmail - values.email.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxEmail - values.email.length) + '/' + maxEmail}</p>
+                  <div style={maxCity - values.city.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
                   </div>
-                  <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.email && touched.email && errors.email}&nbsp;</div>
+                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.city && touched.city && errors.city}&nbsp;</div>
 
-                  <label htmlFor="phone">Phone Number</label>
+                  <label htmlFor="state">State</label>
                   <input
-                    id="phone"
-                    name="phone"
+                    id="state"
+                    name="state"
+                    type="text"
+                    placeholder="Enter your state"
+                    value={values.state}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.state && touched.state && "error"}
+                  />
+                  <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.state && touched.state && errors.state}&nbsp;</div>
+
+                  <label htmlFor="zipCode">Pin Code</label>
+                  <input
+                    id="zipCode"
+                    name="zipCode"
                     type="number"
-                    placeholder="Enter your phone"
-                    value={values.phone}
+                    placeholder="Enter your zip code"
+                    value={values.zipCode}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.phone && touched.phone && "error"}
+                    className={errors.zipCode && touched.zipCode && "error"}
                   />
-                  <div style={maxPhone - values.phone.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxPhone - values.phone.toString().length) + '/' + maxPhone}</p>
-                  </div>
-                  <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.phone && touched.phone && errors.phone}&nbsp;</div>
+                  <div style={errors.zipCode && touched.zipCode ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.zipCode && touched.zipCode && errors.zipCode}&nbsp;</div>
+
+
+                  <label htmlFor="country">Country</label>
+                  <input
+                    id="country"
+                    name="country"
+                    type="text"
+                    placeholder="Enter your country"
+                    value={values.country}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.country && touched.country && "error"}
+                  />
+                  <div style={errors.country && touched.country ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.country && touched.country && errors.country}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
@@ -209,16 +240,14 @@ const AddUser = () => {
                   </div>
                 </form>
               </>
-
               );
             }}
           </Formik>
         </div>
       </div>
     </div>
-
   </>
   )
 }
 
-export default AddUser
+export default EditUserAddress

@@ -101,6 +101,7 @@ const EditBook = () => {
               bookName: book?.bookName || "",
               genre: book?.genre || "",
               language: book?.language || "",
+              author: book?.author || "",
               description: book?.description || "",
               rentPerDay: book?.rentPerDay || "",
               uniqueId: book?._id || "",
@@ -127,6 +128,8 @@ const EditBook = () => {
             validationSchema={Yup.object().shape({
               bookName: Yup.string()
                 .max(maxBookName, `maximum ${maxBookName} chars allowed`)
+                .required("Required"),
+                author: Yup.string()
                 .required("Required"),
               description: Yup.string()
                 .max(maxDescription, `maximum ${maxDescription} chars allowed`)
@@ -196,7 +199,7 @@ const EditBook = () => {
                     style={INPUT.box1}
                     required
                   >
-                    <option value={values.language._id} label={values.language.language}/>
+                    <option value={values.language._id} label={values.language.language} />
                     {languageData && languageData.map((i, index) => {
                       return (<>
                         <option value={i._id}>{i.language}</option>
@@ -206,6 +209,21 @@ const EditBook = () => {
                   </select>
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
+
+                  <label htmlFor="author">Author </label>
+                  <input
+                    id="author"
+                    name="author"
+                    type="text"
+                    placeholder="Enter book author"
+                    value={values.author}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.author && touched.author && "error"}
+                  />
+                  <div style={errors.author && touched.author ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.author && touched.author && errors.author}&nbsp;</div>
 
                   <label htmlFor="description">Description</label>
                   <input
@@ -240,7 +258,7 @@ const EditBook = () => {
                   <div style={errors.rentPerDay && touched.rentPerDay ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.rentPerDay && touched.rentPerDay && errors.rentPerDay}&nbsp;</div>
 
-                    <label htmlFor="uploadedBy">uploadedBy</label>
+                  <label htmlFor="uploadedBy">uploadedBy</label>
                   <select
                     name="uploadedBy"
                     onChange={handleChange}
@@ -248,7 +266,7 @@ const EditBook = () => {
                     style={INPUT.box1}
                     required
                   >
-                    <option value={values.uploadedBy._id} label={values.uploadedBy.userName}/>
+                    <option value={values.uploadedBy._id} label={values.uploadedBy.userName} />
                     {userData && userData.map((i, index) => {
                       return (<>
                         <option value={i._id}>{i.userName}</option>

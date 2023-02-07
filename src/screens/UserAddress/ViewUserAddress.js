@@ -5,11 +5,11 @@ import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const ViewUser = () => {
+const ViewUserAddress = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
-  const [user, setUser] = useState('')
+  const [userAddress, setUserAddress] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -20,17 +20,17 @@ const ViewUser = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-single-user/${id}`)
+    async function getAddress() {
+      await axios.get(`${API}/user/get-single-address/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUser(resApi.data.msg);
+          setUserAddress(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
+    } getAddress()
   }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
@@ -48,7 +48,7 @@ const ViewUser = () => {
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>View User</p>
+        <p>View User Address</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -60,53 +60,37 @@ const ViewUser = () => {
             <thead className='gviewthpre'>
               <tr>
                 <th>Unique ID</th>
-                <td>{user?._id}</td></tr>
+                <td>{userAddress?._id}</td></tr>
 
               <tr>
-                <th>User Name</th>
-                <td>{user?.userName}</td></tr>
+                <th>Address Line</th>
+                <td>{userAddress?.addressLine}</td></tr>
 
               <tr>
-                <th>Full Name</th>
-                <td>{user?.fullName}</td></tr>
+                <th>City</th>
+                <td>{userAddress?.city}</td></tr>
 
               <tr>
-                <th>Email</th>
-                <td>{user?.email}</td></tr>
+                <th>State</th>
+                <td>{userAddress?.state}</td></tr>
 
               <tr>
-                <th>Phone No.</th>
-                <td>{user?.phone}</td></tr>
+                <th>Zip Code</th>
+                <td>{userAddress?.zipCode}</td></tr>
 
               <tr>
-                <th>Role</th>
-                <td>{user?.role}</td></tr>
+                <th>Country</th>
+                <td>{userAddress?.country}</td></tr>
 
               <tr>
-                <th>Books Added</th>
-                <td>{user.booksAdded?.length}</td>
-              </tr>
-
-              <tr>
-                <th style={{display:'flex'}}>All Books</th>
-                <td>{user.booksAdded?.length ?
-                  user.booksAdded.map((i) => {
-                    return (<>
-                      <p><strong>Id :&nbsp;</strong>{i._id}</p><p><strong>Book Name :&nbsp;</strong>{i.bookName}</p><br/>
-                    </>)
-                  })
-                  : null}</td>
-              </tr>
-
-              <tr>
-                <th>Register At</th>
+                <th>Created At</th>
                 <td>
-                  {new Date(`${user?.createdAt}`).toDateString()}<span> , {`${formatAMPM(user?.createdAt)}`}</span>
+                  {new Date(`${userAddress?.createdAt}`).toDateString()}<span> , {`${formatAMPM(userAddress?.createdAt)}`}</span>
                 </td></tr>
 
-              <tr><th>Profile Updated At</th>
+              <tr><th>Updated At</th>
                 <td>
-                  {new Date(`${user?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(user?.updatedAt)}`}</span>
+                  {new Date(`${userAddress?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(userAddress?.updatedAt)}`}</span>
                 </td></tr>
             </thead>
           </table>
@@ -117,4 +101,4 @@ const ViewUser = () => {
   )
 }
 
-export default ViewUser
+export default ViewUserAddress

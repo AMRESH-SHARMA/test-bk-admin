@@ -17,7 +17,6 @@ const EditUser = () => {
   const maxUserName = 50
   const maxEmail = 100
   const maxPhone = 10
-  const maxCity = 50
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -59,7 +58,6 @@ const EditUser = () => {
               userName: user?.userName || "",
               email: user?.email || "",
               phone: user?.phone || "",
-              city: user?.city || "",
               uniqueId: user._id || "",
               timestamp: new Date()
             }}
@@ -91,9 +89,6 @@ const EditUser = () => {
               phone: Yup.number('only numbers allowed')
                 .integer('only numbers allowed')
                 .max(9999999999, `maximum ${maxPhone} digits allowed`)
-                .required("Required"),
-              city: Yup.string()
-                .max(maxCity, `maximum ${maxCity} characters allowed`)
                 .required("Required"),
             })}
           >
@@ -165,24 +160,6 @@ const EditUser = () => {
                   </div>
                   <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.phone && touched.phone && errors.phone}&nbsp;</div>
-
-                  <label htmlFor="city">City</label>
-                  <input
-                    id="city"
-                    name="city"
-                    type="text"
-                    placeholder="Enter your city"
-                    value={values.city}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.city && touched.city && "error"}
-                  />
-                  <div style={maxCity - values.city.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCity - values.city.length) + '/' + maxCity}</p>
-                  </div>
-                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.city && touched.city && errors.city}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

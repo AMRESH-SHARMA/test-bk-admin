@@ -1,7 +1,7 @@
 [
   {
     "title": "Users",
-    "icon": "fa fa-user",
+    "icon": "fa fa-users",
     "path": "/users"
   },
   {
@@ -24,7 +24,7 @@
   },
   {
     "title": "Profile",
-    "icon": "bi-gear-fill",
+    "icon": "fa fa-user",
     "childrens": [
       {
         "title": "Change Password",
@@ -38,7 +38,7 @@
   },
   {
     "title": "Configuration",
-    "icon": "bi-gear-fill",
+    "icon": "fa fa-cog",
     "childrens": [
       {
         "title": "Internet Handling Fees",

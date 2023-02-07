@@ -53,6 +53,10 @@ import Delivered from './screens/Order Management/Delivered/Delivered';
 import Cancelled from './screens/Order Management/Cancelled/Cancelled';
 import Returned from './screens/Order Management/Returned/Returned';
 import ViewNewOrder from './screens/Order Management/NewOrder/ViewNewOrder';
+import UserAddress from './screens/UserAddress/UserAddress';
+import AddUserAddress from './screens/UserAddress/AddUserAddress';
+import EditUserAddress from './screens/UserAddress/EditUserAddress';
+import ViewUserAddress from './screens/UserAddress/ViewUserAddress';
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -107,6 +111,12 @@ const App = () => {
           <Route path='/users/edit/:id' element={<EditUser />} />
           <Route path='/users/view/:id' element={<ViewUser />} />
           <Route path='/users/view/book/:id' element={<ViewUserBook />} />
+
+          {/* USERS   ADDRESS */}
+          <Route path='/users/address/:userId' element={<UserAddress />} />
+          <Route path='/users/address/add/:userId' element={<AddUserAddress />} />
+          <Route path='/users/address/edit/:id' element={<EditUserAddress />} />
+          <Route path='/users/address/view/:id' element={<ViewUserAddress />} />
 
           {/* BOOKS */}
           <Route path='/books' element={<Books />} />

@@ -2,7 +2,16 @@
   {
     "title": "Users",
     "icon": "fa fa-user",
-    "path": "/users"
+    "childrens": [
+      {
+        "title": "Users",
+        "path": "/users"
+      },
+      {
+        "title": "User Address",
+        "path": "/users/address"
+      }
+    ]
   },
   {
     "title": "Books",
@@ -144,10 +153,10 @@
   },
   {
     "title": "Log out",
-    "icon": "fa fa-sign-out fa-lg", 
+    "icon": "fa fa-sign-out fa-lg",
     "path": "/logout"
   },
-    {
+  {
     "title": "Settings",
     "icon": "bi-gear-fill",
     "childrens": [
