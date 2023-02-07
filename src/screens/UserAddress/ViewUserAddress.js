@@ -6,10 +6,10 @@ import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 
 const ViewUserAddress = () => {
-  let { id } = useParams();
+  let { addressId } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
-  const [userAddress, setUserAddress] = useState('')
+  const [userAddress, setUserAddress] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -21,7 +21,7 @@ const ViewUserAddress = () => {
 
   useEffect(() => {
     async function getAddress() {
-      await axios.get(`${API}/user/get-single-address/${id}`)
+      await axios.get(`${API}/user/get-single-address/${addressId}`)
         .then((resApi) => {
           console.log(resApi);
           setUserAddress(resApi.data.msg);
@@ -31,7 +31,7 @@ const ViewUserAddress = () => {
           handleAlert(e.response.data.msg, 'red')
         });
     } getAddress()
-  }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
+  }, [addressId])  // eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
   function formatAMPM(date) {
@@ -63,8 +63,16 @@ const ViewUserAddress = () => {
                 <td>{userAddress?._id}</td></tr>
 
               <tr>
-                <th>Address Line</th>
-                <td>{userAddress?.addressLine}</td></tr>
+                <th>Address Line 1</th>
+                <td>{userAddress?.addressLine1}</td></tr>
+
+              <tr>
+                <th>Address Line 2</th>
+                <td>{userAddress?.addressLine2}</td></tr>
+
+              <tr>
+                <th>Landmark</th>
+                <td>{userAddress?.landmark}</td></tr>
 
               <tr>
                 <th>City</th>

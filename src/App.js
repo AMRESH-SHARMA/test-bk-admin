@@ -115,8 +115,8 @@ const App = () => {
           {/* USERS   ADDRESS */}
           <Route path='/users/address/:userId' element={<UserAddress />} />
           <Route path='/users/address/add/:userId' element={<AddUserAddress />} />
-          <Route path='/users/address/edit/:id' element={<EditUserAddress />} />
-          <Route path='/users/address/view/:id' element={<ViewUserAddress />} />
+          <Route path='/users/address/edit/:addressId/:userId' element={<EditUserAddress />} />
+          <Route path='/users/address/view/:addressId' element={<ViewUserAddress />} />
 
           {/* BOOKS */}
           <Route path='/books' element={<Books />} />

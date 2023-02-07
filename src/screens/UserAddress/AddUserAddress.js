@@ -13,9 +13,9 @@ const AddUserAddress = () => {
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
   const [uid, setUid] = useState('')
-  const [apiData, setApiData] = useState('')
 
-  const maxAddressLine = 50
+  const maxAddressLine1 = 50
+  const maxAddressLine2 = 50
   const maxLandmark = 20
   const maxCity = 20
   const maxState = 20
@@ -42,20 +42,6 @@ const AddUserAddress = () => {
     } getUid()
   }, [])// eslint-disable-line react-hooks/exhaustive-deps
 
-  useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-users`)
-        .then((resApi) => {
-          console.log(resApi);
-          setApiData(resApi.data.msg.result);
-        })
-        .catch((e) => {
-          console.log(e);
-          handleAlert(e.response.data.msg, 'red')
-        });
-    } getUsers()
-  }, [])  // eslint-disable-line react-hooks/exhaustive-deps
-
   return (<>
     <div className='gcont-container'>
 
@@ -73,7 +59,8 @@ const AddUserAddress = () => {
             enableReinitialize={true}
             initialValues={{
               userId: userId,
-              addressLine: "",
+              addressLine1: "",
+              addressLine2: "",
               landmark: "",
               city: "",
               state: "",
@@ -99,9 +86,11 @@ const AddUserAddress = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              addressLine: Yup.string()
-                .max(maxAddressLine, `maximum ${maxAddressLine} characters allowed`)
+              addressLine1: Yup.string()
+                .max(maxAddressLine1, `maximum ${maxAddressLine1} characters allowed`)
                 .required("Required"),
+              addressLine2: Yup.string()
+                .max(maxAddressLine2, `maximum ${maxAddressLine2} characters allowed`),
               landmark: Yup.string()
                 .max(maxLandmark, `maximum ${maxLandmark} characters allowed`),
               city: Yup.string()
@@ -132,33 +121,57 @@ const AddUserAddress = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="addressLine">Address Line</label>
+                  <label htmlFor="addressLine1">Address Line 1</label>
                   <input
-                    id="addressLine"
-                    name="addressLine"
+                    id="addressLine1"
+                    name="addressLine1"
                     type="text"
-                    placeholder="Enter your address line"
-                    value={values.addressLine}
+                    placeholder="Enter your address line 1"
+                    value={values.addressLine1}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.addressLine && touched.addressLine && "error"}
+                    className={errors.addressLine1 && touched.addressLine1 && "error"}
                   />
-                  <div style={errors.addressLine && touched.addressLine ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.addressLine && touched.addressLine && errors.addressLine}&nbsp;</div>
+                  <div style={maxAddressLine1 - values.addressLine1.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxAddressLine1 - values.addressLine1.length) + '/' + maxAddressLine1}</p>
+                  </div>
+                  <div style={errors.addressLine1 && touched.addressLine1 ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.addressLine1 && touched.addressLine1 && errors.addressLine1}&nbsp;</div>
+
+                  <label htmlFor="addressLine2">Address Line 2</label>
+                  <input
+                    id="addressLine2"
+                    name="addressLine2"
+                    type="text"
+                    placeholder="address line 2 (optional)"
+                    value={values.addressLine2}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.addressLine2 && touched.addressLine2 && "error"}
+                  />
+                  <div style={maxAddressLine2 - values.addressLine2.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxAddressLine2 - values.addressLine2.length) + '/' + maxAddressLine2}</p>
+                  </div>
+                  <div style={errors.addressLine2 && touched.addressLine2 ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.addressLine2 && touched.addressLine2 && errors.addressLine2}&nbsp;</div>
 
                   <label htmlFor="landmark">Landmark</label>
                   <input
                     id="landmark"
                     name="landmark"
                     type="text"
-                    placeholder="Enter your address line"
+                    placeholder="Landmark (optional)"
                     value={values.landmark}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
                     className={errors.landmark && touched.landmark && "error"}
                   />
+                  <div style={maxLandmark - values.landmark.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxLandmark - values.landmark.length) + '/' + maxLandmark}</p>
+                  </div>
                   <div style={errors.landmark && touched.landmark ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.landmark && touched.landmark && errors.landmark}&nbsp;</div>
 
@@ -192,6 +205,9 @@ const AddUserAddress = () => {
                     style={INPUT.box1}
                     className={errors.state && touched.state && "error"}
                   />
+                  <div style={maxState - values.state.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxState - values.state.length) + '/' + maxState}</p>
+                  </div>
                   <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.state && touched.state && errors.state}&nbsp;</div>
 
@@ -223,6 +239,9 @@ const AddUserAddress = () => {
                     style={INPUT.box1}
                     className={errors.country && touched.country && "error"}
                   />
+                  <div style={maxCountry - values.country.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCountry - values.country.length) + '/' + maxCountry}</p>
+                  </div>
                   <div style={errors.country && touched.country ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.country && touched.country && errors.country}&nbsp;</div>
 

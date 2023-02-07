@@ -115,7 +115,7 @@ const UserAddress = () => {
                     <td>{i.zipCode}</td>
                     <td><span className='gtable-btn-panel'>
                       <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/address/view/${i._id}`)}>View</button>
-                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/users/address/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/users/address/edit/${i._id}/${userId}`)}>Edit</button>
                       <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, userId)}>Delete</button>
                     </span>
                     </td>
