@@ -16,6 +16,7 @@ const AddUserAddress = () => {
 
   const maxAddressLine1 = 50
   const maxAddressLine2 = 50
+  const maxType = 20
   const maxLandmark = 20
   const maxCity = 20
   const maxState = 20
@@ -61,6 +62,7 @@ const AddUserAddress = () => {
               userId: userId,
               addressLine1: "",
               addressLine2: "",
+              type: "",
               landmark: "",
               city: "",
               state: "",
@@ -91,6 +93,9 @@ const AddUserAddress = () => {
                 .required("Required"),
               addressLine2: Yup.string()
                 .max(maxAddressLine2, `maximum ${maxAddressLine2} characters allowed`),
+              type: Yup.string()
+                .max(maxType, `maximum ${maxType} characters allowed`)
+                .required("Required"),
               landmark: Yup.string()
                 .max(maxLandmark, `maximum ${maxLandmark} characters allowed`),
               city: Yup.string()
@@ -156,6 +161,24 @@ const AddUserAddress = () => {
                   </div>
                   <div style={errors.addressLine2 && touched.addressLine2 ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.addressLine2 && touched.addressLine2 && errors.addressLine2}&nbsp;</div>
+
+                  <label htmlFor="type">Address Type</label>
+                  <input
+                    id="type"
+                    name="type"
+                    type="text"
+                    placeholder="Enter type of address"
+                    value={values.type}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.type && touched.type && "error"}
+                  />
+                  <div style={maxType - values.type.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxType - values.type.length) + '/' + maxType}</p>
+                  </div>
+                  <div style={errors.type && touched.type ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.type && touched.type && errors.type}&nbsp;</div>
 
                   <label htmlFor="landmark">Landmark</label>
                   <input

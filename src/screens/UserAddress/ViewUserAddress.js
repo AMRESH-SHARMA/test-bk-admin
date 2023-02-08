@@ -71,6 +71,10 @@ const ViewUserAddress = () => {
                 <td>{userAddress?.addressLine2}</td></tr>
 
               <tr>
+                <th>Address Type</th>
+                <td>{userAddress?.type}</td></tr>
+
+              <tr>
                 <th>Landmark</th>
                 <td>{userAddress?.landmark}</td></tr>
 
