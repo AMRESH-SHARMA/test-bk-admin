@@ -150,7 +150,7 @@ const Books = () => {
                       {i.approved ?
                         <button className="gbtn-status gbtn-red" onClick={() => handleSuspend(i._id)}>Suspend</button> :
                         <button className="gbtn-status gbtn-lgreen" onClick={() => handleSuspend(i._id)}>Activate</button>}
-                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy?._id)}>Delete</button>
+                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id, i.uploadedBy)}>Delete</button>
                     </span>
                     </td>
                   </tr>
