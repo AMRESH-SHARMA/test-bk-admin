@@ -71,7 +71,7 @@ const Address = () => {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.put(`${API}/address/update-address/${apiData?._id}`, values)
+                await axios.put(`${API}/address/update-address`, values)
                   .then((resApi) => {
                     console.log(resApi)
                     handleAlert('Address Updated', 'green')

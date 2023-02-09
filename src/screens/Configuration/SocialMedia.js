@@ -65,7 +65,7 @@ const SocialMedia = () => {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.put(`${API}/socialMedia/update-socialMedia/${apiData?._id}`, values)
+                await axios.put(`${API}/socialMedia/update-socialMedia`, values)
                   .then((resApi) => {
                     console.log(resApi)
                     handleAlert('Social Media Updated', 'green')

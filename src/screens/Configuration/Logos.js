@@ -69,7 +69,7 @@ const Logos = () => {
                   formData.append('websiteHeader', values.websiteHeader);
                   formData.append('websiteFooter', values.websiteFooter);
                   formData.append('websiteAdminHeader', values.websiteAdminHeader);
-                  await axios.put(`${API}/logos/update-logos/${apiData?._id}`, formData)
+                  await axios.put(`${API}/logos/update-logos`, formData)
                     .then((resApi) => {
                       console.log(resApi)
                       handleAlert('Logos Updated', 'green')
@@ -95,7 +95,7 @@ const Logos = () => {
 
               {props => {
                 const {
-                  values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
+                  values, touched, errors, isSubmitting, handleBlur, handleSubmit, setFieldValue
                 } = props;
 
                 if (isSubmitting) {

@@ -53,76 +53,76 @@ const InternetHandlinginternetHandlingFeess = () => {
           <Spinner />
         </div>
         :
-      <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
-        <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
-          <Formik
-            enableReinitialize={true}
-            initialValues={{
-              fees: apiData?.fees || "",
-            }}
-            onSubmit={(values, { setSubmitting }) => {
-              setTimeout(async () => {
-                await axios.put(`${API}/internetHandlingFees/update-internetHandlingFees/${apiData?._id}`, values)
-                  .then((resApi) => {
-                    console.log(resApi)
-                    handleAlert('internetHandlingFees Updated', 'green')
-                    navigate(0)
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                    handleAlert(e.response.data.msg, 'red')
-                  })
-                setSubmitting(false);
-              }, 500);
-            }}
+        <div className="gcont-body" style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="gcard" style={{ width: "35rem", padding: '40px' }}>
+            <Formik
+              enableReinitialize={true}
+              initialValues={{
+                fees: apiData?.fees || "",
+              }}
+              onSubmit={(values, { setSubmitting }) => {
+                setTimeout(async () => {
+                  await axios.put(`${API}/internetHandlingFees/update-internetHandlingFees`, values)
+                    .then((resApi) => {
+                      console.log(resApi)
+                      handleAlert('internetHandlingFees Updated', 'green')
+                      navigate(0)
+                    })
+                    .catch((e) => {
+                      console.log(e);
+                      handleAlert(e.response.data.msg, 'red')
+                    })
+                  setSubmitting(false);
+                }, 500);
+              }}
 
-            validationSchema={Yup.object().shape({
-              fees: Yup.string()
-                .required("Required"),
-            })}
-          >
+              validationSchema={Yup.object().shape({
+                fees: Yup.string()
+                  .required("Required"),
+              })}
+            >
 
-            {props => {
-              const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
-              } = props;
+              {props => {
+                const {
+                  values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                } = props;
 
-              if (isSubmitting) {
-                var disableStyle = { cursor: "not-allowed", }
-              }
+                if (isSubmitting) {
+                  var disableStyle = { cursor: "not-allowed", }
+                }
 
-              return (<>
-                <form
-                  onSubmit={handleSubmit}
-                  style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
+                return (<>
+                  <form
+                    onSubmit={handleSubmit}
+                    style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="fees">Internet Handling Fees</label>
-                  <input
-                    id="fees"
-                    name="fees"
-                    type="number"
-                    placeholder="Enter to Add Value"
-                    value={values.fees}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.fees && touched.fees && "error"}
-                  />
-                  <div style={errors.fees && touched.fees ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.fees && touched.fees && errors.fees}&nbsp;</div>
+                    <label htmlFor="fees">Internet Handling Fees</label>
+                    <input
+                      id="fees"
+                      name="fees"
+                      type="number"
+                      placeholder="Enter to Add Value"
+                      value={values.fees}
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      style={INPUT.box1}
+                      className={errors.fees && touched.fees && "error"}
+                    />
+                    <div style={errors.fees && touched.fees ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                      {errors.fees && touched.fees && errors.fees}&nbsp;</div>
 
-                  <div className='gcard-btn-panel'>
-                    <button type="submit" className="gbtn1 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
-                      {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
-                  </div>
-                </form>
-              </>
+                    <div className='gcard-btn-panel'>
+                      <button type="submit" className="gbtn1 gbtn-dblue" style={disableStyle} disabled={isSubmitting}>
+                        {isSubmitting ? <i className="fa fa-refresh fa-1x" /> : 'Save'}</button>
+                    </div>
+                  </form>
+                </>
 
-              );
-            }}
-          </Formik>
-        </div>
-      </div>}
+                );
+              }}
+            </Formik>
+          </div>
+        </div>}
     </div>
 
   </>
