@@ -32,8 +32,8 @@ const NewOrder = () => {
   }
 
   useEffect(() => {
-    async function getOrders() {
-      await axios.get(`${API}/order/get-orders?skip=${skip}&limit=${limit}`)
+    async function getNewOrders() {
+      await axios.get(`${API}/order?status=new&skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
@@ -48,7 +48,7 @@ const NewOrder = () => {
           handleAlert(e.response.data.msg, 'red')
         });
       setApiLoading(false)
-    } getOrders()
+    } getNewOrders()
   }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
@@ -87,37 +87,26 @@ const NewOrder = () => {
                   <th>Order ID</th>
                   <th>Amount</th>
                   <th>Placed On</th>
-                  <th>Status</th>
+                  {/* <th>Status</th> */}
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
-                {/* {apiData && apiData.length ? apiData.map((i) => {
-                  return (<tr key={i._id}>
-                    <td>{i.language}</td>
-                    <td>{i._id}</td>
-                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                    <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>View</button>
-                    </span>
-                    </td>
-                  </tr>
+                {apiData && apiData.length ? apiData.map((i) => {
+                  return (
+                    <tr key={i._id}>
+                      <td>{i._id}</td>
+                      <td>Rs.{i.totalAmountAfterCharges}</td>
+                      <td>{new Date(`${i?.createdAt}`).toDateString()}</td>
+                      {/* <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td> */}
+                      <td><span className='gtable-btn-panel'>
+                        <button className="gbtn2 gbtn-view" onClick={() => navigate(`/order/new/view/${i._id}`)}>View</button>
+                      </span>
+                      </td>
+                    </tr>
                   );
                 })
-                  : <>&nbsp;No Data found</>} */}
-                <tr>
-                  <td>1324545</td>
-                  <td>99</td>
-                  <td>Tue Jan 31 2023 , 2:20 PM</td>
-                  <td>{true?
-                      <button className="gbtn-status gbtn-lgreen">New</button> :
-                      <button className="gbtn-status gbtn-red">inactive</button>}
-                    </td>
-                  <td><span className='gtable-btn-panel'>
-                    <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${123}`)}>View</button>
-                  </span>
-                  </td>
-                </tr>
+                  : <>&nbsp;No Data found</>}
               </tbody>
             </table>
           </div>

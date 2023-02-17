@@ -5,12 +5,13 @@ import axios from "axios";
 import { API } from "../../../API"
 import { IMG } from '../../../assets/constants/theme';
 import { useAlert } from "../../../Redux/actions/useAlert";
+import QRCode from 'react-qr-code'
 
 const ViewNewOrder = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
-  const [book, setBook] = useState('')
+  const [order, setOrder] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -21,17 +22,17 @@ const ViewNewOrder = () => {
   }
 
   useEffect(() => {
-    async function getbooks() {
-      await axios.get(`${API}/book/get-single-book/${id}`)
+    async function getOrderById() {
+      await axios.get(`${API}/order/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setBook(resApi.data.msg);
+          setOrder(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getbooks()
+    } getOrderById()
   }, [id])// eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
@@ -66,7 +67,7 @@ const ViewNewOrder = () => {
                 <thead>
                   <tr>
                     <th><pre>Order ID : </pre></th>
-                    <td>37987365</td></tr>
+                    <td>{order?._id}</td></tr>
 
                   <tr>
                     <th><pre>Order By : </pre></th>
@@ -77,37 +78,27 @@ const ViewNewOrder = () => {
 
               <div style={{ padding: '10px' }}>
 
-                <pre style={{fontWeight:'600',color:'#2C3848F2'}}>Items : </pre>
+                <pre style={{ fontWeight: '600', color: '#2C3848F2' }}>Items : </pre>
                 <br />
 
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <img alt='' src={''} style={{ ...IMG.style2, marginRight: '12px' }} />
-
-                  <div>
-                    <pre>SUV Boys Hunter DPT Shirt - White</pre>
-
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-
+                {order?.items?.map((i) => {
+                  return (<div key={i._id}>
+                    <div style={{ display: 'flex', justifyContent: 'centre' }}>
+                      <img alt='' src={i.itemId?.image1?.url} style={{ ...IMG.style2, marginRight: '12px' }} />
                       <div>
-                        <pre>
-                          <p>Price : Rs.300</p>
-                          <p>IGST : 5%</p>
-                          <p>Total : Rs.630</p>
-                        </pre>
-                      </div>
-
-                      <div>
-                        <pre>
-                          <p>Price : Rs.300</p>
-                          <p>IGST : 5%</p>
-                          <p>Total : Rs.630</p>
-                        </pre>
+                        <pre>{i.itemId?.bookName}</pre>
+                        <p>Price : Rs.{i.itemId?.rentPerDay} /day</p>
+                        <p>Days : {i.noOfDays}</p>
+                        <p>Total : Rs.{i.amount}</p>
                       </div>
                     </div>
+                    <br />
                   </div>
+                  );
+                })
+                }
 
-                </div>
-                <hr/>
+                <hr />
 
               </div>
 
@@ -122,31 +113,40 @@ const ViewNewOrder = () => {
               <table>
                 <thead>
                   <tr>
-                    <th><pre>Status : </pre></th>
-                    <td>37987365</td></tr>
+                    <th><pre>Order ID QR Code : </pre></th>
+                    <td><QRCode
+                      value={JSON.stringify({ order_id: order?._id })}
+                      size={256}
+                      style={IMG.style2}
+                    /></td></tr>
 
                   <tr>
-                    <th><pre>Order ID QR Code : </pre></th>
-                    <td><img alt='' src={''} style={IMG.style2} /></td></tr>
+                    <th><pre>Delivery Fees : </pre></th>
+                    <td>Rs.{order?.deliveryFees}</td></tr>
+
                   <tr>
-                    <th><pre>Amount Paid : </pre></th>
-                    <td>Rs.1260</td></tr>
+                    <th><pre>Internet Handling Fees : </pre></th>
+                    <td>Rs.{order?.internetHandlingFees}</td></tr>
+
+                  <tr>
+                    <th><pre>Service Fees : </pre></th>
+                    <td>Rs.{order?.serviceFees}</td></tr>
 
                   <tr>
                     <th><pre>Address : </pre></th>
-                    <td>pawan, 65g, lucknow, lucknow, Lucknow, Uttar Pradesh, 986587</td></tr>
+                    <td>{order?.address?.addressLine1}, {order?.address?.addressLine2}, {order?.address?.city}, {order?.address?.state}, {order?.address?.zipCode}</td></tr>
 
                   <tr>
                     <th><pre>Contact Number : </pre></th>
-                    <td>8695748569</td></tr>
+                    <td>0000000000</td></tr>
 
                   <tr>
                     <th><pre>Razorpay Order ID : </pre></th>
-                    <td>order_L22nTQJa2aiBS8</td></tr>
+                    <td>{order?.razorpayOrderId}</td></tr>
 
                   <tr>
                     <th><pre>Razorpay Payment ID : </pre></th>
-                    <td>pay_L22np8TxF8iGil</td></tr>
+                    <td>{order?.razorpayPaymentId}</td></tr>
 
                 </thead>
               </table>
@@ -163,7 +163,7 @@ const ViewNewOrder = () => {
 
                   <tr >
                     <th>Order Placed On	:	</th>
-                    <td>9 Jan 2023, 03:53 pm</td></tr>
+                    <td>{new Date(order?.createdAt).toDateString()}</td></tr>
 
                   <tr>
                     <th>Processing Started	: </th>

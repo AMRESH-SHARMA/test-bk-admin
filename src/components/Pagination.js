@@ -26,18 +26,21 @@ const Pagination = (props) => {
   return (
     <div className='gpagination'>
 
-      <span onClick={handlePrev}>◀</span>
-
-      {Array.from(Array(totalPages).keys()).map((i,index) => (
+      <span onClick={handlePrev}>◀</span>&nbsp;
+      {/* 
+      {Array.from(Array(totalPages).keys()).map((i, index) => (
         <span
-        key={index}
+          key={index}
           className='gpagination-entries'
-          onClick={()=>handleClick(i+1)}
+          onClick={() => handleClick(i + 1)}
           style={CURRENT_PAGE === i + 1 ? activePage : null}>
           {i + 1}
-        </span>))}
+        </span>))} */}
 
-      <span onClick={handleNext}>▶</span>
+      <span onClick={handleNext}>▶</span>&nbsp;
+
+      <span>Showing {CURRENT_PAGE} of {totalPages} </span>
+
 
     </div>
   )
