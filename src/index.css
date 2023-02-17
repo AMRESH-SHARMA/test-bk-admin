@@ -362,3 +362,14 @@ td {
 .gpagination {
   cursor: pointer;
 }
+
+/* SCROLL BAR */
+::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #4c73ff; 
+  border-radius: 5px;
+}

@@ -3,7 +3,6 @@ import Spinner from '../../../assets/Spinner/Spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import swal from 'sweetalert'
 import { API } from "../../../API"
 import { useAlert } from "../../../Redux/actions/useAlert";
 import Pagination from '../../../components/Pagination';
@@ -14,7 +13,6 @@ const NewOrder = () => {
   const { displayAlert } = useAlert()
   const [apiData, setApiData] = useState([])
   const [apiloading, setApiLoading] = useState(true)
-  const [loading, setLoading] = useState(false)
 
   //PAGINATION
   const PAGE_SIZE = 5;
@@ -49,20 +47,7 @@ const NewOrder = () => {
         });
       setApiLoading(false)
     } getNewOrders()
-  }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  //change time formate
-  function formatAMPM(date) {
-    var hours = new Date(date).getHours();
-    var minutes = new Date(date).getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
-
+  }, [CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>

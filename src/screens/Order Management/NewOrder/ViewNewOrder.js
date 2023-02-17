@@ -6,12 +6,14 @@ import { API } from "../../../API"
 import { IMG } from '../../../assets/constants/theme';
 import { useAlert } from "../../../Redux/actions/useAlert";
 import QRCode from 'react-qr-code'
+import Spinner from '../../../assets/Spinner/Spinner';
 
 const ViewNewOrder = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
   const [order, setOrder] = useState('')
+  const [apiloading, setApiLoading] = useState(true)
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -31,21 +33,10 @@ const ViewNewOrder = () => {
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
-        });
+        })
+        setApiLoading(false)
     } getOrderById()
   }, [id])// eslint-disable-line react-hooks/exhaustive-deps
-
-  //change time formate
-  function formatAMPM(date) {
-    var hours = new Date(date).getHours();
-    var minutes = new Date(date).getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
 
   return (<>
     <div className='gcont-container'>
@@ -58,138 +49,142 @@ const ViewNewOrder = () => {
         </div>
       </div>
 
-      <div style={{ display: 'flex' }}>
+      {apiloading ?
+        <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
+          <Spinner />
+        </div>
+        :
+        <div style={{ display: 'flex' }}>
+          <div>
+            <div className="gcard gcont-body">
+              <div className='gtable' style={{ overflowX: 'auto' }}>
+                <table style={{ border: 'none' }}>
+                  <thead>
+                    <tr>
+                      <th><pre>Order ID : </pre></th>
+                      <td>{order?._id}</td></tr>
 
-        <div>
-          <div className="gcard gcont-body">
-            <div className='gtable' style={{ overflowX: 'auto' }}>
-              <table style={{ border: 'none' }}>
-                <thead>
-                  <tr>
-                    <th><pre>Order ID : </pre></th>
-                    <td>{order?._id}</td></tr>
+                    <tr>
+                      <th><pre>Order By : </pre></th>
+                      <td>37987365</td></tr>
 
-                  <tr>
-                    <th><pre>Order By : </pre></th>
-                    <td>37987365</td></tr>
+                  </thead>
+                </table>
 
-                </thead>
-              </table>
+                <div style={{ padding: '10px' }}>
 
-              <div style={{ padding: '10px' }}>
+                  <pre style={{ fontWeight: '600', color: '#2C3848F2' }}>Items : </pre>
+                  <br />
 
-                <pre style={{ fontWeight: '600', color: '#2C3848F2' }}>Items : </pre>
-                <br />
-
-                {order?.items?.map((i) => {
-                  return (<div key={i._id}>
-                    <div style={{ display: 'flex', justifyContent: 'centre' }}>
-                      <img alt='' src={i.itemId?.image1?.url} style={{ ...IMG.style2, marginRight: '12px' }} />
-                      <div>
-                        <pre>{i.itemId?.bookName}</pre>
-                        <p>Price : Rs.{i.itemId?.rentPerDay} /day</p>
-                        <p>Days : {i.noOfDays}</p>
-                        <p>Total : Rs.{i.amount}</p>
+                  {order?.items?.map((i) => {
+                    return (<div key={i._id}>
+                      <div style={{ display: 'flex', justifyContent: 'centre' }}>
+                        <img alt='' src={i.itemId?.image1?.url} style={{ ...IMG.style2, marginRight: '12px' }} />
+                        <div>
+                          <pre>{i.itemId?.bookName}</pre>
+                          <p>Price : Rs.{i.itemId?.rentPerDay} /day</p>
+                          <p>Days : {i.noOfDays}</p>
+                          <p>Total : Rs.{i.amount}</p>
+                        </div>
                       </div>
+                      <br />
                     </div>
-                    <br />
-                  </div>
-                  );
-                })
-                }
+                    );
+                  })
+                  }
 
-                <hr />
+                  <hr />
+
+                </div>
 
               </div>
-
             </div>
           </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+
+            <div className="gcard gcont-body">
+              <div className='gtable' style={{ overflowX: 'auto' }}>
+                <table>
+                  <thead>
+                    <tr>
+                      <th><pre>Order ID QR Code : </pre></th>
+                      <td><QRCode
+                        value={JSON.stringify({ order_id: order?._id })}
+                        size={256}
+                        style={IMG.style2}
+                      /></td></tr>
+
+                    <tr>
+                      <th><pre>Delivery Fees : </pre></th>
+                      <td>Rs.{order?.deliveryFees}</td></tr>
+
+                    <tr>
+                      <th><pre>Internet Handling Fees : </pre></th>
+                      <td>Rs.{order?.internetHandlingFees}</td></tr>
+
+                    <tr>
+                      <th><pre>Service Fees : </pre></th>
+                      <td>Rs.{order?.serviceFees}</td></tr>
+
+                    <tr>
+                      <th><pre>Address : </pre></th>
+                      <td>{order?.address?.addressLine1}, {order?.address?.addressLine2}, {order?.address?.city}, {order?.address?.state}, {order?.address?.zipCode}</td></tr>
+
+                    <tr>
+                      <th><pre>Contact Number : </pre></th>
+                      <td>0000000000</td></tr>
+
+                    <tr>
+                      <th><pre>Razorpay Order ID : </pre></th>
+                      <td>{order?.razorpayOrderId}</td></tr>
+
+                    <tr>
+                      <th><pre>Razorpay Payment ID : </pre></th>
+                      <td>{order?.razorpayPaymentId}</td></tr>
+
+                  </thead>
+                </table>
+              </div>
+            </div>
+
+            <div className="gcard gcont-body">
+              <div className='gtable' style={{ overflowX: 'auto' }}>
+
+                <p style={{ fontWeight: '600' }}>Status Timeline : </p>
+
+                <table>
+                  <thead className='gtable2cell'>
+
+                    <tr >
+                      <th>Order Placed On	:	</th>
+                      <td>{new Date(order?.createdAt).toDateString()}</td></tr>
+
+                    <tr>
+                      <th>Processing Started	: </th>
+                      <td>-</td></tr>
+
+                    <tr>
+                      <th>Dispatched On	:	</th>
+                      <td>-</td></tr>
+
+                    <tr>
+                      <th>Cancelled On	:	</th>
+                      <td>-</td></tr>
+
+                    <tr>
+                      <th>Returned On	:	</th>
+                      <td>-</td></tr>
+
+                  </thead>
+                </table>
+              </div>
+            </div>
+
+          </div>
+
         </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-
-          <div className="gcard gcont-body">
-            <div className='gtable' style={{ overflowX: 'auto' }}>
-              <table>
-                <thead>
-                  <tr>
-                    <th><pre>Order ID QR Code : </pre></th>
-                    <td><QRCode
-                      value={JSON.stringify({ order_id: order?._id })}
-                      size={256}
-                      style={IMG.style2}
-                    /></td></tr>
-
-                  <tr>
-                    <th><pre>Delivery Fees : </pre></th>
-                    <td>Rs.{order?.deliveryFees}</td></tr>
-
-                  <tr>
-                    <th><pre>Internet Handling Fees : </pre></th>
-                    <td>Rs.{order?.internetHandlingFees}</td></tr>
-
-                  <tr>
-                    <th><pre>Service Fees : </pre></th>
-                    <td>Rs.{order?.serviceFees}</td></tr>
-
-                  <tr>
-                    <th><pre>Address : </pre></th>
-                    <td>{order?.address?.addressLine1}, {order?.address?.addressLine2}, {order?.address?.city}, {order?.address?.state}, {order?.address?.zipCode}</td></tr>
-
-                  <tr>
-                    <th><pre>Contact Number : </pre></th>
-                    <td>0000000000</td></tr>
-
-                  <tr>
-                    <th><pre>Razorpay Order ID : </pre></th>
-                    <td>{order?.razorpayOrderId}</td></tr>
-
-                  <tr>
-                    <th><pre>Razorpay Payment ID : </pre></th>
-                    <td>{order?.razorpayPaymentId}</td></tr>
-
-                </thead>
-              </table>
-            </div>
-          </div>
-
-          <div className="gcard gcont-body">
-            <div className='gtable' style={{ overflowX: 'auto' }}>
-
-              <p style={{ fontWeight: '600' }}>Status Timeline : </p>
-
-              <table>
-                <thead className='gtable2cell'>
-
-                  <tr >
-                    <th>Order Placed On	:	</th>
-                    <td>{new Date(order?.createdAt).toDateString()}</td></tr>
-
-                  <tr>
-                    <th>Processing Started	: </th>
-                    <td>-</td></tr>
-
-                  <tr>
-                    <th>Dispatched On	:	</th>
-                    <td>-</td></tr>
-
-                  <tr>
-                    <th>Cancelled On	:	</th>
-                    <td>-</td></tr>
-
-                  <tr>
-                    <th>Returned On	:	</th>
-                    <td>-</td></tr>
-
-                </thead>
-              </table>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-
+      }
     </div>
   </>
   )

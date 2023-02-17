@@ -17,11 +17,11 @@ const Pagination = (props) => {
     setCURRENT_PAGE(CURRENT_PAGE - 1)
   }
 
-  const activePage = { color: 'red' }
+  // const activePage = { color: 'red' }
 
-  const handleClick = (param) => {
-    setCURRENT_PAGE(param)
-  }
+  // const handleClick = (param) => {
+  //   setCURRENT_PAGE(param)
+  // }
 
   return (
     <div className='gpagination'>
