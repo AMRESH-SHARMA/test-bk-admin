@@ -7,6 +7,7 @@ import axios from "axios";
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
+import {equalsIgnoringCase} from '../../utils/others'
 
 const EditBook = () => {
   const { id } = useParams()
@@ -16,6 +17,8 @@ const EditBook = () => {
   const [languageData, setLanguageData] = useState([])
   const [genreData, setGenreData] = useState([])
   const [userData, setUserData] = useState([])
+  const [cityData, setCityData] = useState([])
+  const [stateData, setStateData] = useState([])
 
   const maxBookName = 50;
   const maxDescription = 200;
@@ -29,8 +32,8 @@ const EditBook = () => {
   }
 
   useEffect(() => {
-    async function getBooks() {
-      await axios.get(`${API}/book/get-single-book/${id}`)
+    async function getBook() {
+      await axios.get(`${API}/book/${id}`)
         .then((resApi) => {
           console.log(resApi);
           setBook(resApi.data.msg);
@@ -39,14 +42,14 @@ const EditBook = () => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getBooks()
+    } getBook()
   }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     async function getLanguages() {
       await axios.get(`${API}/language/get-languages`)
         .then((resApi) => {
-          console.log(resApi);
+          // console.log(resApi);
           setLanguageData(resApi.data.msg.result);
         })
         .catch((e) => {
@@ -60,7 +63,7 @@ const EditBook = () => {
     async function getGenres() {
       await axios.get(`${API}/genre/get-genres`)
         .then((resApi) => {
-          console.log(resApi);
+          // console.log(resApi);
           setGenreData(resApi.data.msg.result);
         })
         .catch((e) => {
@@ -81,6 +84,34 @@ const EditBook = () => {
           handleAlert(e.response.data.msg, 'red')
         });
     } getUsers()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    async function getStates() {
+      await axios.get(`${API}/state/get-states`)
+        .then((resApi) => {
+          // console.log(resApi);
+          setStateData(resApi.data.msg.result);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getStates()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    async function getCities() {
+      await axios.get(`${API}/city/get-cities`)
+        .then((resApi) => {
+          console.log(resApi);
+          setCityData(resApi.data.msg.result);
+        })
+        .catch((e) => {
+          console.log(e);
+          handleAlert(e.response.data.msg, 'red')
+        });
+    } getCities()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
@@ -106,12 +137,14 @@ const EditBook = () => {
               rentPerDay: book?.rentPerDay || "",
               uniqueId: book?._id || "",
               uploadedBy: book?.uploadedBy || "",
+              state: book?.state || "",
+              city: book?.city || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
                 // console.log(values)
-                await axios.put(`${API}/book/update-book/${id}`, values)
+                await axios.put(`${API}/book/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
                     handleAlert('Book Updated successfully', 'green')
@@ -129,7 +162,7 @@ const EditBook = () => {
               bookName: Yup.string()
                 .max(maxBookName, `maximum ${maxBookName} chars allowed`)
                 .required("Required"),
-                author: Yup.string()
+              author: Yup.string()
                 .required("Required"),
               description: Yup.string()
                 .max(maxDescription, `maximum ${maxDescription} chars allowed`)
@@ -276,6 +309,44 @@ const EditBook = () => {
                   </select>
                   <div style={errors.language && touched.language ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.language && touched.language && errors.language}&nbsp;</div>
+
+                  <label htmlFor="state">State</label>
+                  <select
+                    name="state"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    required
+                  >
+                    <option value={values.state} label={values.state} />
+                    {stateData && stateData?.map((i, index) => {
+                      return (<>
+                        <option value={i.state} label={i.state} />
+                      </>
+                      )
+                    })}
+                  </select>
+                  <div style={errors.state && touched.state ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.state && touched.state && errors.state}&nbsp;</div>
+
+                  <label htmlFor="city">City</label>
+                  <select
+                    name="city"
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    required
+                  >
+                    <option value={values.city} label={values.city} />
+                    {cityData && cityData.map((i, index) => {
+                      return (<>
+                        {equalsIgnoringCase(i.state?.state,values.state )  ? <option value={i.city} label={i.city} /> : null}
+                      </>
+                      )
+                    })}
+                  </select>
+                  <div style={errors.city && touched.city ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.city && touched.city && errors.city}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

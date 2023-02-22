@@ -22,7 +22,7 @@ const ViewBook = () => {
 
   useEffect(() => {
     async function getbooks() {
-      await axios.get(`${API}/book/get-single-book/${id}`)
+      await axios.get(`${API}/book/${id}`)
         .then((resApi) => {
           console.log(resApi);
           setBook(resApi.data.msg);
@@ -118,7 +118,8 @@ const ViewBook = () => {
               <tr>
                 <th style={{display:'flex'}}>Uploaded By</th>
                 <td>
-                  <p><strong>Id :&nbsp;</strong>{book?.uploadedBy}</p>
+                  <p><strong>Id :&nbsp;</strong>{book?.uploadedBy?._id}</p>
+                  <p><strong>Name :&nbsp;</strong>{book?.uploadedBy?.userName}</p>
                 </td></tr>
 
               <tr>

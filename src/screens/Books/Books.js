@@ -34,7 +34,7 @@ const Books = () => {
 
   useEffect(() => {
     async function getBooks() {
-      await axios.get(`${API}/book/get-books?skip=${skip}&limit=${limit}`)
+      await axios.get(`${API}/book?skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
