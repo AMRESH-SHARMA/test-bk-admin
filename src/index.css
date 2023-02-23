@@ -98,6 +98,16 @@ input.error {
   background-color: #f2f2f2;
 }
 
+.gflex-c{
+  display: flex;
+  justify-content: center;
+}
+
+.gflex-s{
+  display: flex;
+  justify-content: space-between;
+}
+
 .gforgotpass {
   text-decoration: none;
   display: inline-flex;
@@ -373,3 +383,5 @@ td {
   background: #4c73ff; 
   border-radius: 5px;
 }
+
+/*  */

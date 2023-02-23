@@ -1,6 +1,6 @@
 import React from 'react'
 import Spinner from '../../assets/Spinner/Spinner';
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
@@ -99,11 +99,12 @@ const Users = () => {
                   return (<tr key={i._id}>
                     <td>{i.userName}</td>
                     <td>{i._id}</td>
-                    <td><Link to={`/users/view/book/${i._id}`}>{i.booksAdded?.length}</Link></td>
+                    <td>
+                      <span className=' gflex-c'><button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/view/book/${i._id}`)}>{i.booksAdded?.length}</button></span>
+                    </td>
                     <td>{i.booksRented?.length}</td>
-                    <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/address/${i._id}`)}>Address</button>
-                    </span>
+                    <td>
+                      <span className=' gflex-c'><button className="gbtn2 gbtn-view" onClick={() => navigate(`/users/address/${i._id}`)}>{i.address?.length}</button></span>
                     </td>
                     <td>{i.approved ?
                       <button className="gbtn-status gbtn-active">Active</button> :

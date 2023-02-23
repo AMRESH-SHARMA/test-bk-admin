@@ -80,7 +80,9 @@ const UserAddress = () => {
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <p>Users / Address</p>
-        <div><button className="gbtn2 gbtn-add" onClick={() => navigate(`/users/address/add/${userId}`)}>Add address</button> </div>
+        <div style={{display:'flex', gap: "10px" }}>
+          <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
+          <button className="gbtn2 gbtn-add" onClick={() => navigate(`/users/address/add/${userId}`)}>Add address</button> </div>
       </div>
 
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
