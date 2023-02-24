@@ -3,6 +3,7 @@ import Spinner from '../../assets/Spinner/Spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import swal from 'sweetalert'
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import Pagination from '../../components/Pagination';
@@ -63,6 +64,31 @@ const DeliveryCarrier = () => {
     setLoading(false)
   }
 
+  const handleDelete = (carrierId) => {
+    swal({
+      title: 'Are you sure?',
+      icon: 'error',
+      buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
+    }).then((value) => {
+      if (value === true) {
+        axios.delete(`${API}/deliveryCarrier/${carrierId}`)
+          .then((res) => {
+            setLoading((prev) => !prev)
+            console.log(res)
+          })
+          .catch((err) => {
+            swal({
+              title: 'Warning',
+              text: 'Something went wrong!',
+              icon: 'error',
+              button: 'Retry',
+              dangerMode: true,
+            })
+          })
+      }
+    })
+  }
+
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -112,6 +138,7 @@ const DeliveryCarrier = () => {
                       {i.approved ?
                         <button className="gbtn-status gbtn-suspend" onClick={() => handleSuspend(i._id)}>Suspend</button> :
                         <button className="gbtn-status gbtn-activate" onClick={() => handleSuspend(i._id)}>Activate</button>}
+                      <button className="gbtn-status gbtn-red" onClick={() => handleDelete(i._id)}>Delete</button>
                     </span>
                     </td>
                   </tr>

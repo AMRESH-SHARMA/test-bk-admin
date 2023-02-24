@@ -4,12 +4,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
+import { IMG } from '../../assets/constants/theme';
 
 const ViewDeliveryCarrier = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
-  const [user, setUser] = useState('')
+  const [apiData, setApiData] = useState('')
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -20,17 +21,17 @@ const ViewDeliveryCarrier = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
+    async function getapiDatas() {
       await axios.get(`${API}/deliveryCarrier/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUser(resApi.data.msg);
+          setApiData(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
+    } getapiDatas()
   }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   //change time formate
@@ -60,31 +61,42 @@ const ViewDeliveryCarrier = () => {
             <thead className='gviewthpre'>
               <tr>
                 <th>Unique ID</th>
-                <td>{user?._id}</td></tr>
+                <td>{apiData?._id}</td></tr>
+
+              {apiData.image?.url
+                &&
+                <tr>
+                  <th>Image</th>
+                  <td><img alt='' src={apiData.image.url} style={IMG.style1} /></td></tr>
+              }
 
               <tr>
                 <th>Carrier Name</th>
-                <td>{user?.carrierName}</td></tr>
+                <td>{apiData?.carrierName}</td></tr>
 
               <tr>
                 <th>Email</th>
-                <td>{user?.email}</td></tr>
+                <td>{apiData?.email}</td></tr>
 
               <tr>
                 <th>Phone No.</th>
-                <td>{user?.phone}</td></tr>
+                <td>{apiData?.phone}</td></tr>
+
+              <tr>
+                <th>Address</th>
+                <td>{apiData?.address}</td></tr>
 
               <tr>
                 <th>Books Delivered</th>
-                <td>{user.booksAdded?.length}</td>
+                <td>{apiData.booksAdded?.length}</td>
               </tr>
 
               <tr>
-                <th style={{display:'flex'}}>All Books</th>
-                <td>{user.booksAdded?.length ?
-                  user.booksAdded.map((i) => {
+                <th style={{ display: 'flex' }}>All Books</th>
+                <td>{apiData.booksAdded?.length ?
+                  apiData.booksAdded.map((i) => {
                     return (<>
-                      <p><strong>Id :&nbsp;</strong>{i._id}</p><p><strong>Book Name :&nbsp;</strong>{i.bookName}</p><br/>
+                      <p><strong>Id :&nbsp;</strong>{i._id}</p><p><strong>Book Name :&nbsp;</strong>{i.bookName}</p><br />
                     </>)
                   })
                   : null}</td>
@@ -93,12 +105,12 @@ const ViewDeliveryCarrier = () => {
               <tr>
                 <th>Register At</th>
                 <td>
-                  {new Date(`${user?.createdAt}`).toDateString()}<span> , {`${formatAMPM(user?.createdAt)}`}</span>
+                  {new Date(`${apiData?.createdAt}`).toDateString()}<span> , {`${formatAMPM(apiData?.createdAt)}`}</span>
                 </td></tr>
 
               <tr><th>Profile Updated At</th>
                 <td>
-                  {new Date(`${user?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(user?.updatedAt)}`}</span>
+                  {new Date(`${apiData?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(apiData?.updatedAt)}`}</span>
                 </td></tr>
             </thead>
           </table>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import PreviewImage from '../../components/PreviewImage';
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
@@ -12,9 +13,10 @@ const EditDeliveryCarrier = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { displayAlert } = useAlert();
-  const [user, setUser] = useState('')
+  const [apiData, setApiData] = useState('')
 
-  const maxUserName = 50
+  const maxAddress = 50
+  const maxCarrierName = 50
   const maxEmail = 100
   const maxPhone = 10
 
@@ -27,24 +29,24 @@ const EditDeliveryCarrier = () => {
   }
 
   useEffect(() => {
-    async function getUsers() {
-      await axios.get(`${API}/user/get-single-user/${id}`)
+    async function getDeliveryCarrier() {
+      await axios.get(`${API}/deliveryCarrier/${id}`)
         .then((resApi) => {
           console.log(resApi);
-          setUser(resApi.data.msg);
+          setApiData(resApi.data.msg);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUsers()
+    } getDeliveryCarrier()
   }, [id])  // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Edit User</p>
+        <p>Edit Delivery Carrier</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-pink' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -55,20 +57,27 @@ const EditDeliveryCarrier = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              userName: user?.userName || "",
-              email: user?.email || "",
-              phone: user?.phone || "",
-              uniqueId: user._id || "",
+              image: apiData?.image?.url || "",
+              carrierName: apiData?.carrierName || "",
+              email: apiData?.email || "",
+              phone: apiData?.phone || "",
+              address: apiData?.address || "",
+              uniqueId: apiData._id || "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                console.log(values)
-                await axios.put(`${API}/user/update-user/${id}`, values)
+                const formData = new FormData();
+                formData.append('image', values.image);
+                formData.append('carrierName', values.carrierName);
+                formData.append('email', values.email);
+                formData.append('phone', values.phone);
+                formData.append('address', values.address);
+                await axios.put(`${API}/deliveryCarrier/${id}`, formData)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Updated successfully', 'green')
-                    navigate('/users')
+                    handleAlert('Updated successfully', 'green')
+                    navigate(-1)
                   })
                   .catch((e) => {
                     console.log(e);
@@ -79,8 +88,8 @@ const EditDeliveryCarrier = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              userName: Yup.string()
-                .max(maxUserName, `maximum ${maxUserName} characters allowed`)
+              carrierName: Yup.string()
+                .max(maxCarrierName, `maximum ${maxCarrierName} characters allowed`)
                 .required("Required"),
               email: Yup.string()
                 .email()
@@ -90,12 +99,15 @@ const EditDeliveryCarrier = () => {
                 .integer('only numbers allowed')
                 .max(9999999999, `maximum ${maxPhone} digits allowed`)
                 .required("Required"),
+              address: Yup.string()
+                .max(maxAddress, `maximum ${maxAddress} characters allowed`)
+                .required("Required"),
             })}
           >
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
               } = props;
 
               if (isSubmitting) {
@@ -107,23 +119,41 @@ const EditDeliveryCarrier = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="userName">User Name</label>
+                  <label htmlFor="image">Image</label>
                   <input
-                    id="userName"
-                    name="userName"
+                    id="image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => {
+                      console.log(event.currentTarget.files[0])
+                      setFieldValue("image", event.currentTarget.files[0])
+                    }}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.image && touched.image && "error"}
+                  />
+                  <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.image && touched.image && errors.image}&nbsp;</div>
+                  {values.image && <PreviewImage file={values.image} />}
+
+                  <label htmlFor="carrierName">Carrier Name</label>
+                  <input
+                    id="carrierName"
+                    name="carrierName"
                     type="text"
-                    placeholder="Enter your userName"
-                    value={values.userName}
+                    placeholder="Enter your carrierName"
+                    value={values.carrierName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.userName && touched.userName && "error"}
+                    className={errors.carrierName && touched.carrierName && "error"}
                   />
-                  <div style={maxUserName - values.userName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxUserName - values.userName.length) + '/' + maxUserName}</p>
+                  <div style={maxCarrierName - values.carrierName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCarrierName - values.carrierName.length) + '/' + maxCarrierName}</p>
                   </div>
-                  <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.userName && touched.userName && errors.userName}&nbsp;</div>
+                  <div style={errors.carrierName && touched.carrierName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.carrierName && touched.carrierName && errors.carrierName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -160,6 +190,24 @@ const EditDeliveryCarrier = () => {
                   </div>
                   <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
                     {errors.phone && touched.phone && errors.phone}&nbsp;</div>
+
+                  <label htmlFor="address">Address</label>
+                  <input
+                    id="address"
+                    name="address"
+                    type="text"
+                    placeholder="Enter address"
+                    value={values.address}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.address && touched.address && "error"}
+                  />
+                  <div style={maxAddress - values.address.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxAddress - values.address.length) + '/' + maxAddress}</p>
+                  </div>
+                  <div style={errors.address && touched.address ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.address && touched.address && errors.address}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input

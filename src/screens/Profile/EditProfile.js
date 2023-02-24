@@ -219,7 +219,6 @@ const EditProfile = () => {
                     />
                     <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
                       {errors.image && touched.image && errors.image}&nbsp;</div>
-
                     {values.image && <PreviewImage file={values.image} />}
 
                     <label htmlFor="timestamp">TimeStamp</label>

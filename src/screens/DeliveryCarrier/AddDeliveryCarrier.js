@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Formik } from "formik";
 import * as Yup from "yup";
 import axios from "axios";
+import PreviewImage from '../../components/PreviewImage';
 import { ERROR, INPUT } from "../../assets/constants/theme";
 import { API } from "../../API"
 import { useNavigate } from "react-router-dom";
@@ -13,7 +14,7 @@ const AddDeliveryCarrier = () => {
   const { displayAlert } = useAlert();
   const [uid, setUid] = useState('')
 
-  const maxAddress = 200
+  const maxAddress = 50
   const maxCarrierName = 50
   const maxEmail = 100
   const maxPhone = 10
@@ -64,7 +65,14 @@ const AddDeliveryCarrier = () => {
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/deliveryCarrier`, values)
+                const formData = new FormData();
+                formData.append('image', values.image);
+                formData.append('carrierName', values.carrierName);
+                formData.append('email', values.email);
+                formData.append('phone', values.phone);
+                formData.append('address', values.address);
+                formData.append('uniqueId', values.uniqueId);
+                await axios.post(`${API}/deliveryCarrier`, formData)
                   .then((resApi) => {
                     console.log(resApi)
                     handleAlert('added', 'green')
@@ -97,7 +105,7 @@ const AddDeliveryCarrier = () => {
 
             {props => {
               const {
-                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit
+                values, touched, errors, isSubmitting, handleChange, handleBlur, handleSubmit, setFieldValue
               } = props;
 
               if (isSubmitting) {
@@ -108,6 +116,25 @@ const AddDeliveryCarrier = () => {
                 <form
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
+
+                  <label htmlFor="image">Image</label>
+                  <input
+                    id="image"
+                    name="image"
+                    type="file"
+                    accept="image/*"
+                    required
+                    onChange={(event) => {
+                      console.log(event.currentTarget.files[0])
+                      setFieldValue("image", event.currentTarget.files[0])
+                    }}
+                    onBlur={handleBlur}
+                    style={INPUT.box1}
+                    className={errors.image && touched.image && "error"}
+                  />
+                  <div style={errors.image && touched.image ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.image && touched.image && errors.image}&nbsp;</div>
+                  {values.image && <PreviewImage file={values.image} />}
 
                   <label htmlFor="carrierName">Carrier Name</label>
                   <input
