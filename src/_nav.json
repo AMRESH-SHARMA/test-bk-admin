@@ -75,6 +75,11 @@
     ]
   },
   {
+    "title": "Delivery carrier",
+    "icon": "fa fa-users",
+    "path": "/deliveryCarrier"
+  },
+  {
     "title": "Order Management",
     "icon": "fa fa-shopping-cart",
     "childrens": [

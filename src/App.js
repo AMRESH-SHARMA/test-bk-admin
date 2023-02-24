@@ -47,6 +47,7 @@ import AddServiceFees from './screens/Configuration/ServiceFees/AddServiceFees';
 import EditServiceFees from './screens/Configuration/ServiceFees/EditServiceFees';
 
 import NewOrder from './screens/Order Management/NewOrder/NewOrder';
+import UpdateNewOrder from './screens/Order Management/NewOrder/UpdateNewOrder';
 import Processing from './screens/Order Management/Processing/Processing';
 import Dispatched from './screens/Order Management/Dispatched/Dispatched';
 import Delivered from './screens/Order Management/Delivered/Delivered';
@@ -57,6 +58,11 @@ import UserAddress from './screens/UserAddress/UserAddress';
 import AddUserAddress from './screens/UserAddress/AddUserAddress';
 import EditUserAddress from './screens/UserAddress/EditUserAddress';
 import ViewUserAddress from './screens/UserAddress/ViewUserAddress';
+import DeliveryCarrier from './screens/DeliveryCarrier/DeliveryCarrier';
+import AddDeliveryCarrier from './screens/DeliveryCarrier/AddDeliveryCarrier';
+import EditDeliveryCarrier from './screens/DeliveryCarrier/EditDeliveryCarrier';
+import ViewDeliveryCarrier from './screens/DeliveryCarrier/ViewDeliveryCarrier';
+
 
 // Pages
 const Login = React.lazy(() => import('./screens/Pages/Login'))
@@ -156,9 +162,17 @@ const App = () => {
           <Route path='/configuration/address' element={<Address />} />
           <Route path='/configuration/logos' element={<Logos />} />
 
+          {/* DELIVERY CARRIER */}
+          <Route path='/deliveryCarrier' element={<DeliveryCarrier />} />
+          <Route path='/deliveryCarrier/add' element={<AddDeliveryCarrier />} />
+          <Route path='/deliveryCarrier/edit/:id' element={<EditDeliveryCarrier />} />
+          <Route path='/deliveryCarrier/view/:id' element={<ViewDeliveryCarrier />} />
+          {/* <Route path='/deliveryCarrier/view/book/:id' element={<ViewUserBook />} /> */}
+
           {/* ORDER MANAGEMENT */}
           <Route path='/order/new' element={<NewOrder />} />
           <Route path='/order/new/view/:id' element={<ViewNewOrder />} />
+          <Route path='/order/new/updateNewOrder/:id' element={<UpdateNewOrder />} />
 
           <Route path='/order/processing' element={<Processing />} />
           <Route path='/order/dispatched' element={<Dispatched />} />

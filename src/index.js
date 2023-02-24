@@ -10,7 +10,7 @@ import axios from 'axios'
 
 const setupAxios = () => {
 
-  axios.defaults.baseURL = 'https://test-bk-api.vercel.app';
+  // axios.defaults.baseURL = 'https://test-bk-api.vercel.app';
   // axios.defaults.baseURL = 'http://localhost:8080';
   axios.defaults.headers = {
     'authorization': `${localStorage.getItem('token')}`

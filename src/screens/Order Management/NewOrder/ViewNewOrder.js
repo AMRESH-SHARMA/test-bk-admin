@@ -44,7 +44,7 @@ const ViewNewOrder = () => {
         <p>View Order Details</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-print' onClick={() => navigate(-1)}>Print</button>
-          <button type="button" className='gbtn2 gbtn-update' onClick={() => navigate(-1)}>Update</button>
+          <button type="button" className='gbtn2 gbtn-update' onClick={() => navigate(`/order/new/updateNewOrder/${id}`)}>Update</button>
           <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
       </div>
