@@ -75,9 +75,9 @@
     ]
   },
   {
-    "title": "Delivery carrier",
+    "title": "Courier",
     "icon": "fa fa-users",
-    "path": "/deliveryCarrier"
+    "path": "/courier"
   },
   {
     "title": "Order Management",

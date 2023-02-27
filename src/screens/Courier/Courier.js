@@ -8,7 +8,7 @@ import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import Pagination from '../../components/Pagination';
 
-const DeliveryCarrier = () => {
+const Courier = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
@@ -33,7 +33,7 @@ const DeliveryCarrier = () => {
 
   useEffect(() => {
     async function getUsers() {
-      await axios.get(`${API}/deliveryCarrier?skip=${skip}&limit=${limit}`)
+      await axios.get(`${API}/courier?skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
@@ -53,7 +53,7 @@ const DeliveryCarrier = () => {
 
   const handleSuspend = async (param) => {
     setLoading(true)
-    await axios.put(`${API}/deliveryCarrier`, { carrierId: param })
+    await axios.put(`${API}/courier`, { courierId: param })
       .then((resApi) => {
         console.log(resApi);
       })
@@ -64,14 +64,14 @@ const DeliveryCarrier = () => {
     setLoading(false)
   }
 
-  const handleDelete = (carrierId) => {
+  const handleDelete = (courierId) => {
     swal({
       title: 'Are you sure?',
       icon: 'error',
       buttons: { Yes: { text: 'Yes', value: true }, Cancel: { text: 'Cancel', value: 'cancel' } },
     }).then((value) => {
       if (value === true) {
-        axios.delete(`${API}/deliveryCarrier/${carrierId}`)
+        axios.delete(`${API}/courier/${courierId}`)
           .then((res) => {
             setLoading((prev) => !prev)
             console.log(res)
@@ -92,8 +92,8 @@ const DeliveryCarrier = () => {
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Delivery Carrier</p>
-        <div><button className="gbtn2 gbtn-add" onClick={() => navigate('/deliveryCarrier/add')}>Add Carrier</button></div>
+        <p>Courier</p>
+        <div><button className="gbtn2 gbtn-add" onClick={() => navigate('/courier/add')}>Add Courier</button></div>
       </div>
 
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -111,7 +111,7 @@ const DeliveryCarrier = () => {
             <table >
               <thead className='gthead-light'>
                 <tr>
-                  <th>Carrier Name</th>
+                  <th>Courier Name</th>
                   <th>Unique ID</th>
                   <th>Books Added</th>
                   <th>Books Rented</th>
@@ -122,10 +122,10 @@ const DeliveryCarrier = () => {
               <tbody>
                 {ApiData && ApiData.length ? ApiData.map((i) => {
                   return (<tr key={i._id}>
-                    <td>{i.carrierName}</td>
+                    <td>{i.courierName}</td>
                     <td>{i._id}</td>
                     <td>
-                      <span className=' gflex-c'><button className="gbtn2 gbtn-view" onClick={() => navigate(`/deliveryCarrier/view/${i._id}`)}>{i.booksAdded?.length}</button></span>
+                      <span className=' gflex-c'><button className="gbtn2 gbtn-view" onClick={() => navigate(`/courier/view/${i._id}`)}>{i.booksAdded?.length}</button></span>
                     </td>
                     <td>{i.booksRented?.length}</td>
                     <td>{i.approved ?
@@ -133,8 +133,8 @@ const DeliveryCarrier = () => {
                       <button className="gbtn-status gbtn-inactive">inactive</button>}
                     </td>
                     <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/deliveryCarrier/view/${i._id}`)}>View</button>
-                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/deliveryCarrier/edit/${i._id}`)}>Edit</button>
+                      <button className="gbtn2 gbtn-view" onClick={() => navigate(`/courier/view/${i._id}`)}>View</button>
+                      <button className="gbtn2 gbtn-edit" onClick={() => navigate(`/courier/edit/${i._id}`)}>Edit</button>
                       {i.approved ?
                         <button className="gbtn-status gbtn-suspend" onClick={() => handleSuspend(i._id)}>Suspend</button> :
                         <button className="gbtn-status gbtn-activate" onClick={() => handleSuspend(i._id)}>Activate</button>}
@@ -153,4 +153,4 @@ const DeliveryCarrier = () => {
   )
 }
 
-export default DeliveryCarrier
+export default Courier

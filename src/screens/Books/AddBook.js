@@ -127,7 +127,7 @@ const AddBook = () => {
                 formData.append('rentPerDay', values.rentPerDay);
                 formData.append('uniqueId', values.uniqueId);
                 formData.append('uploadedBy', values.uploadedBy);
-                await axios.post(`${API}/book/create-book`, formData, {
+                await axios.post(`${API}/book`, formData, {
                   headers: {
                     "Content-Type": "multipart/form-data",
                   }

@@ -4,19 +4,14 @@ import * as Yup from "yup";
 import axios from "axios";
 import { ERROR, INPUT } from "../../../assets/constants/theme";
 import { API } from "../../../API"
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "../../../Redux/actions/useAlert";
 
 const UpdateNewOrder = () => {
-
+  let { id } = useParams();
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
-  const [uid, setUid] = useState('')
-
-  const maxUserName = 50
-  const maxFullName = 50
-  const maxEmail = 100
-  const maxPhone = 10
+  const [courierData, setCourierData] = useState([])
 
   const handleAlert = (param1, param2) => {
     displayAlert({
@@ -27,23 +22,24 @@ const UpdateNewOrder = () => {
   }
 
   useEffect(() => {
-    async function getUid() {
-      await axios.get(`${API}/getUid`)
+    async function get() {
+      await axios.get(`${API}/courier/approved`)
         .then((resApi) => {
-          setUid(resApi.data.msg);
+          console.log(resApi);
+          setCourierData(resApi.data.msg.result);
         })
         .catch((e) => {
           console.log(e);
           handleAlert(e.response.data.msg, 'red')
         });
-    } getUid()
-  }, [])// eslint-disable-line react-hooks/exhaustive-deps
+    } get()
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add Delivery Details</p>
+        <p>Update Order Status</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -55,20 +51,17 @@ const UpdateNewOrder = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              userName: "",
-              fullName: "",
-              email: "",
-              phone: "",
-              uniqueId: uid?._id || "",
+              courier: "",
               timestamp: new Date()
             }}
             onSubmit={(values, { setSubmitting }) => {
               setTimeout(async () => {
-                await axios.post(`${API}/user/create-user`, values)
+                values.status = "dispatched";
+                await axios.put(`${API}/order/${id}`, values)
                   .then((resApi) => {
                     console.log(resApi)
-                    handleAlert('User Created', 'green')
-                    navigate('/users')
+                    handleAlert('updated', 'green')
+                    navigate("/order/new")
                   })
                   .catch((e) => {
                     console.log(e);
@@ -79,16 +72,6 @@ const UpdateNewOrder = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              userName: Yup.string()
-                .max(maxUserName, `maximum ${maxUserName} characters allowed`)
-                .required("Required"),
-              email: Yup.string()
-                .email()
-                .max(maxEmail, `maximum ${maxEmail} characters allowed`)
-                .required("Required"),
-              phone: Yup.string()
-                .max(maxPhone, `maximum ${maxPhone} digits allowed`)
-                .required("Required"),
             })}
           >
 
@@ -106,95 +89,32 @@ const UpdateNewOrder = () => {
                   onSubmit={handleSubmit}
                   style={{ display: 'flex', justifyContent: 'space-evenly', flexDirection: 'column' }}>
 
-                  <label htmlFor="userName">Name</label>
-                  <input
-                    id="userName"
-                    name="userName"
-                    type="text"
-                    placeholder="Enter your user name"
-                    value={values.userName}
+                  <label htmlFor="courier"> Courier </label>
+                  <select
+                    name="courier"
+                    value={values.courier}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.userName && touched.userName && "error"}
-                  />
-                  <div style={maxUserName - values.userName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxUserName - values.userName.length) + '/' + maxUserName}</p>
-                  </div>
-                  <div style={errors.userName && touched.userName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.userName && touched.userName && errors.userName}&nbsp;</div>
+                    required
+                  >
+                    <option value="" label="Select courier" />
+                    {courierData && courierData.map((i, index) => {
+                      return (<>
+                        <option value={i._id} label={i.courierName} />
+                      </>
+                      )
+                    })}
+                  </select>
+                  <div style={errors.courier && touched.courier ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.courier && touched.courier && errors.courier}&nbsp;</div>
 
-                  {/* <label htmlFor="fullName">Full Name</label>
-                  <input
-                    id="fullName"
-                    name="fullName"
-                    type="text"
-                    placeholder="Enter your fullName"
-                    value={values.fullName}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.fullName && touched.fullName && "error"}
-                  />
-                  <div style={maxFullName - values.fullName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxFullName - values.fullName.length) + '/' + maxFullName}</p>
-                  </div>
-                  <div style={errors.fullName && touched.fullName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.fullName && touched.fullName && errors.fullName}&nbsp;</div> */}
-
-                  {/* <label htmlFor="email">Email</label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="text"
-                    placeholder="Enter your email"
-                    value={values.email}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.email && touched.email && "error"}
-                  />
-                  <div style={maxEmail - values.email.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxEmail - values.email.length) + '/' + maxEmail}</p>
-                  </div>
-                  <div style={errors.email && touched.email ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.email && touched.email && errors.email}&nbsp;</div> */}
-
-                  <label htmlFor="phone">Phone Number</label>
-                  <input
-                    id="phone"
-                    name="phone"
-                    type="number"
-                    placeholder="Enter your phone"
-                    value={values.phone}
-                    onChange={handleChange}
-                    onBlur={handleBlur}
-                    style={INPUT.box1}
-                    className={errors.phone && touched.phone && "error"}
-                  />
-                  <div style={maxPhone - values.phone.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxPhone - values.phone.toString().length) + '/' + maxPhone}</p>
-                  </div>
-                  <div style={errors.phone && touched.phone ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.phone && touched.phone && errors.phone}&nbsp;</div>
 
                   <label htmlFor="timestamp">TimeStamp</label>
                   <input
                     id="timestamp"
                     name="timestamp"
                     value={new Date()}
-                    onChange={handleChange}
-                    style={INPUT.boxdisable}
-                    disabled
-                  />
-                  <div style={ERROR.inputFFalse}>
-                  </div>
-
-                  <label htmlFor="uniqueId">Unique Id</label>
-                  <input
-                    id="uniqueId"
-                    name="uniqueId"
-                    value={values.uniqueId}
                     onChange={handleChange}
                     style={INPUT.boxdisable}
                     disabled

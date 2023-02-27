@@ -8,14 +8,14 @@ import { API } from "../../API"
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../Redux/actions/useAlert";
 
-const AddDeliveryCarrier = () => {
+const AddCourier = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert();
   const [uid, setUid] = useState('')
 
   const maxAddress = 50
-  const maxCarrierName = 50
+  const maxCourierName = 50
   const maxEmail = 100
   const maxPhone = 10
 
@@ -44,7 +44,7 @@ const AddDeliveryCarrier = () => {
     <div className='gcont-container'>
 
       <div className="gcont-title " style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>Add Carrier</p>
+        <p>Add Courier</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -56,7 +56,7 @@ const AddDeliveryCarrier = () => {
           <Formik
             enableReinitialize={true}
             initialValues={{
-              carrierName: "",
+              courierName: "",
               email: "",
               phone: "",
               address: "",
@@ -67,12 +67,12 @@ const AddDeliveryCarrier = () => {
               setTimeout(async () => {
                 const formData = new FormData();
                 formData.append('image', values.image);
-                formData.append('carrierName', values.carrierName);
+                formData.append('courierName', values.courierName);
                 formData.append('email', values.email);
                 formData.append('phone', values.phone);
                 formData.append('address', values.address);
                 formData.append('uniqueId', values.uniqueId);
-                await axios.post(`${API}/deliveryCarrier`, formData)
+                await axios.post(`${API}/courier`, formData)
                   .then((resApi) => {
                     console.log(resApi)
                     handleAlert('added', 'green')
@@ -87,8 +87,8 @@ const AddDeliveryCarrier = () => {
             }}
 
             validationSchema={Yup.object().shape({
-              carrierName: Yup.string()
-                .max(maxCarrierName, `maximum ${maxCarrierName} characters allowed`)
+              courierName: Yup.string()
+                .max(maxCourierName, `maximum ${maxCourierName} characters allowed`)
                 .required("Required"),
               email: Yup.string()
                 .email()
@@ -136,23 +136,23 @@ const AddDeliveryCarrier = () => {
                     {errors.image && touched.image && errors.image}&nbsp;</div>
                   {values.image && <PreviewImage file={values.image} />}
 
-                  <label htmlFor="carrierName">Carrier Name</label>
+                  <label htmlFor="courierName">Courier Name</label>
                   <input
-                    id="carrierName"
-                    name="carrierName"
+                    id="courierName"
+                    name="courierName"
                     type="text"
                     placeholder="Enter name"
-                    value={values.carrierName}
+                    value={values.courierName}
                     onChange={handleChange}
                     onBlur={handleBlur}
                     style={INPUT.box1}
-                    className={errors.carrierName && touched.carrierName && "error"}
+                    className={errors.courierName && touched.courierName && "error"}
                   />
-                  <div style={maxCarrierName - values.carrierName.length < 0 ? { display: 'block' } : null}>
-                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCarrierName - values.carrierName.length) + '/' + maxCarrierName}</p>
+                  <div style={maxCourierName - values.courierName.length < 0 ? { display: 'block' } : null}>
+                    <p style={{ fontSize: '12px' }}> {'Characters: ' + (maxCourierName - values.courierName.length) + '/' + maxCourierName}</p>
                   </div>
-                  <div style={errors.carrierName && touched.carrierName ? ERROR.inputFTrue : ERROR.inputFFalse}>
-                    {errors.carrierName && touched.carrierName && errors.carrierName}&nbsp;</div>
+                  <div style={errors.courierName && touched.courierName ? ERROR.inputFTrue : ERROR.inputFFalse}>
+                    {errors.courierName && touched.courierName && errors.courierName}&nbsp;</div>
 
                   <label htmlFor="email">Email</label>
                   <input
@@ -252,4 +252,4 @@ const AddDeliveryCarrier = () => {
   )
 }
 
-export default AddDeliveryCarrier
+export default AddCourier

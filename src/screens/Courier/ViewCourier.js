@@ -6,7 +6,7 @@ import { API } from "../../API"
 import { useAlert } from "../../Redux/actions/useAlert";
 import { IMG } from '../../assets/constants/theme';
 
-const ViewDeliveryCarrier = () => {
+const ViewCourier = () => {
   let { id } = useParams();
   const { displayAlert } = useAlert()
   const navigate = useNavigate()
@@ -22,7 +22,7 @@ const ViewDeliveryCarrier = () => {
 
   useEffect(() => {
     async function getapiDatas() {
-      await axios.get(`${API}/deliveryCarrier/${id}`)
+      await axios.get(`${API}/courier/${id}`)
         .then((resApi) => {
           console.log(resApi);
           setApiData(resApi.data.msg);
@@ -49,7 +49,7 @@ const ViewDeliveryCarrier = () => {
   return (<>
     <div className='gcont-container'>
       <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-        <p>View Delivery Carrier Info</p>
+        <p>View Courier Info</p>
         <div className='gcard-btn-panel'>
           <button type="button" className='gbtn2 gbtn-back' onClick={() => navigate(-1)}>Back</button>
         </div>
@@ -71,8 +71,8 @@ const ViewDeliveryCarrier = () => {
               }
 
               <tr>
-                <th>Carrier Name</th>
-                <td>{apiData?.carrierName}</td></tr>
+                <th>Courier Name</th>
+                <td>{apiData?.courierName}</td></tr>
 
               <tr>
                 <th>Email</th>
@@ -121,4 +121,4 @@ const ViewDeliveryCarrier = () => {
   )
 }
 
-export default ViewDeliveryCarrier
+export default ViewCourier

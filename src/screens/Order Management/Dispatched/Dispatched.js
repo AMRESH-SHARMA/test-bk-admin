@@ -3,18 +3,16 @@ import Spinner from '../../../assets/Spinner/Spinner';
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import swal from 'sweetalert'
 import { API } from "../../../API"
 import { useAlert } from "../../../Redux/actions/useAlert";
 import Pagination from '../../../components/Pagination';
 
-const Dispatched = () => {
+const NewOrder = () => {
 
   const navigate = useNavigate()
   const { displayAlert } = useAlert()
   const [apiData, setApiData] = useState([])
   const [apiloading, setApiLoading] = useState(true)
-  const [loading, setLoading] = useState(false)
 
   //PAGINATION
   const PAGE_SIZE = 5;
@@ -32,8 +30,8 @@ const Dispatched = () => {
   }
 
   useEffect(() => {
-    async function getOrders() {
-      await axios.get(`${API}/order/get-orders?skip=${skip}&limit=${limit}`)
+    async function getNewOrders() {
+      await axios.get(`${API}/order?status=dispatched&skip=${skip}&limit=${limit}`)
         .then((resApi) => {
           console.log(resApi);
           setTOTAL_DOCS(resApi.data.msg.totalDocs)
@@ -48,21 +46,8 @@ const Dispatched = () => {
           handleAlert(e.response.data.msg, 'red')
         });
       setApiLoading(false)
-    } getOrders()
-  }, [loading, CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
-
-  //change time formate
-  function formatAMPM(date) {
-    var hours = new Date(date).getHours();
-    var minutes = new Date(date).getMinutes();
-    var ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // the hour '0' should be '12'
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-    var strTime = hours + ':' + minutes + ' ' + ampm;
-    return strTime;
-  }
-
+    } getNewOrders()
+  }, [CURRENT_PAGE]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (<>
     <div className='gcont-container'>
@@ -70,9 +55,9 @@ const Dispatched = () => {
         <p>Orders / Dispatched</p>
       </div>
 
-        <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
-        </div>
+      <div className="gcont-title" style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Pagination setCURRENT_PAGE={setCURRENT_PAGE} CURRENT_PAGE={CURRENT_PAGE} TOTAL_DOCS={TOTAL_DOCS} />
+      </div>
 
       {apiloading ?
         <div style={{ marginTop: "3rem" }} className='gspinnerflex'>
@@ -87,21 +72,23 @@ const Dispatched = () => {
                   <th>Order ID</th>
                   <th>Amount</th>
                   <th>Placed On</th>
-                  <th>Status</th>
+                  {/* <th>Status</th> */}
                   <th>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {apiData && apiData.length ? apiData.map((i) => {
-                  return (<tr key={i._id}>
-                    <td>{i.language}</td>
-                    <td>{i._id}</td>
-                    <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td>
-                    <td><span className='gtable-btn-panel'>
-                      <button className="gbtn2 gbtn-yellow" onClick={() => navigate(`/books/language/edit/${i._id}`)}>View</button>
-                    </span>
-                    </td>
-                  </tr>
+                  return (
+                    <tr key={i._id}>
+                      <td>{i._id}</td>
+                      <td>Rs.{i.totalAmountAfterCharges}</td>
+                      <td>{new Date(`${i?.createdAt}`).toDateString()}</td>
+                      {/* <td>{new Date(`${i?.updatedAt}`).toDateString()}<span> , {`${formatAMPM(i?.updatedAt)}`}</span></td> */}
+                      <td><span className='gtable-btn-panel'>
+                        <button className="gbtn2 gbtn-view" onClick={() => navigate(`/order/dispatched/view/${i._id}`)}>View</button>
+                      </span>
+                      </td>
+                    </tr>
                   );
                 })
                   : <>&nbsp;No Data found</>}
@@ -113,4 +100,4 @@ const Dispatched = () => {
   </>
   )
 }
-export default Dispatched
+export default NewOrder
